@@ -1,0 +1,10 @@
+## Dieser View wird aktuell benötigt für die API
+
+CREATE OR REPLACE VIEW g9p5k_act_view_modified
+AS SELECT
+    c.route,
+    CASE WHEN (MAX(c.modified) > c.created) THEN MAX(c.modified) ELSE c.created END AS modified
+FROM g9p5k_act_comment as c
+LEFT JOIN g9p5k_act_route AS r on r.id = c.route
+WHERE (c.state = 1) 
+GROUP BY (c.route)

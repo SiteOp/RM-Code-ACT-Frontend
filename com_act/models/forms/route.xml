@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset>
+    <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+    <field name="name" maxlength="64" filter="string" type="text" required="true" message="Bitte den Namen der Route eingeben" label="COM_ACT_FORM_LBL_ROUTE_NAME" description="COM_ACT_FORM_DESC_ROUTE_NAME" hint="COM_ACT_FORM_LBL_ROUTE_NAME"/>
+    <field name="settergrade" type="list" label="COM_ACT_FORM_LBL_ROUTE_SETTERGRADE" description="COM_ACT_FORM_DESC_ROUTE_SETTERGRADE" hint="COM_ACT_FORM_LBL_ROUTE_SETTERGRADE">
+      <option value="10">COM_ACT_ROUTES_SETTERGRADE_OPTION_10</option>
+      <option value="11">COM_ACT_ROUTES_SETTERGRADE_OPTION_11</option>
+      <option value="12">COM_ACT_ROUTES_SETTERGRADE_OPTION_12</option>
+      <option value="13">COM_ACT_ROUTES_SETTERGRADE_OPTION_13</option>
+      <option value="14">COM_ACT_ROUTES_SETTERGRADE_OPTION_14</option>
+      <option value="15">COM_ACT_ROUTES_SETTERGRADE_OPTION_15</option>
+      <option value="16">COM_ACT_ROUTES_SETTERGRADE_OPTION_16</option>
+      <option value="17">COM_ACT_ROUTES_SETTERGRADE_OPTION_17</option>
+      <option value="18">COM_ACT_ROUTES_SETTERGRADE_OPTION_18</option>
+      <option value="19">COM_ACT_ROUTES_SETTERGRADE_OPTION_19</option>
+      <option value="20">COM_ACT_ROUTES_SETTERGRADE_OPTION_20</option>
+      <option value="21">COM_ACT_ROUTES_SETTERGRADE_OPTION_21</option>
+      <option value="22">COM_ACT_ROUTES_SETTERGRADE_OPTION_22</option>
+      <option value="23">COM_ACT_ROUTES_SETTERGRADE_OPTION_23</option>
+      <option value="24">COM_ACT_ROUTES_SETTERGRADE_OPTION_24</option>
+      <option value="25">COM_ACT_ROUTES_SETTERGRADE_OPTION_25</option>
+      <option value="26">COM_ACT_ROUTES_SETTERGRADE_OPTION_26</option>
+      <option value="27">COM_ACT_ROUTES_SETTERGRADE_OPTION_27</option>
+      <option value="28">COM_ACT_ROUTES_SETTERGRADE_OPTION_28</option>
+      <option value="29">COM_ACT_ROUTES_SETTERGRADE_OPTION_29</option>
+      <option value="30">COM_ACT_ROUTES_SETTERGRADE_OPTION_30</option>
+      <option value="31">COM_ACT_ROUTES_SETTERGRADE_OPTION_31</option>
+      <option value="32">COM_ACT_ROUTES_SETTERGRADE_OPTION_32</option>
+      <option value="33">COM_ACT_ROUTES_SETTERGRADE_OPTION_33</option>
+      <option value="34">COM_ACT_ROUTES_SETTERGRADE_OPTION_34</option>
+      <option value="35">COM_ACT_ROUTES_SETTERGRADE_OPTION_35</option>
+      <option value="36">COM_ACT_ROUTES_SETTERGRADE_OPTION_36</option>
+    </field>
+    <field name="color" sql_select="color, rgbcode, state, id" sql_from="#__act_color" sql_where="state != 0" sql_order="color ASC" key_field="id" value_field="color" type="sql" label="COM_ACT_FORM_LBL_ROUTE_COLOR" description="COM_ACT_FORM_DESC_ROUTE_COLOR" hint="COM_ACT_FORM_LBL_ROUTE_COLOR"/>
+    <field name="line" sql_select="line, state, id" sql_from="#__act_line" sql_where="state != 0" sql_order="line ASC" key_field="id" value_field="line" header="Linie wählen" type="sql" label="COM_ACT_FORM_LBL_ROUTE_LINE" description="COM_ACT_FORM_DESC_ROUTE_LINE" hint="COM_ACT_FORM_LBL_ROUTE_LINE"/>
+    
+    <field name="setter" 
+		   sql_select="settername, state, id" 
+		   sql_from="#__act_setter" 
+		   sql_where="state != 0" 
+		   sql_order="settername ASC" 
+		   key_field="id" 
+		   value_field="settername" 
+		   multiple="true" 
+		   type="sql" 
+		   label="COM_ACT_FORM_LBL_ROUTE_SETTER" 
+		   description="COM_ACT_FORM_DESC_ROUTE_SETTER" 
+		   hint="COM_ACT_FORM_LBL_ROUTE_SETTER"
+	/>
+    <field name="createdate" class="inputbox" format="%d.%m.%Y" timeformat="12" filter="server_utc" translateformat="true" showtime="false" singleheader="true" todaybutton="true" weeknumbers="false" filltable="true" type="calendar" label="COM_ACT_FORM_LBL_ROUTE_CREATEDATE" description="COM_ACT_FORM_DESC_ROUTE_CREATEDATE" hint="COM_ACT_FORM_LBL_ROUTE_CREATEDATE"/>
+    <field name="info" filter="safehtml" type="textarea" label="COM_ACT_FORM_LBL_ROUTE_INFO" description="COM_ACT_FORM_DESC_ROUTE_INFO" hint="COM_ACT_FORM_LBL_ROUTE_INFO"/>
+    <field name="infoadmin" filter="safehtml" type="textarea" label="COM_ACT_FORM_LBL_ROUTE_INFOADMIN" description="COM_ACT_FORM_DESC_ROUTE_INFOADMIN" hint="COM_ACT_FORM_LBL_ROUTE_INFOADMIN"/>
+    <field name="state" default="1" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1">
+      <option value="1">JPUBLISHED</option>
+      <option value="0">JUNPUBLISHED</option>
+      <option value="2">JARCHIVED</option>
+      <option value="-2">JTRASHED</option>
+    </field>
+    <field name="ordering"/>
+    <field name="checked_out" type="hidden" filter="unset"/>
+    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+    <field name="modified" type="timecreated" label="COM_ACT_FORM_LBL_ROUTE_MODIFIED" description="COM_ACT_FORM_DESC_ROUTE_MODIFIED" hint="COM_ACT_FORM_LBL_ROUTE_MODIFIED"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+  </fieldset>
+</form>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset>
+    <field name="id" 
+           type="text" 
+           readonly="true" 
+           class="readonly invisible" 
+           default="0" 
+    />
+
+    <field name="state" 
+           default="1" 
+           type="list" 
+           label="COM_ACT_STATUS" 
+           class="inputbox"
+           filter="integer"
+           size="1">
+              <option value="1">JPUBLISHED</option>
+              <option value="2">JARCHIVED</option>
+              <option value="-2">JTRASHED</option>
+        </field>
+           
+    <field name="line" 
+           filter="string" 
+           type="text" 
+           required="true"
+           label="COM_ACT_FORM_LBL_LINE_LINE" 
+           hint="COM_ACT_FORM_LBL_LINE_LINE"
+           class="form-control"
+    />
+	
+	<field name="indicator" 
+           filter="string" 
+           type="text" 
+           required="false" 
+           label="COM_ACT_INDICATOR" 
+           hint="COM_ACT_INDICATOR"
+           class="form-control"
+    />
+    
+    <field name="height" 
+           filter="string" 
+           type="text" 
+           required="true" 
+           label="COM_ACT_FORM_LBL_LINE_HEIGHT" 
+           hint="COM_ACT_FORM_LBL_LINE_HEIGHT"
+           class="form-control"
+    />
+    
+     <field name="sector"
+               type="sql"
+	        filter="integer" 
+               default="*"
+               label="COM_ACT_SECTORS_SECTOR"
+               sql_select="sc.sector, sc.id"
+               sql_from="#__act_sector AS sc"
+               key_field="id"
+               value_field="sector"
+               multiple="false"
+               onchange=""
+               >
+             <option value="">COM_ACT_SECTORS_SECTOR</option>
+        </field>
+    
+    
+    <field name="state" 
+           default="1" 
+           type="list" 
+           label="JSTATUS" 
+           class="inputbox" 
+		   filter="integer" 
+           size="1"
+           >
+              <option value="1">JPUBLISHED</option>
+              <option value="0">JUNPUBLISHED</option>
+              <option value="2">JARCHIVED</option>
+              <option value="-2">JTRASHED</option>
+    </field>
+    
+     <field name="maker" 
+           default="0" 
+           type="list"
+           label="COM_ACT_FORM_LBL_LINE_MAKER" 
+           class="inputbox"
+		   filter="integer" 
+           size="1"
+           >
+              <option value="0">COM_ACT_FORM_LBL_LINE_MAKER_0</option>
+              <option value="1">COM_ACT_FORM_LBL_LINE_MAKER_1</option>
+              <option value="2">COM_ACT_FORM_LBL_LINE_MAKER_2</option>
+              <option value="3">COM_ACT_FORM_LBL_LINE_MAKER_3</option>
+              <option value="4">COM_ACT_FORM_LBL_LINE_MAKER_4</option>
+              <option value="5">COM_ACT_FORM_LBL_LINE_MAKER_5</option>
+    </field>
+	
+	 <field name="lineoption"
+               type="sql"
+		 filter="integer" 
+               default=""
+	        class="form-control" 
+               label="COM_ACT_FORM_LBL_LINE_LINEOPTION_LABEL"  
+               sql_select="l.name,l.id"
+               sql_from="#__lineoption_opt AS l"
+               key_field="id"
+               value_field="name"
+	        sql_where="l.state = 1"
+               multiple="true"
+               >
+        </field>
+	
+    <field name="maintenance_interval" 
+		   filter="number" 
+		   type="number" 
+		   class="form-control"
+                 min="1" 
+                 step="1"
+		   label="COM_ACT_FORM_LBL_LINE_INTERVAL" 
+	/>
+
+    <!-- Time true - erfoderlich damit Sortierung nach Setterdate vernünftig funktioniert / Sonst Unterschiede beim sortieren Routenliste Guest/Admin -->
+   <field name="first_maintenace" 
+               class="form-control" 
+               format="" 
+               timeformat="12" 
+               filter="user_utc" 
+               translateformat="true" 
+               showtime="false" 
+               singleheader="false" 
+               todaybutton="true" 
+               weeknumbers="true" 
+               filltable="true"
+               default="NOW"
+               type="calendar" 
+               label="COM_ACT_NEXT_MAINTENACE"
+        />
+    
+    <field name="checked_out"
+           type="hidden" 
+           filter="unset"
+     />
+     
+    <field name="checked_out_time" 
+           default="0000-00-00 00:00:00" 
+           type="hidden" 
+           filter="unset"
+    />
+    
+
+  </fieldset>
+</form>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        
+        <field name="search" type="text" 
+               hint="COM_ACT_SEARCH_FILTER_LINE"
+               label=""
+               class="js-stools-search-string" 
+        />
+        <field name="state" 
+               default="1" 
+               type="list" 
+               label="COM_ACT_STATUS" 
+               class="inputbox"
+               filter="integer"
+               size="1"
+               onchange="this.form.submit();" 
+               >
+                  <option value="1">JPUBLISHED</option>
+                  <option value="2">JARCHIVED</option>
+                  <option value="-2">JTRASHED</option>
+        </field>       
+        
+         <field name="sector" 
+               type="sql"
+               default="*"
+               label="COM_ACT_SEARCH_FILTER_SECTOR"
+               sql_select="sector, id"
+               sql_from="#__act_sector"
+               sql_where="state = 1"
+               key_field="id"
+               value_field="sector"
+               onchange="this.form.submit();" 
+               >
+             <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
+        </field>  
+
+        <field name="building" 
+               label="" 
+               type="list" 
+               default="COM_ACT_SEARCH_FILTER_BUIDLING"
+               onchange="this.form.submit();" 
+               >
+                  <option value="">COM_ACT_SEARCH_FILTER_BUIDLING</option>
+                  <option value="1">COM_ACT_SEARCH_FILTER_BUIDLING_1</option>
+                  <option value="2">COM_ACT_SEARCH_FILTER_BUIDLING_2</option>
+        </field>
+        
+        <field name="inorout" 
+               label="" 
+               type="list"
+               default="COM_ACT_SEARCH_FILTER_INOROUT "
+               onchange="this.form.submit();" 
+               >
+                  <option value="">COM_ACT_SEARCH_FILTER_INOROUT </option>
+                  <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
+                  <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
+        </field>
+
+    </fields>
+</form>

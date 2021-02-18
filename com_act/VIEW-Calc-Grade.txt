@@ -1,0 +1,51 @@
+############## VIEW 1 ####################
+
+CREATE OR REPLACE VIEW g9p5k_act_view_all
+AS SELECT
+    r.id, 
+
+    avg(CASE WHEN c.stars  = 0 THEN NULL ELSE c.stars END) AS avg_stars,
+    count(CASE WHEN c.stars =0 THEN NULL ELSE 1 END) AS count_stars, 
+    sum(c.myroutegrade) AS sum_grade, 
+    count(CASE WHEN c.myroutegrade IS NULL THEN NULL ELSE 1 END) AS count_user_myroutegrade
+FROM g9p5k_act_comment as c
+RIGHT OUTER JOIN g9p5k_act_route AS r on r.id = c.route
+
+
+GROUP BY route
+
+
+
+############## VIEW 2 ####################
+
+
+   Dieser View setzt auf einen anderen View auf.
+    Keine schöne Lösung. 
+    Ansonsten keine Idee wie man den C-Grade berechnet unter Berücksichtigung von Kommentar-Status und MyRoutegrade-Bewertung
+
+
+CREATE OR REPLACE VIEW g9p5k_act_grade_view
+    AS SELECT 
+        r.id as routeId,
+        CASE WHEN v.sum_grade IS NULL THEN r.settergrade ELSE (round((((r.settergrade * 2)  + v.sum_grade) / (2 +  v.count_user_myroutegrade)),0)) END AS calc_grad
+              FROM g9p5k_act_view as v
+             RIGHT OUTER JOIN g9p5k_act_route AS r on r.id = v.route
+             
+    WHERE r.state = 1
+    GROUP BY r.id
+    
+
+
+
+CREATE OR REPLACE VIEW g9p5k_act_view_all
+AS SELECT
+    r.id, 
+    avg(CASE WHEN c.stars  = 0 THEN NULL ELSE c.stars END) AS avg_stars,
+    count(CASE WHEN c.stars =0 THEN NULL ELSE 1 END) AS count_stars, 
+    sum(c.myroutegrade) AS sum_grade, 
+    count(CASE WHEN c.myroutegrade IS NULL THEN NULL ELSE 1 END) AS count_user_myroutegrade
+FROM g9p5k_act_route AS r
+LEFT JOIN g9p5k_act_comment AS c on c.route = r.id
+
+
+GROUP BY r.id

@@ -1,0 +1,50 @@
+
+
+
+
+TRUNCATE TABLE g9p5k_act_view_copy;
+INSERT INTO g9p5k_act_view_copy
+SELECT  *
+FROM  g9p5k_act_view
+
+
+
+
+CREATE OR REPLACE VIEW g9p5k_act_view
+AS SELECT
+    route, 
+    state, 
+    max(modified) AS comment_modified,
+    avg(CASE stars WHEN stars >1 THEN NULL ELSE stars END) AS avg_stars,
+    count(CASE stars WHEN stars >1 THEN NULL ELSE 1 END) AS count_stars, 
+    sum(myroutegrade) AS sum_grade, 
+    count(CASE myroutegrade WHEN myroutegrade >1 THEN NULL ELSE 1 END) AS count_user_myroutegrade
+FROM g9p5k_act_comment
+WHERE state = 1 AND review_yn != 0 
+GROUP BY route
+
+
+
+
+
+
+CREATE OR REPLACE VIEW g9p5k_act_view
+AS SELECT
+    route, 
+    state, 
+    CASE WHEN  max(modified) > created THEN max(modified) ELSE created END  AS comment_modified,
+    avg(CASE stars WHEN stars >1 THEN NULL ELSE stars END) AS avg_stars,
+    count(CASE stars WHEN stars >1 THEN NULL ELSE 1 END) AS count_stars, 
+    sum(myroutegrade) AS sum_grade, 
+    count(CASE myroutegrade WHEN myroutegrade >1 THEN NULL ELSE 1 END) AS count_user_myroutegrade
+FROM g9p5k_act_comment
+WHERE state = 1
+GROUP BY route
+
+
+
+
+
+
+
+select `g9p5k_act_comment`.`route` AS `route`,`g9p5k_act_comment`.`state` AS `state`,case when max(`g9p5k_act_comment`.`modified`) > `g9p5k_act_comment`.`created` then max(`g9p5k_act_comment`.`modified`) else `g9p5k_act_comment`.`created` end AS `comment_modified`,avg(case `g9p5k_act_comment`.`stars` when `g9p5k_act_comment`.`stars` > 1 then NULL else `g9p5k_act_comment`.`stars` end) AS `avg_stars`,count(case `g9p5k_act_comment`.`stars` when `g9p5k_act_comment`.`stars` > 1 then NULL else 1 end) AS `count_stars`,sum(`g9p5k_act_comment`.`myroutegrade`) AS `sum_grade`,count(case `g9p5k_act_comment`.`myroutegrade` when `g9p5k_act_comment`.`myroutegrade` > 1 then NULL else 1 end) AS `count_user_myroutegrade` from `g9p5k_act_comment` where `g9p5k_act_comment`.`state` = 1 and `g9p5k_act_comment`.`review_yn` <> 0 group by `g9p5k_act_comment`.`route`
