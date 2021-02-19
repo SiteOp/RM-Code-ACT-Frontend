@@ -9,8 +9,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
-use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Factory;
+use \Joomla\CMS\HTML\HTMLHelper;
 use \Joomla\CMS\Uri\Uri;
 use \Joomla\CMS\Router\Route;
 use \Joomla\CMS\Language\Text;
@@ -25,7 +25,6 @@ $doc->addScript(Uri::base() . '/media/com_act/js/form.js');
 
 $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
-
 
 if($this->item->state == 1){
 	$state_string = 'Publish';
@@ -73,21 +72,21 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('maker'); ?></div>
 			</div> 
 			<div class="form-group row">
+				<div class="col-md-5"><?php echo $this->form->renderField('lineoption'); ?></div>
+				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('indicator'); ?></div>
+			</div>
+			<div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('maintenance_interval'); ?></div>
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('first_maintenace'); ?></div>
-			</div> 
-			<div class="form-group row">
-				<div class="col-md-5"><?php echo $this->form->renderField('lineoption'); ?></div>
-				<div class="col-md-5"><?php echo $this->form->renderField('indicator'); ?></div>
 			</div> 
 	
 			<?php echo $this->form->getInput('id'); ?>
 			<?php echo $this->form->getInput('created_by'); ?>
 			<?php echo $this->form->getInput('modified_by'); ?>
 			<div class="control-group">
-				<div class="controls">
+				<div class="controls mt-1">
 					<?php if ($this->canSave): ?>
-						<button type="submit" class="validate btn btn-success">
+						<button type="submit" class="validate btn btn-secondary mr-1">
 							<?php echo Text::_('COM_ACT_SUBMIT_SAVE'); ?>
 						</button>
 					<?php endif; ?>
