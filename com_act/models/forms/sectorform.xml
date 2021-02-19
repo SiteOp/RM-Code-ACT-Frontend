@@ -1,79 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
   <fieldset>
-    
-    <field name="id" 
-           type="text" 
-           readonly="true" 
-           class="readonly" 
-           default="0" 
-           description="JGLOBAL_FIELD_ID_DESC"
-    />
-
-    <field name="state" 
-           default="1" 
-           type="list" 
-           label="COM_ACT_STATUS" 
-           class="inputbox"
-           size="1"
-           >
-              <option value="1">JPUBLISHED</option>
-              <option value="0">JUNPUBLISHED</option>
-              <option value="2">JARCHIVED</option>
-              <option value="-2">JTRASHED</option>
-    </field>
-
-    <field name="sector" 
-          filter="safehtml" 
-          type="text" 
-          class="form-control"
-          required="true"  
-          label="COM_ACT_SECTORS_SECTOR"  
-          description="" 
-          hint=""
-    />
-   
-   <field name="building" 
-           type="list" 
-           label="COM_ACT_SECTORS_BUILDING"  
-           >
-              <option value="1">COM_ACT_SECTORS_BUILDING_OPTION_1</option>
-              <option value="2">COM_ACT_SECTORS_BUILDING_OPTION_2</option>
-    </field>
-    
-    <field name="inorout" 
-           type="list" 
-           required="true" 
-           label="COM_ACT_SECTORS_INOROUT" 
-           >
-          <option value="1">COM_ACT_SECTORS_INOROUT_OPTION_1</option>
-          <option value="0">COM_ACT_SECTORS_INOROUT_OPTION_0</option>
-    </field>
-    
-    <field name="media" 
-           directory="Sektoren" 
-           type="media" 
-           label="COM_ACT_FORM_LBL_SETTER_IMAGE" 
-           hint="COM_ACT_FORM_LBL_SETTER_IMAGE"
-           class="form-control"
-    />
-    
-    <field name="sponsor" 
-               type="sql" 
-               sql_select="id, name" 
-               sql_from="#__act_sponsor" 
-               sql_where="state != 0" 
-               sql_order="name ASC" 
-               key_field="id" 
-               value_field="name"
-               label="COM_ACT_FORM_LBL_ROUTE_SPONSOR" 
-               header="COM_ACT_FORM_HEADER_ROUTE_SPONSOR"
+       <field name="id" 
+              type="text" 
+              readonly="true" 
+              class="readonly" 
+              default="0" 
+              description=""
+       />
+       <field name="state" 
+              default="1" 
+              type="list"
+              filter="integer"
+              label="COM_ACT_STATUS" 
+              class="inputbox"
+              size="1">
+                <option value="1">JPUBLISHED</option>
+                <option value="0">JUNPUBLISHED</option>
+                <option value="2">JARCHIVED</option>
+                <option value="-2">JTRASHED</option>
+       </field>
+       <field name="sector" 
+              filter="safehtml" 
+              type="text" 
+              class="form-control"
+              required="true"  
+              label="COM_ACT_SECTORS_SECTOR"  
+              description="" 
+              hint=""
+       />
+       <field name="building" 
+              type="list"
+              filter="integer"
+              label="COM_ACT_SECTORS_BUILDING">
+                <option value="1">COM_ACT_SECTORS_BUILDING_OPTION_1</option>
+                <option value="2">COM_ACT_SECTORS_BUILDING_OPTION_2</option>
+       </field>
+       <field name="inorout" 
+              type="list" 
+              required="true"
+              filter="integer"
+              label="COM_ACT_SECTORS_INOROUT" >
+                <option value="1">COM_ACT_SECTORS_INOROUT_OPTION_1</option>
+                <option value="0">COM_ACT_SECTORS_INOROUT_OPTION_0</option>
+       </field>
+       <field name="media" 
+              directory="Sektoren" 
+              type="media" 
+              label="COM_ACT_FORM_LBL_SETTER_IMAGE" 
+              hint="COM_ACT_FORM_LBL_SETTER_IMAGE"
+              class="form-control"
+       />
+       <field name="sponsor" 
+              type="sql" 
+              sql_select="id, name" 
+              sql_from="#__act_sponsor" 
+              sql_where="state != 0" 
+              sql_order="name ASC" 
+              key_field="id" 
+              value_field="name"
+              label="COM_ACT_FORM_LBL_ROUTE_SPONSOR" 
+              header="COM_ACT_FORM_HEADER_ROUTE_SPONSOR"
+              filter="integer"
         />
-    
-    <field name="ordering"/>
-    <field name="checked_out" type="hidden" filter="unset"/>
-    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
-    
-    <field name="version_note" type="text"  description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+       <field name="maintenance_interval" 
+		filter="number" 
+		type="number" 
+		class="form-control"
+              min="0" 
+              step="1"
+		label="COM_ACT_FORM_LBL_LINE_INTERVAL" 
+	/>
+       <!-- Time true - erfoderlich damit Sortierung nach Setterdate vernünftig funktioniert / Sonst Unterschiede beim sortieren Routenliste Guest/Admin -->
+       <field name="first_maintenace" 
+              class="form-control" 
+              format="" 
+              timeformat="12" 
+              filter="user_utc" 
+              translateformat="true" 
+              showtime="false" 
+              singleheader="false" 
+              todaybutton="true" 
+              weeknumbers="true" 
+              filltable="true"
+              default="NOW"
+              type="calendar" 
+              label="COM_ACT_NEXT_MAINTENACE"
+        />
+       <field name="ordering"/>
+       <field name="checked_out" type="hidden" filter="unset"/>
+       <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+       <field name="version_note" type="text"  description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
   </fieldset>
 </form>
