@@ -64,6 +64,8 @@ $customOptions = array(
 	'searchFieldSelector' => '#filter_search',
 	'orderFieldSelector'  => '#list_fullordering'
 );
+$customOptions['filterButton'] = 0;
+$customOptions['filtersHidden'] = 0;
 
 $data['options'] = array_unique(array_merge($customOptions, $data['options']));
 
