@@ -52,6 +52,7 @@ class ActModelRoutesAdmin extends ListModel
                 'setterdate', 'a.setterdate',
                 'info', 'a.info',
                 'state', 'a.state',
+                'fixed', 'a.fixed'
             );
         }
 
@@ -119,7 +120,7 @@ class ActModelRoutesAdmin extends ListModel
         $query = $db->getQuery(true);
 
         // Route (a), Setter (s), Color (c), Categorie (cat), Comment (r),
-        $query->select(array('a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.created_by', 'a.exclude', 'a.hidden',
+        $query->select(array('a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.created_by', 'a.exclude', 'a.hidden', 'a.fixed',
                              's.settername', 'a.settergrade', 's.id AS setterId',
                              'c.rgbcode', 'c.id AS colorId',
                              'l.line', 'l.id AS lineId',
@@ -212,12 +213,12 @@ class ActModelRoutesAdmin extends ListModel
                 $query->where($db->qn('s.id') . '=' . (int) $filter_settername);
             }
 
-        // Filtering Stars
-        $filter_stars = $this->state->get("filter.stars");
+        // Filtering Fixed - Unveränder z. B Struktur
+        $filter_fixed = $this->state->get("filter.fixed");
 
-            if ($filter_stars)
+            if ($filter_fixed != '')
             {
-                $query->where($db->qn('t.avg_stars') . '=' . (int) $filter_stars);
+                $query->where($db->qn('a.fixed') . '=' . (int) $filter_fixed);
             }
 
         // Filtering color

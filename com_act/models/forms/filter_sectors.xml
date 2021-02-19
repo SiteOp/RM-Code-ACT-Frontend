@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fields name="filter">
-        <field name="search" 
-               type="text" 
-               hint="COM_ACT_SEARCH_FILTER_SECTOR"
-               label="COM_ACT_SEARCH_FILTER_SECTOR"
-               class="js-stools-search-string" 
-        />
-        
-        <field name="state"
-               type="list"
-               label="COM_CONTENT_FILTER_PUBLISHED"
-               description="COM_CONTENT_FILTER_PUBLISHED_DESC"
-               default="1"
-               >
+       <field name="search"
+              type="text"
+              hint="COM_ACT_SEARCH_FILTER_SECTOR"
+              label="COM_ACT_SEARCH_FILTER_SECTOR"
+              class="js-stools-search-string"
+       />
+       <field name="state"
+              type="list"
+              filter="integer"
+              label="COM_CONTENT_FILTER_PUBLISHED"
+              description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+              onchange="this.form.submit();"
+              default="1">
                 <option value="1">COM_ACT_PUBLISHED</option>
                 <option value="0">COM_ACT_UNPUBLISHED </option>
                 <option value="-2">COM_ACT_TRASHED </option>
-                <option value="2">COM_ACT_ARCHIVED </option>
-        </field>
-               
-        <field name="building" 
-               label="" 
-               type="list" 
-               default="COM_ACT_SEARCH_FILTER_BUIDLING"
-               >
-                  <option value="">COM_ACT_SEARCH_FILTER_BUIDLING</option>
-                  <option value="1">COM_ACT_SEARCH_FILTER_BUIDLING_1</option>
-                  <option value="2">COM_ACT_SEARCH_FILTER_BUIDLING_2</option>
-        </field>
-        
-        <field name="inorout" 
-               label="" 
-               type="list"
-               default="COM_ACT_SEARCH_FILTER_INOROUT "
-               >
-                  <option value="">COM_ACT_SEARCH_FILTER_INOROUT </option>
-                  <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
-                  <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
-        </field>
-        
-
+       </field>      
+       <field name="building"
+              label=""
+              type="list"
+              filter="integer"
+              onchange="this.form.submit();"
+              default="COM_ACT_SEARCH_FILTER_BUIDLING">
+                <option value="">COM_ACT_SEARCH_FILTER_BUIDLING</option>
+                <option value="1">COM_ACT_SEARCH_FILTER_BUIDLING_1</option>
+                <option value="2">COM_ACT_SEARCH_FILTER_BUIDLING_2</option>
+       </field>
+       <field name="inorout"
+              label=""
+              type="list"
+              filter="integer"
+              onchange="this.form.submit();"
+              default="COM_ACT_SEARCH_FILTER_INOROUT ">
+                <option value="">COM_ACT_SEARCH_FILTER_INOROUT </option>
+                <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
+                <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
+       </field>
     </fields>
 </form>

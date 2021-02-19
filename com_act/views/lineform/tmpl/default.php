@@ -27,15 +27,14 @@ $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
 
 if($this->item->state == 1){
-	$state_string = 'Publish';
-	$state_value = 1;
+    $state_string = 'Publish';
+    $state_value = 1;
 } else {
-	$state_string = 'Unpublish';
-	$state_value = 0;
+    $state_string = 'Unpublish';
+    $state_value = 0;
 }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 ?>
-
 
     <?Php // Pager-Header ?>
 	<?php if (!$canEdit) : ?>

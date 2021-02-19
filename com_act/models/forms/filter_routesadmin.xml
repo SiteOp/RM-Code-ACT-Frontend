@@ -1,142 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fields name="filter">
-        <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
-               label=""
-               class="js-stools-search-string"
-        />
-        
-        
-        <field name="state"
-               type="list"
-               label="COM_CONTENT_FILTER_PUBLISHED"
-               description="COM_CONTENT_FILTER_PUBLISHED_DESC"
-               onchange=""
-               default="1"
-               >
+       <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
+              label=""
+              class="js-stools-search-string"
+       />
+       <field name="state"
+              type="list"
+              filter="integer"
+              label="COM_CONTENT_FILTER_PUBLISHED"
+              description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+              onchange="this.form.submit();"
+              default="1">
                 <option value="1">COM_ACT_PUBLISHED</option>
                 <option value="-2">COM_ACT_TRASHED </option>
                 <option value="2">COM_ACT_ARCHIVED </option>
-        </field>
-  
-         <field name="cgrade" 
-               label="COM_ACT_SEARCH_FILTER_CGRADE" 
-               type="list"
-                multiple="multiple"
-               default="*">
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-        </field>
-  <!--         
-        <field name="stars" 
-               label="COM_ACT_SEARCH_FILTER_STARS" 
-               type="list"
-               default="COM_ACT_SEARCH_FILTER_STARS">
-                    <option value="0">COM_ACT_SEARCH_FILTER_STARS</option>
-                    <option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
-                    <option value="2">COM_ACT_SEARCH_FILTER_STARS_2</option>
-                    <option value="3">COM_ACT_SEARCH_FILTER_STARS_3</option>
-                    <option value="4">COM_ACT_SEARCH_FILTER_STARS_4</option>
-                    <option value="5">COM_ACT_SEARCH_FILTER_STARS_5</option>
-        </field>
-  -->      
-        <field name="settername"
-               type="sql"
-               default="*"
-               label="COM_ACT_SEARCH_FILTER_SETTER"
-               sql_select="s.settername, s.id"
-               sql_from="#__act_setter AS s"
-               sql_join="#__act_route AS r ON r.setter = s.id"
-               sql_group="s.settername"
-               key_field="id"
-               value_field="settername"
-               multiple="false"
-               onchange=""
-               >
-             <option value="">COM_ACT_SEARCH_FILTER_SETTER</option>
-        </field>
-        
-        <field name="color"
-               type="sql"
-               default="*"
-               label="COM_ACT_SEARCH_FILTER_COLOR"
-               sql_select="c.color, c.id"
-               sql_from="#__act_color AS c"
-               sql_join="#__act_route AS r ON r.color = c.id"
-               sql_group="c.color"
-               key_field="id"
-               value_field="color"
-               >
-             <option value="">COM_ACT_SEARCH_FILTER_COLOR</option>
-        </field>
-        
-         <field name="sector" 
-               type="sql"
-               default="*"
-               label="COM_ACT_SEARCH_FILTER_SECTOR"
-               sql_select="sector, id"
-               sql_from="#__act_sector"
-               sql_where="state = 1"
-               key_field="id"
-               value_field="sector"
-               >
-             <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
-        </field>  
-        
-        <field name="line"
-               type="sql"
-               label="COM_ACT_SEARCH_FILTER_LINE"
-               default="*"
-               sql_select="l.line, l.id"
-               sql_from="#__act_line AS l"
-               sql_join="#__act_route AS r ON r.line = l.id"
-               multiple="falses"
-               sql_group="line"
-               key_field="id"
-               value_field="line"
-               >
-             <option value="">COM_ACT_SEARCH_FILTER_LINE</option>
-        </field>
-        
-
-
-        
-        <field name="inorout"
-               type="list"
-               label="COM_ACT_SEARCH_FILTER_INOROUT"
-               class=""
-               default="*"
-               >
+       </field>
+       <field name="cgrade" 
+              label="COM_ACT_SEARCH_FILTER_CGRADE" 
+              type="list"
+              filter="integer"
+              multiple="multiple"
+              onchange="this.form.submit();"
+              default="*">
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+       </field>   
+       <field name="settername"
+              type="sql"
+              filter="integer"
+              default="*"
+              label="COM_ACT_SEARCH_FILTER_SETTER"
+              sql_select="s.settername, s.id"
+              sql_from="#__act_setter AS s"
+              sql_join="#__act_route AS r ON r.setter = s.id"
+              sql_group="s.settername"
+              key_field="id"
+              value_field="settername"
+              multiple="false"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_SETTER</option>
+       </field>
+       <field name="color"
+              type="sql"
+              filter="integer"
+              default="*"
+              label="COM_ACT_SEARCH_FILTER_COLOR"
+              sql_select="c.color, c.id"
+              sql_from="#__act_color AS c"
+              sql_join="#__act_route AS r ON r.color = c.id"
+              sql_group="c.color"
+              key_field="id"
+              value_field="color"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_COLOR</option>
+       </field>
+       <field name="sector" 
+              type="sql"
+              filter="integer"
+              default="*"
+              label="COM_ACT_SEARCH_FILTER_SECTOR"
+              sql_select="sector, id"
+              sql_from="#__act_sector"
+              sql_where="state = 1"
+              key_field="id"
+              value_field="sector"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
+       </field>  
+       <field name="line"
+              type="sql"
+              filter="integer"
+              label="COM_ACT_SEARCH_FILTER_LINE"
+              default="*"
+              sql_select="l.line, l.id"
+              sql_from="#__act_line AS l"
+              sql_join="#__act_route AS r ON r.line = l.id"
+              multiple="falses"
+              sql_group="line"
+              key_field="id"
+              value_field="line"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_LINE</option>
+       </field>
+       <field name="inorout"
+              type="list"
+              filter="integer"
+              label="COM_ACT_SEARCH_FILTER_INOROUT"
+              class=""
+              onchange="this.form.submit();"
+              default="*">
                 <option value="">COM_ACT_SEARCH_FILTER_INOROUT</option>
                 <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
                 <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
+       </field>
+       <field name="fixed"
+              type="list"
+              filter="integer"
+              label="COM_ACT_FORM_LBL_FIXED_ROUTE_SHORT"
+              class=""
+              onchange="this.form.submit();"
+              default="*">
+                <option value="">COM_ACT_FORM_LBL_FIXED_ROUTE_SHORT</option>
+                <option value="1">COM_ACT_FORM_LBL_FIXED_ROUTE_YES</option>
+                <option value="0">COM_ACT_FORM_LBL_FIXED_ROUTE_NO</option>
+       </field>
+       <field name="lineoption"
+              type="sql"
+              filter="integer"
+              default="*"
+	       class="form-control" 
+              label="COM_ACT_FORM_LBL_LINE_LINEOPTION_LABEL"  
+              sql_select="l.name,l.id"
+              sql_from="#__lineoption_opt AS l"
+              key_field="id"
+              value_field="name"
+	       sql_where="l.state = 1"
+	       sql_order="l.ordering ASC"
+              multiple="false"
+              onchange="this.form.submit();">
+	         <option value="">Optionen</option>
         </field>
-
-
-         <field name="lineoption"
-               type="sql"
-		 filter="" 
-               default="*"
-	        class="form-control" 
-               label="COM_ACT_FORM_LBL_LINE_LINEOPTION_LABEL"  
-               sql_select="l.name,l.id"
-               sql_from="#__lineoption_opt AS l"
-               key_field="id"
-               value_field="name"
-		 sql_where="l.state = 1"
-	        sql_order="l.ordering ASC"
-               multiple="false"
-               onchange="">
-		  <option value="">Optionen</option>
-        </field>
-        
     </fields>
 </form>

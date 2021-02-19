@@ -11,7 +11,6 @@
 defined('_JEXEC') or die;
 
 use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.modellist');
 
@@ -40,6 +39,9 @@ class ActModelSectors extends \Joomla\CMS\MVC\Model\ListModel
                 'sector', 'a.sector',
                 'building', 'a.building',
                 'inorout', 'a.inorout',
+                'maintenance_interval', 'a.maintenance_interval',
+                'first_maintenace', 'a.first_maintenace',
+                'next_maintenance', 'v.next_maintenance'
             );
         }
 
@@ -78,9 +80,7 @@ class ActModelSectors extends \Joomla\CMS\MVC\Model\ListModel
         $app->setUserState($this->context . '.list', $list);
         $app->input->set('list', null);
            
-            
         // List state information.
-
         parent::populateState("a.id", "ASC");
 
         $context = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,27 +105,16 @@ class ActModelSectors extends \Joomla\CMS\MVC\Model\ListModel
      */
     protected function getListQuery()
     {
-            // Create a new query object.
-            $db    = $this->getDbo();
-            $query = $db->getQuery(true);
+        $db    = $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select(array('a.id', 'a.sector', 'a.building', 'a.inorout',  'a.state', 'a.maintenance_interval',
+                             'v.next_maintenance'
+                            )
+                        );
 
-            // Select the required fields from the table.
-            $query->select(array('a.id', 'a.sector', 'a.building', 'a.inorout',  'a.state', 
-                                 )
-                           );
-
-            $query->from('`#__act_sector` AS a');
-            
-        // Join over the users for the checked out user.
-        $query->select('uc.name AS uEditor');
-        $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-
-        // Join over the created by field 'created_by'
-        $query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
-
-        // Join over the created by field 'modified_by'
-        $query->join('LEFT', '#__users AS modified_by ON modified_by.id = a.modified_by');
-            
+        $query->from('`#__act_sector` AS a')
+              ->join('LEFT', '#__maintenance_last_maintenance_sector_view AS v ON v.id = a.id');
         
         // ########################### Filter ##################
         // Filter by state 
@@ -133,12 +122,15 @@ class ActModelSectors extends \Joomla\CMS\MVC\Model\ListModel
         
         if ($filter_state != '')
         {
-            $query->where($db->qn('a.state') . '=' . (int) $filter_state);
+            $query->where($db->qn('a.state') . '=' .  $filter_state);
+        }
+        else 
+        {
+            $query->where($db->qn('a.state') . '= 1');
         }
 
         // Filter by search in title
         $search = $this->getState('filter.search');
-
         if (!empty($search))
         {
             if (stripos($search, 'id:') === 0)
@@ -190,48 +182,5 @@ class ActModelSectors extends \Joomla\CMS\MVC\Model\ListModel
         
 
         return $items;
-    }
-
-    /**
-     * Overrides the default function to check Date fields format, identified by
-     * "_dateformat" suffix, and erases the field if it's not correct.
-     *
-     * @return void
-     */
-    protected function loadFormData()
-    {
-        $app              = Factory::getApplication();
-        $filters          = $app->getUserState($this->context . '.filter', array());
-        $error_dateformat = false;
-
-        foreach ($filters as $key => $value)
-        {
-            if (strpos($key, '_dateformat') && !empty($value) && $this->isValidDate($value) == null)
-            {
-                $filters[$key]    = '';
-                $error_dateformat = true;
-            }
-        }
-
-        if ($error_dateformat)
-        {
-            $app->enqueueMessage(Text::_("COM_ACT_SEARCH_FILTER_DATE_FORMAT"), "warning");
-            $app->setUserState($this->context . '.filter', $filters);
-        }
-
-        return parent::loadFormData();
-    }
-
-    /**
-     * Checks if a given date is valid and in a specified format (YYYY-MM-DD)
-     *
-     * @param   string  $date  Date to be checked
-     *
-     * @return bool
-     */
-    private function isValidDate($date)
-    {
-        $date = str_replace('/', '-', $date);
-        return (date_create($date)) ? Factory::getDate($date)->format("Y-m-d") : null;
     }
 }

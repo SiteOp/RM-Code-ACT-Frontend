@@ -15,7 +15,7 @@
               filter="integer"
               size="1">
                 <option value="1">JPUBLISHED</option>
-                <option value="2">JARCHIVED</option>
+                <option value="0">JUNPUBLISHED</option>
                 <option value="-2">JTRASHED</option>
        </field>
        <field name="line" 
@@ -114,7 +114,7 @@
               todaybutton="true" 
               weeknumbers="true" 
               filltable="true"
-              default="NOW"
+              default=""
               type="calendar" 
               label="COM_ACT_NEXT_MAINTENACE"
         />

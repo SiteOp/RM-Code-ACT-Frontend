@@ -58,8 +58,6 @@ class ActViewLineform extends \Joomla\CMS\MVC\View\HtmlView
 			throw new Exception(implode("\n", $errors));
 		}
 
-		
-
 		$this->_prepareDocument();
 
 		parent::display($tpl);

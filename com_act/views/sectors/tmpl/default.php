@@ -9,11 +9,12 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
 use \Joomla\CMS\HTML\HTMLHelper;
-use \Joomla\CMS\Factory;
 use \Joomla\CMS\Uri\Uri;
-use \Joomla\CMS\Router\Route;
-use \Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('bootstrap.tooltip');
@@ -29,6 +30,7 @@ $canEdit    = $user->authorise('core.edit', 'com_act') && file_exists(JPATH_COMP
 $canCheckin = $user->authorise('core.manage', 'com_act');
 $canChange  = $user->authorise('core.edit.state', 'com_act');
 $canDelete  = $user->authorise('core.delete', 'com_act');
+
 ?>
 <?php // Page-Header ?>
 <?php if ($this->params->get('show_page_heading')) : ?>
@@ -48,85 +50,57 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 
     <?php echo JLayoutHelper::render('default_filter', array('view' => $this), dirname(__FILE__)); ?>
     
-<div class="table-responsive">
-    <table class="table table-striped table-sm"  id="sectorList">
-        <thead>
-        <tr>
-            <th class=''>
-                <?php echo JHtml::_('grid.sort',  'COM_ACT_ID', 'a.id', $listDirn, $listOrder); ?>
-            </th>
-            <th width="">
-                <?php echo JHtml::_('grid.sort', 'COM_ACT_STATUS', 'a.state', $listDirn, $listOrder); ?>
-            </th>
-            <th class=''>
-                <?php echo JHtml::_('grid.sort',  'COM_ACT_SECTORS_SECTOR', 'a.sector', $listDirn, $listOrder); ?>
-            </th>
-            <th class=''>
-                <?php echo JHtml::_('grid.sort',  'COM_ACT_SECTORS_BUILDING', 'a.building', $listDirn, $listOrder); ?>
-            </th>
-            <th class=''>
-                <?php echo JHtml::_('grid.sort',  'COM_ACT_SECTORS_INOROUT', 'a.inorout', $listDirn, $listOrder); ?>
-            </th>
-            <th class="text-center">
-                <?php echo JText::_('COM_ACT_ACTIONS'); ?>
-            </th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="<?php echo isset($this->items[0]) ? count(get_object_vars($this->items[0])) : 10; ?>">
-                <?php echo $this->pagination->getListFooter(); ?>
-            </td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <?php foreach ($this->items as $i => $item) : ?>
-            <?php $canEdit = $user->authorise('core.edit', 'com_act'); ?>
-
+    <div class="table-responsive">
+        <table class="table table-striped table-sm"  id="sectorList">
+            <thead>
+                <tr>
+                    <th class="pl-3"><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_SECTORS_SECTOR', 'a.sector', $listDirn, $listOrder); ?></th>
+                    <th><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_SECTORS_BUILDING', 'a.building', $listDirn, $listOrder); ?></th>
+                    <th><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_SECTORS_INOROUT', 'a.inorout', $listDirn, $listOrder); ?></th>
+                    <th><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_NEXT_MAINTENACE_SHORT', 'a.next_maintenance', $listDirn, $listOrder); ?></th>
+                    <th><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_INTERVAL', 'a.maintenance_interval', $listDirn, $listOrder); ?></th>
+                    <th class="text-center"><?php echo Text::_('COM_ACT_ACTIONS'); ?></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="<?php echo isset($this->items[0]) ? count(get_object_vars($this->items[0])) : 10; ?>">
+                        <?php echo $this->pagination->getListFooter(); ?>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+            <?php foreach ($this->items as $i => $item) : ?>
+                <?php $canEdit = $user->authorise('core.edit', 'com_act'); ?>
                 <?php if (!$canEdit && $user->authorise('core.edit.own', 'com_act')): ?>
-                    <?php $canEdit = JFactory::getUser()->id == $item->created_by; ?>
+                    <?php $canEdit = Factory::getUser()->id == $item->created_by; ?>
                 <?php endif; ?>
 
-            <tr class="row<?php echo $i % 2; ?>">
-            
-                <td><?php echo $item->id; ?></td>
-                <td><?php // Status ?>
-                <?php switch ($item->state) 
-                {
-                    case 1:
-                        echo '<i class=" '. Text::_('COM_ACT_FA_PUBLISHED') . ' "></i>';
-                        break;
-                    case 0:
-                        echo '<i class=" '. Text::_('COM_ACT_FA_UNPUBLISHED') . ' "></i>';
-                        break;
-                    case 2:
-                        echo '<i class=" '. Text::_('COM_ACT_FA_ARCHIV') . ' "></i>';
-                        break;
-                    case -2:
-                        echo '<i class=" '. Text::_('COM_ACT_FA_TRASHED') . ' "></i>';
-                    break;
-                }
-                ?>
-                </td>
-                <td><?php echo $this->escape($item->sector); ?></td>
-                <td><?php echo JText::_('COM_ACT_SECTORS_BUILDING_OPTION_' . $item->building); ?> </td>
-                <td><?php echo JText::_('COM_ACT_SECTORS_INOROUT_OPTION_' . $item->inorout); ?> </td>
-                <td class="text-center">                
-                    <a href="<?php echo JRoute::_('index.php?option=com_act&task=sectorform.edit&id=' . $item->id, false, 2); ?>" class="btn btn-mini" type="button">
-                        <i class="<?php echo Text::_('COM_ACT_FA_EDIT'); ?>"></i>
-                    </a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+                <tr class="row<?php echo $i % 2; ?>">
+                    <td class="pl-3"><?php echo $this->escape($item->sector); ?></td>
+                    <td><?php echo Text::_('COM_ACT_SECTORS_BUILDING_OPTION_' . $item->building); ?> </td>
+                    <td><?php echo Text::_('COM_ACT_SECTORS_INOROUT_OPTION_' . $item->inorout); ?> </td>
+                    <td><?php if ($item->next_maintenance > 0 ) : ?>
+                        <?php echo HTMLHelper::_('date', $item->next_maintenance, Text::_('DATE_FORMAT_LC4')); ?>
+                        <?php endif; ?>
+                    </td>
+                    <td><?php echo sprintf("%02d", $item->maintenance_interval) . ' ' . Text::_('COM_ACT_INTERVAL_WEEKS'); ?> </td>
+                    <td class="text-center">                
+                        <a href="<?php echo Route::_('index.php?option=com_act&task=sectorform.edit&id=' . $item->id, false, 2); ?>" class="btn btn-mini" type="button">
+                            <i class="<?php echo Text::_('COM_ACT_FA_EDIT'); ?>"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
     <?php if ($canCreate) : ?>
         <a href="<?php echo Route::_('index.php?option=com_act&task=sectorform.edit&id=0', false, 0); ?>"
            class="btn btn-secondary btn-small mt-4">
            <i class="<?php echo Text::_('COM_ACT_FA_ADD_ITEM'); ?>"></i>
-            <?php echo JText::_('COM_ACT_SECTORS_ADD_ITEM'); ?>
+            <?php echo Text::_('COM_ACT_SECTORS_ADD_ITEM'); ?>
         </a>
     <?php endif; ?>
 
