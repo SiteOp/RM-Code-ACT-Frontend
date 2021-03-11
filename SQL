@@ -1,0 +1,3 @@
+Neuberechnung der Tabelle act_trigger_calc kann anhand der SQL-Routine erledigt werden.
+DB auswählen (keine einzelne Tabelle sondern nur DB komplett) dann auf Reiter Routine
+SetCalcGradeNew - Ausführen
