@@ -192,15 +192,20 @@ END;;
 
 CREATE TRIGGER trigger_Comment_update BEFORE UPDATE ON g9p5k_act_route FOR EACH ROW BEGIN
 /*
- * Dieser Trigger wird beim archivieren einer Route ausgelöst (Route Status - 2)
- * Alle Kommentare auf diese Route erhalten den Status welche die Route hat 
+ * Dieser Trigger wird beim ändern des Status einer Route ausgelöst 
+ * Alle Kommentare auf diese Route erhalten den selben Status wie die Route
+ * Als Ausnahme gilt der Routenstatus -1 (Kommt raus) hier wird Status 1 (Öffentlich) gesetzt
  * Route State 2 = Kommentar State 2
  * Route State 1 = Kommentar State 1
 */
  DECLARE state INTEGER DEFAULT 2;   
  
-    IF new.state != -1 THEN 
+    IF new.state = -1 THEN 
         UPDATE g9p5k_act_comment as c
+        SET c.state = 1
+        WHERE c.route = old.id;
+    ELSE 
+         UPDATE g9p5k_act_comment as c
         SET c.state = new.state
         WHERE c.route = old.id;
     END IF;
