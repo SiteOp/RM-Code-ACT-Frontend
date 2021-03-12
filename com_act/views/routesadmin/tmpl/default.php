@@ -71,7 +71,6 @@ $unix_date = strtotime(Factory::getDate());
                 <th class="r_state text-center d-none d-xl-table-cell "><?php // STATE ?>
                     <?php echo  HTMLHelper::_('grid.sort', 'COM_ACT_STATUS', 'a.state', $listDirn, $listOrder); ?> 
                 </th>
-                <th class="r_state text-center d-none d-xl-table-cell ">Ersetzen</th>
                 <th class="r_info text-center"><?php // Info Popover ?>
                     <?php echo Text::_('COM_ACT_LBL_INFO'); ?>
                 </th>
@@ -156,13 +155,6 @@ $unix_date = strtotime(Factory::getDate());
                             <?php endif; ?>
                     </td>
                      <?php endif; ?>
-                    <td class="text-center">
-                        <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= -1') : '#'; ?>">
-                            <i class="<?php echo Text::_('COM_ACT_FA_PUBLISHED'); ?>"></i>
-                        </a>
-
-                    </td>
-
                     <td class="r_info text-center"><?php // Info Popover ?>
                          <a class="" rel="popover" 
                                 data-placement="right" 

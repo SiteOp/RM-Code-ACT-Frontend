@@ -47,11 +47,11 @@ $lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
             </div>
             <div class="card-body">
                 <?php foreach($lines AS $line) : ?>
-                Linie:  <?php echo $line->line; ?> - max. 3 Routen<br > <?php // TODO ?>
+                Linie:  <?php echo $line->line; ?> <br > <?php // TODO ?>
                 <?php endforeach; ?>
                 <br />
                 <b>Gesamt <?php echo count($lines); ?> Linien</b><br /> <?php // TODO ?>
-                <b>Maximal 27 Routen im Sektor</b><br /> <?php // TODO ?>
+                
             </div>
         </div>
     </div>   
