@@ -169,7 +169,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
         </span>
     <?php endif; ?>
     </tbody>
-    </table
+    </table>
 
 
     <input type="hidden" name="task" value=""/>

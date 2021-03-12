@@ -78,8 +78,6 @@ class ActHelpersAct
 
         $db->setQuery($query);
         return $db->loadResult();
-		
-
     }   
     /**
     * Get Stars using $params
@@ -400,6 +398,83 @@ class ActHelpersAct
 				 ' .$option->icon. '
 				 </span>';
 		}
+    }
+
+
+
+
+
+    /**
+     * Anzahl an Routen pro Schwierigkeitsgrad innerhalb eines Sektors
+     * @param   int    Sektor-ID
+     * @return  mixed
+     */
+	public static function getIstGrades($sector)
+    {
+      $db = Factory::getDbo();
+
+      $query = $db->getQuery(true);
+      $query->select(array('COUNT(CASE WHEN t.calc_grade = 10 then 1 ELSE NULL END) as  ist_grade_10',
+                           'COUNT(CASE WHEN t.calc_grade = 11 then 1 ELSE NULL END) as  ist_grade_11',
+                           'COUNT(CASE WHEN t.calc_grade = 12 then 1 ELSE NULL END) as  ist_grade_12',
+                           'COUNT(CASE WHEN t.calc_grade = 13 then 1 ELSE NULL END) as  ist_grade_13',
+                           'COUNT(CASE WHEN t.calc_grade = 14 then 1 ELSE NULL END) as  ist_grade_14',
+                           'COUNT(CASE WHEN t.calc_grade = 15 then 1 ELSE NULL END) as  ist_grade_15',
+                           'COUNT(CASE WHEN t.calc_grade = 16 then 1 ELSE NULL END) as  ist_grade_16',
+                           'COUNT(CASE WHEN t.calc_grade = 17 then 1 ELSE NULL END) as  ist_grade_17',
+                           'COUNT(CASE WHEN t.calc_grade = 18 then 1 ELSE NULL END) as  ist_grade_18',
+                           'COUNT(CASE WHEN t.calc_grade = 19 then 1 ELSE NULL END) as  ist_grade_19',
+                           'COUNT(CASE WHEN t.calc_grade = 20 then 1 ELSE NULL END) as  ist_grade_20',
+                           'COUNT(CASE WHEN t.calc_grade = 21 then 1 ELSE NULL END) as  ist_grade_21',
+                           'COUNT(CASE WHEN t.calc_grade = 22 then 1 ELSE NULL END) as  ist_grade_22',
+                           'COUNT(CASE WHEN t.calc_grade = 23 then 1 ELSE NULL END) as  ist_grade_23',
+                           'COUNT(CASE WHEN t.calc_grade = 24 then 1 ELSE NULL END) as  ist_grade_24',
+                           'COUNT(CASE WHEN t.calc_grade = 25 then 1 ELSE NULL END) as  ist_grade_25',
+                           'COUNT(CASE WHEN t.calc_grade = 26 then 1 ELSE NULL END) as  ist_grade_26',
+                           'COUNT(CASE WHEN t.calc_grade = 27 then 1 ELSE NULL END) as  ist_grade_27',
+                           'COUNT(CASE WHEN t.calc_grade = 28 then 1 ELSE NULL END) as  ist_grade_28',
+                           'COUNT(CASE WHEN t.calc_grade = 29 then 1 ELSE NULL END) as  ist_grade_29',
+                           'COUNT(CASE WHEN t.calc_grade = 30 then 1 ELSE NULL END) as  ist_grade_30',
+                           'COUNT(CASE WHEN t.calc_grade = 31 then 1 ELSE NULL END) as  ist_grade_31',
+                           'COUNT(CASE WHEN t.calc_grade = 32 then 1 ELSE NULL END) as  ist_grade_32',
+                           'COUNT(CASE WHEN t.calc_grade = 33 then 1 ELSE NULL END) as  ist_grade_33',
+                           'COUNT(CASE WHEN t.calc_grade = 34 then 1 ELSE NULL END) as  ist_grade_34',
+                           'COUNT(CASE WHEN t.calc_grade = 35 then 1 ELSE NULL END) as  ist_grade_35',
+                           )
+                    )
+                    
+            ->from('#__act_route AS a')
+            ->join('LEFT', '#__act_trigger_calc AS t ON t.id = a.id') // VIEW TABLE
+			->join('LEFT', '#__act_line AS l ON l.id = a.line')
+			->join('LEFT', '#__act_sector AS s ON s.id = l.sector')
+            ->where('a.state = 1')
+            ->where('s.id =' .$sector);
+            
+       $db->setQuery($query);
+       $result = $db->loadAssocList();
+	   
+       return $result; 
+    }
+
+
+
+    /**
+    * Get Route name using route ID
+    * @param integer $route_id 
+    * @return mixed route name
+    */
+    public static function getLinesFromSectorId($sector_id) {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select('line')
+            ->from('#__act_line')
+            ->where('state = 1')
+            ->where('sector = ' . intval($sector_id));
+
+        $db->setQuery($query);
+        return $db->loadObjectList();
     }
 
 }

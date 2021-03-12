@@ -11,10 +11,17 @@
               label="COM_CONTENT_FILTER_PUBLISHED"
               description="COM_CONTENT_FILTER_PUBLISHED_DESC"
               onchange="this.form.submit();"
-              default="1">
+              default="">
+              
+               <option value="">Öffentl/Erneuern</option>
                 <option value="1">COM_ACT_PUBLISHED</option>
+                <option value="-1">Erneuern</option>
+                 <option value="4">Zur Freigabe</option>
                 <option value="-2">COM_ACT_TRASHED </option>
                 <option value="2">COM_ACT_ARCHIVED </option>
+                
+
+  
        </field>
        <field name="cgrade" 
               label="COM_ACT_SEARCH_FILTER_CGRADE" 
@@ -129,5 +136,16 @@
               onchange="this.form.submit();">
 	         <option value="">Optionen</option>
         </field>
+         <field name="datesort"
+              type="list"
+              filter="raw"
+              label="date"
+              class=""
+              onchange="this.form.submit();"
+              hint="Datum"
+              default="0">
+                <option value="1">Datum aufsteigend</option>
+                <option value="0">Datum absteigend</option>
+       </field>
     </fields>
 </form>

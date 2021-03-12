@@ -36,6 +36,11 @@ if($this->item->state == 1){
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 ?>
 
+<style>
+.sw_soll  {text-align: center; font-weight: bold;}
+.sw_soll .form-control {text-align: center; padding-left: 25px!important;}
+</style>
+
 <?Php // Pager-Header ?>
 <?php if (!$canEdit) : ?>
     <h3><?php throw new Exception(Text::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
@@ -81,11 +86,59 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
                 <div class="col-md-5"><?php //echo $this->form->renderField('sponsor'); ?></div>
             </div>
             -->
+
+            <h3 class="mt-5">Soll-Verteilung SW</h3>
+            <div class="form-group row sw_soll" >
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll10'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll11'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >  
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll12'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll13'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll14'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >   
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll15'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll16'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll17'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll18'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll19'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll20'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-5" >
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll21'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll22'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll23'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >  
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll24'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll25'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll26'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-5" >
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll27'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll28'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll29'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >  
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll30'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll31'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll32'); ?></div>
+            </div>
+            <div class="form-group row sw_soll mt-3" >  
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll33'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll34'); ?></div>
+                <div class="col-4 col-md-2"><?php echo $this->form->renderField('soll35'); ?></div>
+            </div>
+
+            <h3 class="mt-5">Wartung</h3>
             <div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('maintenance_interval'); ?></div>
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('first_maintenace'); ?></div>
 			</div> 
-            <div class="control-group">
+           
                 <div class="controls mt-1">
                     <?php if ($this->canSave): ?>
                         <button type="submit" class="validate btn btn-secondary mr-1">
@@ -98,8 +151,8 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
                             <?php echo Text::_('JCANCEL'); ?>
                     </a>
                 </div>
-            </div>
-            
+        
+
             <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
             <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
             <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />

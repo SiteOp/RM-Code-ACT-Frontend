@@ -91,7 +91,7 @@ class ActModelRoutesAdmin extends ListModel
         $app->input->set('list', null);
 
         // List state information
-        parent::populateState('a.id', 'DESC');
+        parent::populateState('a.setterdate', 'DESC');
 
         $context = $this->getUserStateFromRequest($this->context . '.context', 'context', 'com_content.article', 'CMD'); 
         $this->setState('filter.context', $context);
@@ -146,14 +146,19 @@ class ActModelRoutesAdmin extends ListModel
         // Filter by state 
         $filter_state = $this->getState('filter.state');
         
+       
         if ($filter_state != '')
         {
             $query->where($db->qn('a.state') . '=' .  $filter_state);
         }
+        
         else 
         {
-            $query->where($db->qn('a.state') . '= 1');
+            //$query->where($db->qn('a.state') . '= 1');
+            $query->where($db->qn('a.state') . 'IN(1,-1)');
         }
+
+       
 
         // Filter by search in title
         $search = $this->getState('filter.search');
@@ -237,10 +242,21 @@ class ActModelRoutesAdmin extends ListModel
                 }
         
 
-
         // Add the list ordering clause.
-        $orderCol  = $this->state->get('list.ordering', 'a.id');
-        $orderDirn = $this->state->get('list.direction', 'DESC');
+        $orderCol  = $this->state->get('list.ordering', 'a.setterdate');
+       
+        $filter_datesort = $this->state->get("filter.datesort");
+            if ($filter_datesort == '1')
+            {
+                $orderDirn = $this->state->get('list.direction', 'ASC');
+            }
+            else
+            {
+                $orderDirn = $this->state->get('list.direction', 'DESC');
+            }
+
+       
+        //$orderDirn = $this->state->get('list.direction', 'DESC');
 
             if ($orderCol && $orderDirn)
             {

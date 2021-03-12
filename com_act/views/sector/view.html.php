@@ -15,6 +15,7 @@ jimport('joomla.application.component.view');
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
+
 /**
  * View to edit
  *

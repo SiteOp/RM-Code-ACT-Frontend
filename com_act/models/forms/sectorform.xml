@@ -86,6 +86,35 @@
               type="calendar" 
               label="COM_ACT_NEXT_MAINTENACE"
         />
+       <field name="soll10" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_10" min="0" step="1" class="form-control"/>
+       <field name="soll11" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_11" min="0" step="1" class="form-control"/>
+       <field name="soll12" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_12" min="0" step="1" class="form-control"/>
+       <field name="soll13" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_13" min="0" step="1" class="form-control"/>
+       <field name="soll14" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_14" min="0" step="1" class="form-control"/>
+       <field name="soll15" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_15" min="0" step="1" class="form-control"/>
+       <field name="soll16" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_16" min="0" step="1" class="form-control"/>
+       <field name="soll17" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_17" min="0" step="1" class="form-control"/>
+       <field name="soll18" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_18" min="0" step="1" class="form-control"/>
+       <field name="soll19" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_19" min="0" step="1" class="form-control"/>
+       <field name="soll20" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_20" min="0" step="1" class="form-control"/>
+       <field name="soll21" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_21" min="0" step="1" class="form-control"/>
+       <field name="soll22" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_22" min="0" step="1" class="form-control"/>
+       <field name="soll23" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_23" min="0" step="1" class="form-control"/>
+       <field name="soll24" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_24" min="0" step="1" class="form-control"/>
+       <field name="soll25" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_25" min="0" step="1" class="form-control"/>
+       <field name="soll26" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_26" min="0" step="1" class="form-control"/>
+       <field name="soll27" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_27" min="0" step="1" class="form-control"/>
+       <field name="soll28" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_28" min="0" step="1" class="form-control"/>
+       <field name="soll29" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_29" min="0" step="1" class="form-control"/>
+       <field name="soll30" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_30" min="0" step="1" class="form-control"/>
+       <field name="soll31" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_31" min="0" step="1" class="form-control"/>
+       <field name="soll32" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_32" min="0" step="1" class="form-control"/>
+       <field name="soll33" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_33" min="0" step="1" class="form-control"/>
+       <field name="soll34" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_34" min="0" step="1" class="form-control"/>
+       <field name="soll35" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_35" min="0" step="1" class="form-control"/>
+
+
+
        <field name="ordering"/>
        <field name="checked_out" type="hidden" filter="unset"/>
        <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>

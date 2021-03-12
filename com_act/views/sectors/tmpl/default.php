@@ -77,7 +77,11 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
                 <?php endif; ?>
 
                 <tr class="row<?php echo $i % 2; ?>">
-                    <td class="pl-3"><?php echo $this->escape($item->sector); ?></td>
+                    <td class="pl-3">
+                        <a href="<?php echo JRoute::_('index.php?option=com_act&view=sector&id='.(int) $item->id); ?>">
+				         <?php echo $this->escape($item->sector); ?>
+                        </a>
+                    </td>
                     <td><?php echo Text::_('COM_ACT_SECTORS_BUILDING_OPTION_' . $item->building); ?> </td>
                     <td><?php echo Text::_('COM_ACT_SECTORS_INOROUT_OPTION_' . $item->inorout); ?> </td>
                     <td><?php if ($item->next_maintenance > 0 ) : ?>

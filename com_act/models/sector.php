@@ -282,5 +282,6 @@ class ActModelSector extends \Joomla\CMS\MVC\Model\ItemModel
                 
 	}
 
+
 	
 }
