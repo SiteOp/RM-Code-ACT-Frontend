@@ -12,16 +12,13 @@
               description="COM_CONTENT_FILTER_PUBLISHED_DESC"
               onchange="this.form.submit();"
               default="">
-              
-               <option value="">Öffentl/Erneuern</option>
+                <option value="">COM_ACT_PUBLISHED_AND_REPLACE</option>
+                <option value="-4">COM_ACT_PLANNING</option>
+                <option value="-3">COM_ACT_TO_RELEASE</option>
                 <option value="1">COM_ACT_PUBLISHED</option>
-                <option value="-1">Erneuern</option>
-                 <option value="4">Zur Freigabe</option>
-                <option value="-2">COM_ACT_TRASHED </option>
+                <option value="-1">COM_ACT_REPLACE</option>
                 <option value="2">COM_ACT_ARCHIVED </option>
-                
-
-  
+                <option value="-2">COM_ACT_TRASHED </option>
        </field>
        <field name="cgrade" 
               label="COM_ACT_SEARCH_FILTER_CGRADE" 

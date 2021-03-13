@@ -447,7 +447,7 @@ class ActHelpersAct
             ->join('LEFT', '#__act_trigger_calc AS t ON t.id = a.id') // VIEW TABLE
 			->join('LEFT', '#__act_line AS l ON l.id = a.line')
 			->join('LEFT', '#__act_sector AS s ON s.id = l.sector')
-            ->where('a.state = 1')
+            ->where('a.state IN(1,-1)')
             ->where('s.id =' .$sector);
             
        $db->setQuery($query);

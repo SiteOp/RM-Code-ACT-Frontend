@@ -17,9 +17,10 @@
                filter="integer"
                size="1"
                >
-                  <option value="1">JPUBLISHED</option>
-                  <option value="2">JARCHIVED</option>
-                  <option value="-2">JTRASHED</option>
+                <option value="1">COM_ACT_PUBLISHED</option>
+                <option value="-1">COM_ACT_REPLACE</option>
+                <option value="2">COM_ACT_ARCHIVED </option>
+                <option value="-2">COM_ACT_TRASHED </option>
         </field>
         
         <field name="name" 

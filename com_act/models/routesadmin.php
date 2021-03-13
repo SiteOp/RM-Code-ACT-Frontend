@@ -146,7 +146,6 @@ class ActModelRoutesAdmin extends ListModel
         // Filter by state 
         $filter_state = $this->getState('filter.state');
         
-       
         if ($filter_state != '')
         {
             $query->where($db->qn('a.state') . '=' .  $filter_state);
@@ -158,8 +157,7 @@ class ActModelRoutesAdmin extends ListModel
             $query->where($db->qn('a.state') . 'IN(1,-1)');
         }
 
-       
-
+    
         // Filter by search in title
         $search = $this->getState('filter.search');
 

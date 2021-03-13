@@ -141,7 +141,7 @@ class ActModelRoutes extends ListModel
               ->join('LEFT', '#__act_sector       AS sc ON sc.id    = l.sector')
               ->join('LEFT', '#__act_setter       AS s  ON a.setter = s.id')
               ->join('LEFT', '#__act_color        AS c  ON c.id     = a.color')
-              ->where('a.state = 1')
+              ->where('a.state IN (1,-1)')
               ->where('a.hidden != 1');
 
         // Filter by search in title

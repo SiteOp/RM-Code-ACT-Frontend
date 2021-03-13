@@ -118,7 +118,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 
                     <tr class="row<?php echo $i % 2; ?>">    
                         <td class="pl-2"><?php // Route Name  ## If Route State 1 - Then link else echo Name?>
-                            <?php if ($item->route_state == 1) : ?>
+                            <?php if (($item->route_state == 1) OR ($item->route_state == -1)) : ?>
                                 <a href="<?php echo JRoute::_('index.php?option=com_act&view=route&id='.(int) $item->route_id); ?>"><?php echo $this->escape($item->route_name); ?></a>
                             <?php else :?>
                                 <?php echo $this->escape($item->route_name); ?>

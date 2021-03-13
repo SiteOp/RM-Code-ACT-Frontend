@@ -140,19 +140,29 @@ $unix_date = strtotime(Factory::getDate());
                         <?php $class = ($canChange) ? 'active' : 'disabled'; ?>    
                         
                         
-                    <td class="text-center d-none d-xl-table-cell"><?php // State ############################ TODO Statt if elseif - Switch einsetzten ?>
-                       <?php if ($item->state == 1): ?>
-                            <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= 2') : '#'; ?>">
+                    <td class="text-center"><?php // State ############################ TODO Statt if elseif - Switch einsetzten ?>
+                    <?php if ($item->state == -4): ?><?php // Planung  ?>
+                            <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= -3') : '#'; ?>">
+                                <i class="fas fa-solar-panel"></i>
+                            </a>
+                       <?php elseif ($item->state == -3): ?><?php // Zur Freigabe ist Geschraubt  ?>
+                            <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= 1') : '#'; ?>">
+                             <i class="fas fa-tools"></i> 
+                            </a>
+                        <?php elseif ($item->state == 1): ?><?php // Öffentlich ?>
+                            <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= -1') : '#'; ?>">
                                 <i class="<?php echo Text::_('COM_ACT_FA_PUBLISHED'); ?>"></i>
                             </a>
+                        <?php elseif ($item->state == -1): ?><?php // Kommt raus ?>
+                            <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= 2') : '#'; ?>">
+                                <i class="fas fa-highlighter"></i>
+                            </a>
                            
-                            <?php elseif ($item->state == 2): ?>
-                                <i class="<?php echo Text::_('COM_ACT_FA_ARCHIV'); ?>"></i>
-                            <?php elseif ($item->state == -1): ?>
-                                <i class="fas fa-tools"></i>
-                            <?php else : ?>
-                            <?php echo '<i class=" '. Text::_('COM_ACT_FA_TRASHED') . ' "></i>'; ?>
-                            <?php endif; ?>
+                        <?php elseif ($item->state == 2): ?>
+                            <i class="<?php echo Text::_('COM_ACT_FA_ARCHIV'); ?>"></i>
+                        <?php else : ?>
+                            <?php echo '<i class=" '. Text::_('COM_ACT_FA_TRASHED') . '"></i>'; ?>
+                        <?php endif; ?>
                     </td>
                      <?php endif; ?>
                     <td class="r_info text-center"><?php // Info Popover ?>

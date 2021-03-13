@@ -41,34 +41,8 @@ $tachoCGradeBefore =  ActHelpersAct::uiaa(round(($this->item->calc_grade -1),0))
 $tachoCGradeAfter = ActHelpersAct::uiaa(round(($this->item->calc_grade +1),0));
 $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/2) *100);
 
-// IMG aus Kategorie der Sektoren - Steht im Datenbankfeld Params - Muss über Json Decodiert werden
-//$img = json_decode($this->item->params);
 ?>
 
-
-<?php if (!empty($img->image)) : ?>
-
-
-<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><?php echo $this->item->lineSectorName; ?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-         <img class="img-fluid" src="<?php echo $img->image;  ?>" width="800" height="800"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php endif; ?>
 
 
 <?php // Nach dem Kommentieren wird die Seite Refreshed. Dadurch kein HTTP_REFERER. Der Backlink muss daher unterschiedlich sein ?>
