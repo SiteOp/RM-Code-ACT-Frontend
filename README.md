@@ -9,4 +9,4 @@ Zurzeit nicht als Komponente sondern nur zur Versionierung der Dateien
 * Freigegeben   =  1
 * Kommt raus    = -1
 * Archiv        =  2
-* Papierkorb    = -2
+* Papierkorb    = -2 
