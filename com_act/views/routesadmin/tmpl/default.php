@@ -68,10 +68,10 @@ $unix_date = strtotime(Factory::getDate());
         <table class="table table-striped table-sm" id="routeList">
             <thead>
             <tr>
-                <th class="r_state text-center d-none d-xl-table-cell "><?php // STATE ?>
+                <th class="r_state text-center" ><?php // STATE ?>
                     <?php echo  HTMLHelper::_('grid.sort', 'COM_ACT_STATUS', 'a.state', $listDirn, $listOrder); ?> 
                 </th>
-                <th class="r_info text-center"><?php // Info Popover ?>
+                <th class="r_info text-center d-xl-table-cell"><?php // Info Popover ?>
                     <?php echo Text::_('COM_ACT_LBL_INFO'); ?>
                 </th>
                 <th class="r_line d-none d-xxl-table-cell">

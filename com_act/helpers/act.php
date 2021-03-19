@@ -459,16 +459,16 @@ class ActHelpersAct
 
 
     /**
-    * Get Route name using route ID
-    * @param integer $route_id 
-    * @return mixed route name
+    * Alle Linien in diesem Sektor - 
+    * @param integer $sector_id
+    * @return mixed 
     */
     public static function getLinesFromSectorId($sector_id) {
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $query
-            ->select('line')
+            ->select(array('line, maxroutes, id',))
             ->from('#__act_line')
             ->where('state = 1')
             ->where('sector = ' . intval($sector_id));
@@ -476,5 +476,25 @@ class ActHelpersAct
         $db->setQuery($query);
         return $db->loadObjectList();
     }
+
+     /**
+    * Anzahl Routen innerhalb einer Linie
+    * @param integer $line_id
+    * @return mixed 
+    */
+    public static function getNumbersRoutesFromLineId($line_id) {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select(array('COUNT(*)'))
+            ->from('#__act_route')
+            ->where('state = 1')
+            ->where('line = ' . intval($line_id));
+
+        $db->setQuery($query);
+        return $db->loadResult();
+    }
+   
 
 }

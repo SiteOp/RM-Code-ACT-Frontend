@@ -20,6 +20,12 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+$doc = Factory::getDocument();
+//$doc->addScript(Uri::base() . '/media/com_act/js/form.js');
+
+// Add Script 
+$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
+$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
 
 $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
@@ -33,15 +39,28 @@ if($this->item->state == 1){
 }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 
-// Helper - Alle Linien in diesem Sektor (Array)
+$sum_routes = [];
+for($i = 10; $i <= 36; $i++) {
+    $soll = "soll$i";
+    $varname = 'soll';
+    ${$varname.$i} = $this->item->$soll;
+    array_push($sum_routes,  $this->item->$soll);
+  }
+
+  $sum_routes = array_sum($sum_routes);
+
+
+
+
+// Helper - Alle Linien in diesem Sektor
 $lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
 
+// Max Routenanzahl gerechnet aus allen Linien in diesem Sektor
 $total_max_routes = 0;
 foreach($lines AS $line) {
-    $total_max_routes += $line->maxroutes;// Max Routenanzahl gerechnet aus allen Linien in diesem Sektor
+    $total_max_routes += $line->maxroutes;
 }
 
-$total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
 ?>
 
 <style>
@@ -49,7 +68,6 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
 .sw_soll .form-control {text-align: center; padding-left: 25px!important;}
 #gradetable .form-control {padding: 0; min-width: 1.5rem; min-height: 1.5rem; text-align: center;}
 #gradetable .table td {padding: 4px;}
-.card-body {padding: 0;}
 </style>
 
 <?Php // Pager-Header ?>
@@ -93,15 +111,7 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
             </div>
 
             <h3 class="mt-5">Soll-Verteilung SW</h3>
-            <div class="">Gesamt Routenanzahl: <span id="total"><?php //Summer wird per Javascript berechnet; ?></span></div>
-            <div> Max Anzahl Routen: <span id="total_max_routes"><?php echo $total_max_routes; ?></span></div>
-            <div>Gesamtzahl Linie: <span id="total_lines"><?php echo $total_lines_in_sektor; ?></span></div>
-            <div>Routendichte: <span  id="density"></span></div>
-          
-
-
-
-            <div id="gradetable" class="table-responsive mt-4">
+            <div id="gradetable" class="table-responsive">
                 <table class="table table-bordered text-center" id="datatable">
                     <thead>
                         <tr>
@@ -122,17 +132,27 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
                 </table>
             </div>
 
-            <div id="warning_to_much" class=""></div>
+          <div class="mt-4">Gesamt Routenanzahl: <span class="total"></span></div>
+           <div> Max Anzahl Routen:<?php echo $total_max_routes; ?>
 
-           <div class="row mt-5">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <canvas id="myChart" height="80"></canvas>
-                        </div>
+
+
+           <div class="row mt-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                    <canvas id="sollBar" height="80"></canvas>
                     </div>
-                </div> 
-            </div>
+                </div>
+            </div> 
+        </div>
+        <div class="button-container">
+  <button id="update">click me</button>
+</div>
+
+
+
+
 
             <h3 class="mt-5">Wartung</h3>
             <div class="form-group row">
@@ -152,7 +172,8 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
                             <?php echo Text::_('JCANCEL'); ?>
                     </a>
                 </div>
-    
+        
+
             <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
             <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
             <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
@@ -167,4 +188,140 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
     </div>
 <?php endif; ?>
 
-<?php echo $this->loadTemplate('chart.js'); ?>
+
+
+<script>
+    $(document).ready(function () {
+    
+        var sum = 0;
+        $('.grade').each(function() {
+            if((!(isNaN($(this).val()))) && $(this).val())
+            {              
+                sum +=  parseFloat($(this).val()); 
+            }
+        });
+        $('.total').html(sum);
+
+        $('#gradetable').change(function() {
+            var sum = 0;
+            $('.grade').each(function() {
+            if((!(isNaN($(this).val()))) && $(this).val())
+            {              
+                sum +=  parseFloat($(this).val()); 
+            }
+            });
+            
+            $('.total').html(sum);
+        });
+    });
+</script>
+
+
+<script>
+    (function( $ ){ 
+        $.fn.sum=function () {
+            var sum=0;
+            $(this).each(function(index, element){
+                if($(element).val()!="")
+                    sum += parseFloat($(element).val());
+            });
+            return sum;
+        }; 
+    })( jQuery );
+
+
+    $(document).ready(function show() {
+        let grade3 =  $('#gradetable .grade3').sum();
+        let grade4 =  $('#gradetable .grade4').sum();
+        let grade5 =  $('#gradetable .grade5').sum();
+        let grade6 =  $('#gradetable .grade6').sum();
+        let grade7 =  $('#gradetable .grade7').sum();
+        let grade8 =  $('#gradetable .grade8').sum();
+        let grade9 =  $('#gradetable .grade9').sum();
+        let grade10 = $('#gradetable .grade10').sum();
+        let grade11 = $('#gradetable .grade11').sum();
+        let grade12 = $('#gradetable .grade12').sum();
+        let dataObj =  JSON.parse("["+grade3+','+grade4+','+grade5+','+grade6+','+grade7+','+grade8+','+grade9+','+grade10+','+grade11+','+grade12+"]");   
+         
+        $('#gradetable .grade').change(function() {
+            let dataObj = [];
+            show();
+           
+        });
+        
+        BuildChart(dataObj);
+
+       
+    });
+
+   
+ </script>
+
+<script>
+let myChart
+Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
+  align: 'end',
+  anchor: 'end',
+  color: '#555',
+  offset: 0,
+  font: {
+    size: 16,
+    weight: 'bold'
+  },
+  
+});
+
+
+function BuildChart(data) {
+    // Wenn das Chart neu geladen wird (z.B nach .change) dann zerstöre das vorhandene
+    // Ansonsten Hover-Effekt durch überlagernde Charst
+    if(myChart){
+          myChart.destroy();
+      };
+    var ctx = document.getElementById('sollBar').getContext('2d');
+     myChart = new Chart(ctx, {
+        type: 'bar',
+    data: {
+      labels: [3,4,5,6,7,8,9,10,11,12],
+      datasets: [
+        {
+          backgroundColor: ["#a001f2", "#ffc600", "#a86301", "#fa3a07","#98c920","#019abc","#a001f2", "#2a82cd", "#ff00ff", "#ffc600", ],
+          data: data
+        }
+      ]
+    },
+     // Abstand von Legend nach unten 3.Grade ...
+  plugins: [{
+    beforeInit: function(chart, options) {
+      chart.legend.afterFit = function() {
+        this.height = this.height + 20;
+      };
+    }
+  }],
+    options: {
+        legend: { display: false },
+        animation: {duration: 0 }, // general animation time
+        hover: { animationDuration: 0 }, // duration of animations when hovering an item
+        responsiveAnimationDuration: 0 , // animation duration after a resi
+        scales: {
+            yAxes: [{
+                ticks: {display: false}
+            }],
+            xAxes: [{
+        ticks: {
+          callback: function(value, index, values) {
+            return  value + '.Grad';
+          }
+        }
+      }]
+        }
+    }
+
+    });
+    return myChart;
+}
+
+
+
+
+</script>

@@ -129,7 +129,7 @@ class ActModelTicklists extends JModelList
              // ->join('LEFT', '#__act_grade AS gt    ON gt.id     = t.calc_grade')
               ->where('a.created_by ='. $user)
               ->where('ticklist_yn = 1')
-              ->where('a.climbdate  > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
+              ->where('a.climbdate  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
 
         // Filter by search in title - Filter Name of Route
         $search = $this->getState('filter.search');
@@ -280,7 +280,7 @@ class ActModelTicklists extends JModelList
             ->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
             ->where('c.created_by =' .$user)
             ->where('ticklist_yn = 1')
-            ->where('c.climbdate  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
+            ->where('c.climbdate  > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
 
         // Filtering myroutegrade
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");

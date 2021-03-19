@@ -118,6 +118,7 @@
               type="calendar" 
               label="COM_ACT_NEXT_MAINTENACE"
         />
+        <field name="maxroutes" type="number" label="COM_ACT_LINE_MAX_ROUTES"  min="0" max="10" step="1" class="form-control"/>
        <field name="checked_out" type="hidden" filter="unset"/>
        <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
   </fieldset>

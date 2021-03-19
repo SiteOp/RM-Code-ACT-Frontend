@@ -61,14 +61,14 @@ $sum_diff = $sum_soll - $sum_ist;
         </thead>
         <tbody>
             <tr>
-                <td>Soll</td>
+                <td><i class="fas fa-align-justify"></i> Soll</td>
                 <?php for($i = 10; $i < 35; $i++) : ?>
                     <?php  $soll = "soll$i"; ?>
                     <td><?php echo $this->item->$soll; ?></td>
                 <?php endfor; ?>
             </tr>
             <tr>
-                <td>Ist</td>
+                <td><i class="fas fa-align-left"></i>&nbsp; Ist</td>
                  <?php for($i = 10; $i < 35; $i++) : ?>
                     <td><?php echo $ist_grade_list['ist_grade_'.$i]; ?></td>
                 <?php endfor; ?>

@@ -75,6 +75,9 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('indicator'); ?></div>
 			</div>
 			<div class="form-group row">
+				<div class="col-md-5"><?php echo $this->form->renderField('maxroutes'); ?></div>
+			</div>
+			<div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('maintenance_interval'); ?></div>
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('first_maintenace'); ?></div>
 			</div> 

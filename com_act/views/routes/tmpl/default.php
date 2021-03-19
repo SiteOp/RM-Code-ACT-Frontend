@@ -4,7 +4,7 @@
  * @package    Com_Act
  * @author     Richard Gebhard <gebhard@site-optimierer.de>
  * @copyright  2019 Richard Gebhard
- * @license    GNU General Public License Version 2 oder später; siehe LICENSE.txt
+ * @license    GNU General Public License Version 2 oder spï¿½ter; siehe LICENSE.txt
  */
 
 
@@ -55,7 +55,7 @@ $listDirn    = $this->state->get('list.direction');
 
 <?php echo LayoutHelper::render('default_filter', array('view' => $this), dirname(__FILE__)); ?>
 
-<?php if (sizeof($this->items) !== 0 ) : ?> <?php // Prüfe ob es überhaubpt Ergebnisse gibt ?>
+<?php if (sizeof($this->items) !== 0 ) : ?> <?php // Prï¿½fe ob es ï¿½berhaubpt Ergebnisse gibt ?>
 
     <div class="table-responsive ">
         <table class="table table-striped table-sm" id="routeList">
@@ -168,7 +168,7 @@ $listDirn    = $this->state->get('list.direction');
                         <?php endif; ?>
                     </td>
                     <?php endif; ?>
-                    <td class="text-center"><?php // VR_Grade Wenn Kommentare gesperrt dann - Wichtig für Speedroute ?>
+                    <td class="text-center"><?php // VR_Grade Wenn Kommentare gesperrt dann - Wichtig fï¿½r Speedroute ?>
                      <?php echo (1 == $item->exclude) ? '-' : ActHelpersAct::uiaa($item->settergrade); ?><?php // Short if else ?>
                     </td> 
                     <td class="d-none d-sm-table-cell" >  <?php // AVG  ?>
@@ -177,7 +177,7 @@ $listDirn    = $this->state->get('list.direction');
 
                         <?php endif; ?>
                     </td>
-                    <td class="d-sm-none text-center" >  <?php // AVG nur Ausgabe Text für Smartphone  ?>
+                    <td class="d-sm-none text-center" >  <?php // AVG nur Ausgabe Text fï¿½r Smartphone  ?>
                         <?php echo round($item->AvgStars,0); ?>
                     </td>
                     <td  class=""><?php // Count User ?>

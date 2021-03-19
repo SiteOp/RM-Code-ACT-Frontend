@@ -52,6 +52,7 @@ class ActViewSectorform extends \Joomla\CMS\MVC\View\HtmlView
 		$this->canSave = $this->get('CanSave');
 		$this->form		= $this->get('Form');
 
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{

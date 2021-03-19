@@ -28,7 +28,7 @@ for($i = 10; $i <= 36; $i++) {
 // Erstelle Variablen für Gesamtgrad (3.Grad, 4.Grad usw)
 $soll_grade_3  = ($soll10 + $soll11);              // 3
 $soll_grade_4  = ($soll12 + $soll13 + $soll14);    // 4
-$soll_grade_5  = ($soll15 + $soll15 + $soll17 );	 // 5
+$soll_grade_5  = ($soll15 + $soll16 + $soll17 );	 // 5
 $soll_grade_6  = ($soll18 + $soll19 + $soll20 );	 // 6
 $soll_grade_7  = ($soll21 + $soll22 + $soll23 );	 // 7
 $soll_grade_8  = ($soll24 + $soll25 + $soll26 );	 // 8
@@ -79,73 +79,78 @@ for ($i = 3; $i <= 12; $i++) {
    } 
 
 }
+
 ?>
 
+<?php if ($soll_data != '') : ?>
+  <canvas id="sollChart" width="" height="130"></canvas>
 
- <canvas id="sollChart" width="" height="130"></canvas>
-
- <script>
-Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
-  align: 'end',
-  anchor: 'end',
-  color: '#555',
-  offset: 0,
-  margin: 30,
-  font: {
-    size: 14,
-    weight: 'bold'
-  },
-});
+  <script>
+  Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
+    align: 'end',
+    anchor: 'end',
+    color: '#555',
+    offset: 0,
+    margin: 30,
+    font: {
+      size: 14,
+      weight: 'bold'
+    },
+  });
 
 
-var canvas = document.getElementById('sollChart');
-new Chart(canvas, {
-  type: 'doughnut',    
-  data: {
-    labels: [<?php echo $soll_label; ?>],
-    datasets: [{
-      data: [<?php echo $soll_data; ?>],
-      backgroundColor: [<?php echo $soll_color; ?> ]
-    }]
-  },
+  var canvas = document.getElementById('sollChart');
+  new Chart(canvas, {
+    type: 'doughnut',    
+    data: {
+      labels: [<?php echo $soll_label; ?>],
+      datasets: [{
+        data: [<?php echo $soll_data; ?>],
+        backgroundColor: [<?php echo $soll_color; ?> ]
+      }]
+    },
 
-  // Abstand von Legend nach unten 3.Grade ...
-  plugins: [{
-    beforeInit: function(chart, options) {
-      chart.legend.afterFit = function() {
-        this.height = this.height + 30;
-      };
-    }
-  }],
-
-  options: {
-    legend: {
-      display: true,
-      position: 'top',
-      padding: 0,
-      labels: {
-       fontSize: 14,
+    // Abstand von Legend nach unten 3.Grade ...
+    plugins: [{
+      beforeInit: function(chart, options) {
+        chart.legend.afterFit = function() {
+          this.height = this.height + 30;
+        };
       }
-    },
-    // Option animation time
-    animation: {
-      duration: 0 
-    },
-    // Semi
-    rotation: -Math.PI,
-    cutoutPercentage: 35,
-    circumference: Math.PI,
-    responsive: true,
-    maintainAspectRatio: true,
-    
-    plugins: {
-      labels: {
-        fontColor: 'black',
-        fontSize: 15,
-        precision: 0
-      },
-    },
-  }
+    }],
 
-});
-</script>
+    options: {
+      legend: {
+        display: true,
+        position: 'top',
+        padding: 0,
+        labels: {
+        fontSize: 14,
+        }
+      },
+      // Option animation time
+      animation: {
+        duration: 0 
+      },
+      // Semi
+      rotation: -Math.PI,
+      cutoutPercentage: 35,
+      circumference: Math.PI,
+      responsive: true,
+      maintainAspectRatio: true,
+      
+      plugins: {
+        labels: {
+          fontColor: 'black',
+          fontSize: 15,
+          precision: 0
+        },
+      },
+    }
+
+  });
+  </script>
+
+<?php else : ?>
+  <p>Keine Sollwerte erfasst.</p>
+<?php endif; ?>

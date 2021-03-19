@@ -60,7 +60,6 @@
               label="COM_ACT_SEARCH_FILTER_COLOR"
               sql_select="c.color, c.id"
               sql_from="#__act_color AS c"
-              sql_join="#__act_route AS r ON r.color = c.id"
               sql_group="c.color"
               key_field="id"
               value_field="color"
@@ -85,12 +84,11 @@
               filter="integer"
               label="COM_ACT_SEARCH_FILTER_LINE"
               default="*"
-              sql_select="l.line, l.id"
+              sql_select="l.line, l.id, l.state"
               sql_from="#__act_line AS l"
-              sql_join="#__act_route AS r ON r.line = l.id"
               multiple="falses"
-              sql_group="line"
               key_field="id"
+              sql_where="state = 1"
               value_field="line"
               onchange="this.form.submit();">
                <option value="">COM_ACT_SEARCH_FILTER_LINE</option>

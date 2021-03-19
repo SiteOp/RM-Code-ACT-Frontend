@@ -86,32 +86,33 @@
               type="calendar" 
               label="COM_ACT_NEXT_MAINTENACE"
         />
-       <field name="soll10" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_10" min="0" step="1" class="form-control"/>
-       <field name="soll11" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_11" min="0" step="1" class="form-control"/>
-       <field name="soll12" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_12" min="0" step="1" class="form-control"/>
-       <field name="soll13" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_13" min="0" step="1" class="form-control"/>
-       <field name="soll14" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_14" min="0" step="1" class="form-control"/>
-       <field name="soll15" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_15" min="0" step="1" class="form-control"/>
-       <field name="soll16" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_16" min="0" step="1" class="form-control"/>
-       <field name="soll17" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_17" min="0" step="1" class="form-control"/>
-       <field name="soll18" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_18" min="0" step="1" class="form-control"/>
-       <field name="soll19" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_19" min="0" step="1" class="form-control"/>
-       <field name="soll20" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_20" min="0" step="1" class="form-control"/>
-       <field name="soll21" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_21" min="0" step="1" class="form-control"/>
-       <field name="soll22" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_22" min="0" step="1" class="form-control"/>
-       <field name="soll23" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_23" min="0" step="1" class="form-control"/>
-       <field name="soll24" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_24" min="0" step="1" class="form-control"/>
-       <field name="soll25" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_25" min="0" step="1" class="form-control"/>
-       <field name="soll26" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_26" min="0" step="1" class="form-control"/>
-       <field name="soll27" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_27" min="0" step="1" class="form-control"/>
-       <field name="soll28" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_28" min="0" step="1" class="form-control"/>
-       <field name="soll29" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_29" min="0" step="1" class="form-control"/>
-       <field name="soll30" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_30" min="0" step="1" class="form-control"/>
-       <field name="soll31" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_31" min="0" step="1" class="form-control"/>
-       <field name="soll32" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_32" min="0" step="1" class="form-control"/>
-       <field name="soll33" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_33" min="0" step="1" class="form-control"/>
-       <field name="soll34" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_34" min="0" step="1" class="form-control"/>
-       <field name="soll35" type="number" default="0" label="COM_ACT_ROUTES_GRADE_OPTION_35" min="0" step="1" class="form-control"/>
+       <field name="soll10" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_10"  class="form-control grade" id="grade10" message="Bitte eine Zahl eingeben" />
+       <field name="soll11" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_11"  class="form-control grade" id="grade11"/>
+       <field name="soll12" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_12"  class="form-control grade" id="grade12"/>
+       <field name="soll13" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_13"  class="form-control grade" id="grade13"/>
+       <field name="soll14" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_14"  class="form-control grade" id="grade14"/>
+       <field name="soll15" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_15"  class="form-control grade" id="grade15"/>
+       <field name="soll16" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_16"  class="form-control grade" id="grade16"/>
+       <field name="soll17" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_17"  class="form-control grade" id="grade17"/>
+       <field name="soll18" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_18"  class="form-control grade" id="grade18"/>
+       <field name="soll19" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_19"  class="form-control grade" id="grade19"/>
+       <field name="soll20" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_20"  class="form-control grade" id="grade20"/>
+       <field name="soll21" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_21"  class="form-control grade" id="grade21"/>
+       <field name="soll22" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_22"  class="form-control grade" id="grade22"/>
+       <field name="soll23" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_23"  class="form-control grade" id="grade23"/>
+       <field name="soll24" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_24"  class="form-control grade" id="grade24"/>
+       <field name="soll25" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_25"  class="form-control grade" id="grade25"/>
+       <field name="soll26" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_26"  class="form-control grade" id="grade26"/>
+       <field name="soll27" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_27"  class="form-control grade" id="grade27"/>
+       <field name="soll28" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_28"  class="form-control grade" id="grade28"/>
+       <field name="soll29" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_29"  class="form-control grade" id="grade29"/>
+       <field name="soll30" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_30"  class="form-control grade" id="grade30"/>
+       <field name="soll31" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_31"  class="form-control grade" id="grade31"/>
+       <field name="soll32" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_32"  class="form-control grade" id="grade32"/>
+       <field name="soll33" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_33"  class="form-control grade" id="grade33"/>
+       <field name="soll34" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_34"  class="form-control grade" id="grade34"/>
+       <field name="soll35" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_35"  class="form-control grade" id="grade35"/>
+       <field name="soll36" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_36"  class="form-control grade" id="grade36"/>
 
 
 
