@@ -24,7 +24,6 @@ $total_max_routes = 0;
 $total_ist_routes = 0;
 foreach($lines AS $line) {
     $total_max_routes += $line->maxroutes;
-    $total_ist_routes += ActHelpersAct::getNumbersRoutesFromLineId($line->id);
 }
                       
 
@@ -51,7 +50,7 @@ foreach($lines AS $line) {
 </div>
 
 <div class="row mt-5">
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-4">
         <div class="card">
             <div class="card-header">
                 <h3>Linien im Sektor</h3>
@@ -62,7 +61,6 @@ foreach($lines AS $line) {
                     <tr>
                     <th>Linie</th>
                     <th>Routen max.</th>
-                    <th>Routen ist</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +68,6 @@ foreach($lines AS $line) {
                         <tr>
                             <th><?php echo $line->line; ?></th>
                             <td><?php echo $line->maxroutes; ?></td>
-                            <td><?php echo ActHelpersAct::getNumbersRoutesFromLineId($line->id); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -78,15 +75,13 @@ foreach($lines AS $line) {
                     <tr>
                         <td><?php echo count($lines); ?></td>
                         <td><?php echo $total_max_routes; ?> </td>
-                        <td><?php echo $total_ist_routes; ?></td>
                     </tr>
                 </tfoot>
             </table>
-            Routendichte: <?php echo round(($total_ist_routes / count($lines)),2); ?> </p>
             </div>
         </div>
     </div>   
-    <div class="col-12 col-md-7">
+    <div class="col-12 col-md-8">
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-align-justify"></i> Soll-Werte Schwierigkeitsgrade</h3> <?php // TODO ?>
@@ -99,7 +94,7 @@ foreach($lines AS $line) {
  </div>
 
 
-<?php  echo $this->loadTemplate('table'); ?>
+<?php // echo $this->loadTemplate('table'); ?>
 
 
     <?php if($canEdit): ?>

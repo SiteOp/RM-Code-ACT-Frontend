@@ -143,7 +143,7 @@ for ($i = 3; $i <= 12; $i++) {
         labels: {
           fontColor: 'black',
           fontSize: 15,
-          precision: 0
+          precision: 2
         },
       },
     }

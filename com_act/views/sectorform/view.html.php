@@ -48,9 +48,36 @@ class ActViewSectorform extends \Joomla\CMS\MVC\View\HtmlView
 
 		$this->state   = $this->get('State');
 		$this->item    = $this->get('Item');
-		$this->params  = $app->getParams('com_act');
 		$this->canSave = $this->get('CanSave');
 		$this->form		= $this->get('Form');
+
+		// ACT Params 
+		$this->params  = $app->getParams('com_act');
+		$this->c3   = $this->params['color3grad'];
+		$this->c4   = $this->params['color4grad'];
+		$this->c5   = $this->params['color5grad'];
+		$this->c6   = $this->params['color6grad'];
+		$this->c7   = $this->params['color7grad'];
+		$this->c8   = $this->params['color8grad'];
+		$this->c9   = $this->params['color9grad'];
+		$this->c10  = $this->params['color10grad'];
+		$this->c11  = $this->params['color11grad'];
+		$this->c12  = $this->params['color12grad'];
+
+		// Routes-Planning Params
+		$this->params2  = $app->getParams('com_routes_planning');
+		$this->berechnungsart = $this->params2['berechnungsart'];
+
+
+		// Alle Linien in diesem Sektor
+		$this->lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
+		$this->total_lines_in_sektor =  count($this->lines); // Anzahl Linien im Sektor
+		
+		$this->total_max_routes = 0;
+			foreach($this->lines AS $line) {
+   			$this->total_max_routes += $line->maxroutes;// Max Routenanzahl gerechnet aus allen Linien in diesem Sektor
+		}
+		
 
 
 		// Check for errors.

@@ -20,6 +20,11 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+// Add Script 
+$doc = Factory::getDocument();
+$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
+$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
+$doc->addScript('components/com_act/views/sectorform/tmpl/enternotsend.js');
 
 $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
@@ -33,23 +38,26 @@ if($this->item->state == 1){
 }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 
-// Helper - Alle Linien in diesem Sektor (Array)
-$lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
-
-$total_max_routes = 0;
-foreach($lines AS $line) {
-    $total_max_routes += $line->maxroutes;// Max Routenanzahl gerechnet aus allen Linien in diesem Sektor
-}
-
-$total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
 ?>
 
-<style>
+<style> 
 .sw_soll  {text-align: center; font-weight: bold;}
 .sw_soll .form-control {text-align: center; padding-left: 25px!important;}
 #gradetable .form-control {padding: 0; min-width: 1.5rem; min-height: 1.5rem; text-align: center;}
 #gradetable .table td {padding: 4px;}
-.card-body {padding: 0;}
+.card-body {padding: 0; margin-left: -5px;}
+label {width: 100%; margin-bottom: 0;}
+.lblg {border-bottom: 5px solid;!important;}
+.grade3  {border-color: <?php echo $this->c3; ?>}
+.grade4  {border-color: <?php echo $this->c4; ?>}
+.grade5  {border-color: <?php echo $this->c5; ?>}
+.grade6  {border-color: <?php echo $this->c6; ?>}
+.grade7  {border-color: <?php echo $this->c7; ?>}
+.grade8  {border-color: <?php echo $this->c8; ?>}
+.grade9  {border-color: <?php echo $this->c9; ?>}
+.grade10 {border-color: <?php echo $this->c10; ?>}
+.grade11 {border-color: <?php echo $this->c11; ?>}
+.grade12 {border-color: <?php echo $this->c12; ?>}
 </style>
 
 <?Php // Pager-Header ?>
@@ -92,38 +100,18 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
                 <div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('building'); ?></div>
             </div>
 
-            <h3 class="mt-5">Soll-Verteilung SW</h3>
-            <div class="">Gesamt Routenanzahl: <span id="total"><?php //Summer wird per Javascript berechnet; ?></span></div>
-            <div> Max Anzahl Routen: <span id="total_max_routes"><?php echo $total_max_routes; ?></span></div>
-            <div>Gesamtzahl Linie: <span id="total_lines"><?php echo $total_lines_in_sektor; ?></span></div>
-            <div>Routendichte: <span  id="density"></span></div>
-          
+           
 
 
-
-            <div id="gradetable" class="table-responsive mt-4">
-                <table class="table table-bordered text-center" id="datatable">
-                    <thead>
-                        <tr>
-                            <?php for($i = 10; $i <= 36; $i++) : ?>
-                                <?php  $soll = "soll$i"; ?>
-                                <td><?php echo $this->form->getLabel($soll); ?></td>
-                            <?php endfor; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <?php for($i = 10; $i <= 36; $i++) : ?>
-                                <?php  $soll = "soll$i"; ?>
-                                <td><?php echo $this->form->getInput($soll); ?></td>
-                            <?php endfor; ?>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="warning_to_much" class=""></div>
-
+        <?php if (1 == $this->berechnungsart) {
+            echo $this->loadTemplate('sw_einzeln');
+        }
+        else 
+        {
+            echo $this->loadTemplate('sw_prozent');
+        }
+        ?>       
+        
            <div class="row mt-5">
                 <div class="col">
                     <div class="card">
@@ -152,7 +140,7 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
                             <?php echo Text::_('JCANCEL'); ?>
                     </a>
                 </div>
-    
+
             <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
             <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
             <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
@@ -167,4 +155,13 @@ $total_lines_in_sektor =  count($lines); // Anzahl Linien im Sektor
     </div>
 <?php endif; ?>
 
-<?php echo $this->loadTemplate('chart.js'); ?>
+    <?php if (1 == $this->berechnungsart)
+    {
+        echo $this->loadTemplate('chart.js_einzeln');
+    }
+    else 
+    {
+        echo $this->loadTemplate('chart.js_prozent');
+    }
+    ?>     
+
