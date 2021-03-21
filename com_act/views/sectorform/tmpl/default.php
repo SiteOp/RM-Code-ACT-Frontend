@@ -103,7 +103,7 @@ label {width: 100%; margin-bottom: 0;}
            
 
 
-        <?php if (1 == $this->berechnungsart) {
+        <?php if (0 == $this->berechnungsart) {
             echo $this->loadTemplate('sw_einzeln');
         }
         else 
@@ -155,7 +155,7 @@ label {width: 100%; margin-bottom: 0;}
     </div>
 <?php endif; ?>
 
-    <?php if (1 == $this->berechnungsart)
+    <?php if (0 == $this->berechnungsart)
     {
         echo $this->loadTemplate('chart.js_einzeln');
     }

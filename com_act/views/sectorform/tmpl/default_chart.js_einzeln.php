@@ -11,20 +11,8 @@ defined('_JEXEC') or die;
 
 use \Joomla\CMS\Factory;
 
-
-$colors = [$this->c3,$this->c3,$this->c4,$this->c4,$this->c4,$this->c5,$this->c5,$this->c5,$this->c6,$this->c6,$this->c6,$this->c7,$this->c7,$this->c7,$this->c8,$this->c8,$this->c8,$this->c9,$this->c9,$this->c9,$this->c10,$this->c10,$this->c10,$this->c11,$this->c11,$this->c11,$this->c12];
-$colors = json_encode($colors);
-
-// Routen Gesamtanzahl & Array für Routen 
-$sum_routes = [];
-
-for($i = 10; $i <= 36; $i++) {
-    $soll = "soll$i";
-    $varname = 'soll';
-    ${$varname.$i} = $this->item->$soll;
-    array_push($sum_routes,  $this->item->$soll);
-  }
-  $json_routes = json_encode($sum_routes);
+// Erstelle den JSON-String für die Farben
+$colors = json_encode([$this->c3,$this->c3,$this->c4,$this->c4,$this->c4,$this->c5,$this->c5,$this->c5,$this->c6,$this->c6,$this->c6,$this->c7,$this->c7,$this->c7,$this->c8,$this->c8,$this->c8,$this->c9,$this->c9,$this->c9,$this->c10,$this->c10,$this->c10,$this->c11,$this->c11,$this->c11,$this->c12]);
 
 // Label JSON [3,3-,3,3+ usw]
   $label = [];
@@ -32,21 +20,16 @@ for($i = 10; $i <= 36; $i++) {
     array_push($label, ActHelpersAct::uiaa($i));
   };
 $json_label = json_encode($label);
-      
 ?>
 
 <script>
-    // Berechne die gesamte Routenanzahl besser mit Javascript nicht PHP 
-    // Beim erneuten Laden der Seite ist somit der Wert ebenfalls richtig
-   $(document).ready(function () {
-
-        let sum =  $('#gradetable .grade').sum(); // Gesamtzahl Routen
-        $('#total').html(sum);
-
-        let total_lines = $('#total_lines').text(); // Anzahl Linien
-        let density = parseFloat((sum / total_lines).toFixed(2)); // Routendichte 
-        $('#density').html(density);
-
+    // Beim ersten Laden Daten berechnen
+    $(document).ready(function () {
+       updateData();
+    });
+    // Nach einer Änderung Daten neu berechnen
+     $('#gradetable').change(function() {    
+        updateData();
     });
 
     // Defaults für Charts
@@ -66,7 +49,7 @@ $json_label = json_encode($label);
         data: {
             labels: <?php echo $json_label; ?>,
             datasets: [{
-                data: <?php echo $json_routes; ?>,
+                data: [],
                 backgroundColor: <?php echo $colors; ?>,
             }]
         },
@@ -93,7 +76,6 @@ $json_label = json_encode($label);
     var ctx = document.getElementById("myChart").getContext("2d");
     var myChart = new Chart(ctx, config);
 
-
      // Funktion zum berechnen der Summe der einzelnen Grade
      (function( $ ){ 
         $.fn.sum=function () {
@@ -106,11 +88,18 @@ $json_label = json_encode($label);
         }; 
     })( jQuery )
 
-
-   
     // Die Daten (Angabe Summe der einzelnen Grade) muss nach der Eingabe neu erstellt werden
     // Nur diese Daten werden dann als Update in das Chart eingespielt
     function updateData(){
+
+        let sum =  $('#gradetable .grade').sum(); // Gesamtzahl aller Routen berechnen
+        $('#total').html(sum);
+
+        let total_lines = $('#total_lines').text();
+        let density = parseFloat((sum / total_lines).toFixed(2)); // Routendichte
+        $('#density').html(density);
+
+        let total_max_routes = $('#total_max_routes').text();
         let grade10 =  $('#jform_grade10').val();
         let grade11 =  $('#jform_grade11').val();
         let grade12 =  $('#jform_grade12').val();
@@ -145,19 +134,4 @@ $json_label = json_encode($label);
         myChart.data.datasets[0].data =newData;
         myChart.update();
     };
-
-    // Wenn sich in der Tabelle etwas ändern dann
-    $('#gradetable').change(function() {    
-
-        let sum =  $('#gradetable .grade').sum(); // Gesamtzahl aller Routen berechnen
-        $('#total').html(sum);  // Gesamtzahl in ausgeben
-
-        let total_lines = $('#total_lines').text();
-        let density = parseFloat((sum / total_lines).toFixed(2));
-        $('#density').html(density);
-
-        let total_max_routes = $('#total_max_routes').text();
-        updateData();   // Funktion Update der Grade durchführen
-    });
-
 </script>

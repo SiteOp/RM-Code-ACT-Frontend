@@ -22,7 +22,6 @@ $colors = json_encode([$this->c3,$this->c4,$this->c5,$this->c6,$this->c7,$this->
 $json_label = json_encode($label);
 ?>
 
-
 <script>
     // Beim ersten Laden Daten berechnen
     $(document).ready(function () {
@@ -75,10 +74,8 @@ $json_label = json_encode($label);
                             display: true,
                             labelString: 'Anzahl Routen',
                             fontSize: 18
-                        }
+                    }
                 }]
-               
-                
             }
         }
     };
@@ -88,16 +85,16 @@ $json_label = json_encode($label);
 
     // Hole die Daten aus dem Feld welches die Anzahl Routen berechnet
     function updateData(){
-        let soll3 = $('#totalsoll3').text();
-        let soll4 = $('#totalsoll4').text();
-        let soll5 = $('#totalsoll5').text();
-        let soll6 = $('#totalsoll6').text();
-        let soll7 = $('#totalsoll7').text();
-        let soll8 = $('#totalsoll8').text();
-        let soll9 = $('#totalsoll9').text();
-        let soll10 = $('#totalsoll10').text();
-        let soll11 = $('#totalsoll11').text();
-        let soll12 = $('#totalsoll12').text();
+        let soll3 = $('#jform_totalsoll3').val();
+        let soll4 = $('#jform_totalsoll4').val();
+        let soll5 = $('#jform_totalsoll5').val();
+        let soll6 = $('#jform_totalsoll6').val();
+        let soll7 = $('#jform_totalsoll7').val();
+        let soll8 = $('#jform_totalsoll8').val();
+        let soll9 = $('#jform_totalsoll9').val();
+        let soll10 = $('#jform_totalsoll10').val();
+        let soll11 = $('#jform_totalsoll11').val();
+        let soll12 = $('#jform_totalsoll12').val();
         let dataObj =  JSON.parse("["+soll3+','+soll4+','+soll5+','+soll6+','+soll7+','+soll8+','+soll9+','+soll10+','+soll11+','+soll12+"]"); 
         let newData=[];
         newData = dataObj;
@@ -105,4 +102,5 @@ $json_label = json_encode($label);
         myChart.data.datasets[0].data =newData;
         myChart.update();
     };
+
 </script>
