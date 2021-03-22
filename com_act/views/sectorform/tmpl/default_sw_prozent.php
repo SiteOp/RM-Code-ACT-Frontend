@@ -20,6 +20,7 @@ defined('_JEXEC') or die;
         <div class="row">
             <div class="col-sm-6"><?php echo $this->form->renderField('routestotalinsector'); ?></div>
         </div>
+        
 
     <div id="gradetable" class="table-responsive mt-4">
         <table class="table table-bordered text-center" id="datatable">
@@ -69,6 +70,7 @@ defined('_JEXEC') or die;
                     <td>Erfüllung</td>
                     <td colspan="11">
                         <div class="progress">
+                            <span class="sr-only"><?php echo $this->form->getInput('percent'); ?></span>
                             <div id="progress" class="" role="progressbar" style=""></div>
                         </div>
                     </td>
@@ -150,9 +152,10 @@ defined('_JEXEC') or die;
         $('#jform_totalsoll9').val(parseFloat(total9).toFixed(1));
         $('#jform_totalsoll10').val(parseFloat(total10).toFixed(1));
         $('#jform_totalsoll11').val(parseFloat(total11).toFixed(1));
-        $('#jform_totalsoll12').val(parseFloat(total11).toFixed(1));
+        $('#jform_totalsoll12').val(parseFloat(total12).toFixed(1));
 
         let sum_percent =  $('#percentsoll input').sum(); // Summe der Prozentwerte
+        $('#jform_percent').val(sum_percent);
         makeProgress(sum_percent); // Funktion der Progressbar aufrufen
     };
 

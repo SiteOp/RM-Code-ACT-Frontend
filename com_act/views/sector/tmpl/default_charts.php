@@ -13,10 +13,9 @@ use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
 $doc = Factory::getDocument();
-$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
-$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
+//$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
+//$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
 $doc->addScript('node_modules/chartjs-plugin-labels/build/chartjs-plugin-labels.min.js');
-
 
 // Erstelle Variablen soll10 usw => Sollwert (Alle einzeln 3, 3+, 4- usw)
 for($i = 10; $i <= 36; $i++) {
@@ -26,16 +25,23 @@ for($i = 10; $i <= 36; $i++) {
   }
 
 // Erstelle Variablen für Gesamtgrad (3.Grad, 4.Grad usw)
-$soll_grade_3  = ($soll10 + $soll11);              // 3
-$soll_grade_4  = ($soll12 + $soll13 + $soll14);    // 4
-$soll_grade_5  = ($soll15 + $soll16 + $soll17 );	 // 5
-$soll_grade_6  = ($soll18 + $soll19 + $soll20 );	 // 6
-$soll_grade_7  = ($soll21 + $soll22 + $soll23 );	 // 7
-$soll_grade_8  = ($soll24 + $soll25 + $soll26 );	 // 8
-$soll_grade_9  = ($soll27 + $soll28 + $soll29 );	 // 9
-$soll_grade_10 = ($soll30 + $soll31 + $soll32 );	 // 10
-$soll_grade_11 = ($soll33 + $soll34 + $soll35 );	 // 11
-$soll_grade_12 = ($soll36);	                       // 12
+$soll_grade_3  = $this->item->totalsoll3;  // 3
+$soll_grade_4  = $this->item->totalsoll4;  // 4
+$soll_grade_5  = $this->item->totalsoll5;	 // 5
+$soll_grade_6  = $this->item->totalsoll6;	 // 6
+$soll_grade_7  = $this->item->totalsoll7;	 // 7
+$soll_grade_8  = $this->item->totalsoll8;	 // 8
+$soll_grade_9  = $this->item->totalsoll9;	 // 9
+$soll_grade_10 = $this->item->totalsoll10; // 10
+$soll_grade_11 = $this->item->totalsoll11; // 11
+$soll_grade_12 = $this->item->totalsoll12; // 12
+$soll_grade_array = [$soll_grade_3,$soll_grade_4,$soll_grade_5,$soll_grade_6,$soll_grade_7,$soll_grade_8,$soll_grade_9,$soll_grade_10,$soll_grade_11,$soll_grade_12];
+$soll_differenz = ($this->item->routestotalinsector - array_sum($soll_grade_array) );
+if ($soll_differenz > 0) {
+  $soll_grade_13 = $soll_differenz;
+} else {
+  $soll_grade_13 = ''; 
+};
 
 // Farben
 $color_3  = '#a001f2'; // TODO CONFIG
@@ -48,6 +54,7 @@ $color_9  = '#a001f2';
 $color_10 = '#2a82cd';
 $color_11 = '#ff00ff';
 $color_12 = '#ffc600';
+$color_13 = '#f2f2f2';
 
 // Label für Grad
 $label_3 = '3.Grad';  // TODO Sprache
@@ -60,13 +67,14 @@ $label_9 = '9.Grad';
 $label_10 = '10.Grad';
 $label_11 = '11.Grad';
 $label_12 = '12.Grad';
+$label_13 = 'undefiniert';
 
 // Ist Werte für Chart
 $soll_label = '';
 $soll_color = '';
 $soll_data = ''; 
 
-for ($i = 3; $i <= 12; $i++) {
+for ($i = 3; $i <= 13; $i++) {
  
   $soll_grade = "soll_grade_$i";
   $color = "color_$i";
@@ -83,7 +91,7 @@ for ($i = 3; $i <= 12; $i++) {
 ?>
 
 <?php if ($soll_data != '') : ?>
-  <canvas id="sollChart" width="" height="130"></canvas>
+  <canvas id="sollChart" width="" height="90"></canvas>
 
   <script>
   Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {

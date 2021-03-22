@@ -146,13 +146,13 @@ class ActControllerSectorForm extends \Joomla\CMS\MVC\Controller\FormController
 		}
 
 		// Clear the profile id from the session.
-		$app->setUserState('com_act.edit.sector.id', null);
-
+		//$app->setUserState('com_act.edit.sector.id', null);
+		$id = (int) $app->getUserState('com_act.edit.sector.id');
 		// Redirect to the list screen.
 		$this->setMessage(Text::_('COM_ACT_ITEM_SAVED_SUCCESSFULLY'));
 		$menu = Factory::getApplication()->getMenu();
 		$item = $menu->getActive();
-		$url  = (empty($item->link) ? 'index.php?option=com_act&view=sectors' : $item->link);
+		$url  = (!empty($item->link) ? 'index.php?option=com_act&view=sector&id='.$id : $item->link);
 		$this->setRedirect(Route::_($url, false));
 
 		// Flush the data from the session.
@@ -184,7 +184,7 @@ class ActControllerSectorForm extends \Joomla\CMS\MVC\Controller\FormController
 
 		$menu = Factory::getApplication()->getMenu();
 		$item = $menu->getActive();
-		$url  = (empty($item->link) ? 'index.php?option=com_act&view=sectors' : $item->link);
+		$url  = (!empty($item->link) ? 'index.php?option=com_act&view=sector&id='.$editId : $item->link);
 		$this->setRedirect(Route::_($url, false));
 	}
 

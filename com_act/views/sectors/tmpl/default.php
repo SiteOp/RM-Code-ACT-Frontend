@@ -78,7 +78,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="pl-3">
-                        <a href="<?php echo JRoute::_('index.php?option=com_act&view=sector&id='.(int) $item->id); ?>">
+                        <a href="<?php echo Route::_('index.php?option=com_act&view=sector&id='.(int) $item->id); ?>">
 				         <?php echo $this->escape($item->sector); ?>
                         </a>
                     </td>

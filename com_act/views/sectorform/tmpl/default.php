@@ -140,7 +140,7 @@ label {width: 100%; margin-bottom: 0;}
                             <?php echo Text::_('JCANCEL'); ?>
                     </a>
                 </div>
-
+       
             <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
             <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
             <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
