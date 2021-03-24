@@ -26,8 +26,6 @@ $doc = Factory::getDocument();
 $doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
 $doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
 
-// Helper - Alle Linien in diesem Sektor
-$lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
 
 ?>
 
@@ -43,7 +41,7 @@ $lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
                     <h3>Info</h3>
                 </div>
                 <div class="card-body">
-                <?php echo Text::_('COM_ACT_SECTORS_BUILDING_OPTION_'.$this->item->building); ?>
+                <?php echo ActHelpersAct::getBuildingName($this->item->building); ?>
                     <?php echo Text::_('COM_ACT_SECTORS_INOROUT_OPTION_'.$this->item->inorout); ?>
                     <div>Intervall: <?php echo $this->item->maintenance_interval; ?> Woche(n)</div>
                     <div>Nächste Wartung: xxx</div> <?php // TODO ?>
@@ -57,11 +55,11 @@ $lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-row">
-                        <?php foreach($lines AS $line) : ?>
+                        <?php foreach($this->lines AS $line) : ?>
                             <div class="pr-2"><?php echo $line->line; ?> | </div>
                         <?php endforeach; ?>
                     </div>
-                    <div class="mt-2">Gesamt <?php echo count($lines); ?> Linie</div>
+                    <div class="mt-2">Gesamt <?php echo count($this->lines); ?> Linie</div>
                 </div>
             </div>
         </div>

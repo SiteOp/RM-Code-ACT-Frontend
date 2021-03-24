@@ -29,12 +29,19 @@
               hint=""
        />
        <field name="building" 
-              type="list"
+              type="sql" 
+              sql_select="id, building" 
+              sql_from="#__act_building" 
+              sql_where="state = 1" 
+              sql_order="building ASC" 
+              key_field="id" 
+              value_field="building"
+              required="true"
+              label="COM_ACT_SECTORS_BUILDING" 
+              header="COM_ACT_SECTORS_BUILDING"
               filter="integer"
-              label="COM_ACT_SECTORS_BUILDING">
-                <option value="1">COM_ACT_SECTORS_BUILDING_OPTION_1</option>
-                <option value="2">COM_ACT_SECTORS_BUILDING_OPTION_2</option>
-       </field>
+        />
+
        <field name="inorout" 
               type="list" 
               required="true"
@@ -127,18 +134,18 @@
        <field name="totalsoll11" type="text" filter="float" label="11" pattern="[0-9]+([\.][0-9]+)?" class="form-control" readonly="true"/>
        <field name="totalsoll12" type="text" filter="float" label="12" pattern="[0-9]+([\.][0-9]+)?" class="form-control" readonly="true"/>
 
-       <field name="percent" type="number" filter="float" step="0.01" label="prozent" max="100" /> 
+       <field name="percent" type="number" filter="float" step="1" label="prozent" max="100" /> 
 
-       <field name="percentsoll3"  type="number" step=".5" min="0" max="100" filter="float" label="3"  class="form-control " labelclass="lblg grade3"/>
-       <field name="percentsoll4"  type="number" step=".5" min="0" max="100" filter="float" label="4"  class="form-control"  labelclass="lblg grade4"/>
-       <field name="percentsoll5"  type="number" step=".5" min="0" max="100" filter="float" label="5"  class="form-control"  labelclass="lblg grade5"/>
-       <field name="percentsoll6"  type="number" step=".5" min="0" max="100" filter="float" label="6"  class="form-control"  labelclass="lblg grade6"/>
-       <field name="percentsoll7"  type="number" step=".5" min="0" max="100" filter="float" label="7"  class="form-control"  labelclass="lblg grade7"/>
-       <field name="percentsoll8"  type="number" step=".5" min="0" max="100" filter="float" label="8"  class="form-control"  labelclass="lblg grade8"/>
-       <field name="percentsoll9"  type="number" step=".5" min="0" max="100" filter="float" label="9"  class="form-control"  labelclass="lblg grade9"/>
-       <field name="percentsoll10" type="number" step=".5" min="0" max="100" filter="float" label="10" class="form-control"  labelclass="lblg grade10"/>
-       <field name="percentsoll11" type="number" step=".5" min="0" max="100" filter="float" label="11" class="form-control"  labelclass="lblg grade11"/>
-       <field name="percentsoll12" type="number" step=".5" min="0" max="100" filter="float" label="12" class="form-control"  labelclass="lblg grade12"/>
+       <field name="percentsoll3"  type="number" step="1" min="0" max="100" filter="float" label="3"  class="form-control " labelclass="lblg grade3"/>
+       <field name="percentsoll4"  type="number" step="1" min="0" max="100" filter="float" label="4"  class="form-control"  labelclass="lblg grade4"/>
+       <field name="percentsoll5"  type="number" step="1" min="0" max="100" filter="float" label="5"  class="form-control"  labelclass="lblg grade5"/>
+       <field name="percentsoll6"  type="number" step="1" min="0" max="100" filter="float" label="6"  class="form-control"  labelclass="lblg grade6"/>
+       <field name="percentsoll7"  type="number" step="1" min="0" max="100" filter="float" label="7"  class="form-control"  labelclass="lblg grade7"/>
+       <field name="percentsoll8"  type="number" step="1" min="0" max="100" filter="float" label="8"  class="form-control"  labelclass="lblg grade8"/>
+       <field name="percentsoll9"  type="number" step="1" min="0" max="100" filter="float" label="9"  class="form-control"  labelclass="lblg grade9"/>
+       <field name="percentsoll10" type="number" step="1" min="0" max="100" filter="float" label="10" class="form-control"  labelclass="lblg grade10"/>
+       <field name="percentsoll11" type="number" step="1" min="0" max="100" filter="float" label="11" class="form-control"  labelclass="lblg grade11"/>
+       <field name="percentsoll12" type="number" step="1" min="0" max="100" filter="float" label="12" class="form-control"  labelclass="lblg grade12"/>
 
        <field name="ordering"/>
        <field name="checked_out" type="hidden" filter="unset"/>

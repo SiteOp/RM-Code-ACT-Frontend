@@ -32,15 +32,18 @@
                <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
        </field>  
        <field name="building" 
-              label="" 
-              type="list"
+              type="sql" 
+              sql_select="id, building" 
+              sql_from="#__act_building" 
+              sql_where="state = 1" 
+              sql_order="building ASC" 
+              key_field="id" 
+              value_field="building"
+              required="true"
+              label="COM_ACT_SECTORS_BUILDING" 
+              header="COM_ACT_SECTORS_BUILDING"
               filter="integer"
-              default="COM_ACT_SEARCH_FILTER_BUIDLING"
-              onchange="this.form.submit();">
-                <option value="">COM_ACT_SEARCH_FILTER_BUIDLING</option>
-                <option value="1">COM_ACT_SEARCH_FILTER_BUIDLING_1</option>
-                <option value="2">COM_ACT_SEARCH_FILTER_BUIDLING_2</option>
-       </field>
+        />
        <field name="inorout" 
               label="" 
               type="list"

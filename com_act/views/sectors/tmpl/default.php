@@ -82,7 +82,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 				         <?php echo $this->escape($item->sector); ?>
                         </a>
                     </td>
-                    <td><?php echo Text::_('COM_ACT_SECTORS_BUILDING_OPTION_' . $item->building); ?> </td>
+                    <td> <?php echo ActHelpersAct::getBuildingName($item->building); ?> </td>
                     <td><?php echo Text::_('COM_ACT_SECTORS_INOROUT_OPTION_' . $item->inorout); ?> </td>
                     <td><?php if ($item->next_maintenance > 0 ) : ?>
                         <?php echo HTMLHelper::_('date', $item->next_maintenance, Text::_('DATE_FORMAT_LC4')); ?>

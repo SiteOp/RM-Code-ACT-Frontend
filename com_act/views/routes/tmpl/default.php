@@ -121,7 +121,7 @@ $listDirn    = $this->state->get('list.direction');
                                 data-trigger="hover" 
                                 title=" 
                                     <?php echo Text::_('COM_ACT_SECTORS_INOROUT_OPTION_' . $item->inorout); ?> |
-                                    <?php echo $item->building = Text::_('COM_ACT_SECTORS_BUILDING_OPTION_' . $item->building); ?>
+                                    <?php echo $item->building =  ActHelpersAct::getBuildingName($item->building); ?>
                                       "
                                 data-content=" 
                                     <div class='pop_line'>Linie: <?php echo $item->line; ?></div>

@@ -62,6 +62,8 @@ class ActViewSector extends \Joomla\CMS\MVC\View\HtmlView
 		$this->c11  = $this->params['color11grad'];
 		$this->c12  = $this->params['color12grad'];
 
+		$this->lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
+
 		if (!empty($this->item))
 		{
 			$this->form = $this->get('Form');

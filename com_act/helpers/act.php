@@ -495,6 +495,25 @@ class ActHelpersAct
         $db->setQuery($query);
         return $db->loadResult();
     }
+
+
+    /**
+    * Name des Gebäudes bzw. Mastersektor
+    * @param integer $id
+    * @return string
+    */
+    public static function getBuildingName($id) {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select(array('building'))
+            ->from('#__act_building')
+            ->where('id = ' . intval($id));
+
+        $db->setQuery($query);
+        return $db->loadResult();
+    }
    
 
 }
