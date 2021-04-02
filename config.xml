@@ -354,15 +354,21 @@
 			   format="HEX"
 			   label="Farbe: 12 Grad"
 		/>
+		<field name="color_undefined" 
+			   type="color" 
+			   default="#f2f2f2" 
+			   format="HEX"
+			   label="Farbe: undefiniert"
+			   description="Z. B Routenplanung. Wenn in der Prozentwerterfassung nicht 100% Auslastung ist dann gibt es einen Anteil undefinierte Routenanzahl"
+		/>
+
     </fieldset>
 	
 	 <fieldset label="COM_ACT_ADMIN_DEFAULTS" name="admin_defaults">
-        
 		 <field name="admin_lines_pdf" default="1" type="radio" label="COM_ACT_CONFIG_LBL_ADMIN_LINES_PDF">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
         </field>
-		
 		<field name="grade_offset_comment" 
                type="number" 
                default="3" 
@@ -372,7 +378,6 @@
                max="8" 
                step="1" 
         />
-		
     </fieldset>
 
     <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">

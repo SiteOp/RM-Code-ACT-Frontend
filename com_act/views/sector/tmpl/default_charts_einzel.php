@@ -12,11 +12,18 @@ defined('_JEXEC') or die;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Language\Text;
 
-$routes_array = [$this->item->soll10,$this->item->soll11,$this->item->soll12,$this->item->soll13,$this->item->soll14,$this->item->soll15,$this->item->soll16,$this->item->soll17,
-                            $this->item->soll18,$this->item->soll19,$this->item->soll20,$this->item->soll21,$this->item->soll22,$this->item->soll23,$this->item->soll24,$this->item->soll25,
-                            $this->item->soll26,$this->item->soll27,$this->item->soll28,$this->item->soll29,$this->item->soll30,$this->item->soll31,$this->item->soll32,$this->item->soll33,
-                            $this->item->soll34,$this->item->soll35 
-                            ];
+$grade_start = $this->grade_start_individually;
+$grade_end = $this->grade_end_individually;
+
+$jsonroutes = json_decode($this->item->routessoll_ind, true); // Hole die Werte aus DB um die Inputfelder vorab zu füllen
+
+$routes_array = [];
+for($i = $grade_start; $i <= $grade_end; $i++) {
+    $grade = "g$i";
+    array_push($routes_array, $jsonroutes[$grade] );
+}
+
+
 $total_routes = array_sum($routes_array);         // Gesamtzahl Routen
 $total_lines = count($this->lines);               // Gesamtzahl Linien
 $density = round($total_routes/$total_lines, 2);  // Routendichte
@@ -32,10 +39,17 @@ $colors = json_encode([$this->c3,$this->c3,$this->c4,$this->c4,$this->c4,$this->
 
 // Label JSON [3,3-,3,3+ usw]
 $label = [];
-for($i = 10; $i <= 36; $i++) {
+for($i = $grade_start; $i <= $grade_end; $i++) {
   array_push($label, ActHelpersAct::uiaa($i));
 };
 $json_label = json_encode($label);
+
+$json = json_decode($this->item->routessoll_ind, true);
+for($i = $grade_start; $i <= $grade_end; $i++) {
+};
+
+
+
 
 ?>
 

@@ -61,8 +61,17 @@ class ActViewSector extends \Joomla\CMS\MVC\View\HtmlView
 		$this->c10  = $this->params['color10grad'];
 		$this->c11  = $this->params['color11grad'];
 		$this->c12  = $this->params['color12grad'];
+		$this->c13  = $this->params['color_undefined'];
 
 		$this->lines = ActHelpersAct::getLinesFromSectorId($this->item->id);
+		
+		// Params Routes-Planning
+		$this->params_rp = $app->getParams('com_routes_planning');
+		$this->record_should = $this->params_rp['record_should']; 						  // Soll Soll erfasst werden 0=nein 1=ja
+		$this->record_sector_or_building = $this->params_rp['record_sector_or_building']; // Sollen die Sollwerte im Sektor oder Gebäude erfasst werden? 1=Gebäude 2=Sektor
+		$this->record_type = $this->params_rp['record_type'];
+		$this->grade_start_individually = $this->params_rp['grade_start_individually'];   // Einzelwerte - Niedrigster Schwierigkeitsgrad
+		$this->grade_end_individually = $this->params_rp['grade_end_individually'];       // Einzelwerte - Höchster  Schwierigkeitsgrad 
 
 		if (!empty($this->item))
 		{

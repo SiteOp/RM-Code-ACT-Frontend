@@ -22,11 +22,11 @@ $params = $app->getParams();
 $params         = $app->getParams('com_routes_planning');
 $berechnungsart = $params['berechnungsart'];
 
-$doc = Factory::getDocument();
-$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
-$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
-
-
+if ((1 == $this->record_should) && (2 == $this->record_sector_or_building)) { // Wenn Sollerfassung innerhalb Sektoren
+    $doc = Factory::getDocument();
+    $doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
+    $doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
+};
 ?>
 
     <?php // Page-Header ?>
@@ -65,18 +65,23 @@ $doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-data
         </div>
     </div>
 
-    <?php if (0 == $berechnungsart) {
-        echo $this->loadTemplate('charts_einzel');
-    } else {
-        echo $this->loadTemplate('charts_prozent');
-    }; ?>
-
-    <?php if($canEdit): ?>
-        <a class="btn btn-secondary mt-4" href="<?php echo Route::_('index.php?option=com_act&task=sector.edit&id='.$this->item->id); ?>">
-            <?php echo Text::_("COM_ACT_SECTORS_EDIT_ITEM_TITLE"); ?>
-        </a>
+    <?php if ((1 == $this->record_should) && (2 == $this->record_sector_or_building))  :  ?> <?php // Gebäude=1 / Sektor=2 ?>
+         <?php  if(0 == $this->record_type) { // Einzelwert (0) oder Prozente (1)?
+                   echo $this->loadTemplate('charts_einzel');
+                    
+                } else {
+                    echo $this->loadTemplate('charts_prozent');
+                }; ?>
     <?php endif; ?>
-    <a class="btn btn-warning mt-4" href="<?php echo Route::_('index.php?option=com_act&task=sectors') ?>">
-        <?php echo Text::_("COM_ACT_SECTORS"); ?>
-    </a>
+
+    <div class="mt-4">
+        <?php if($canEdit): ?>
+            <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_act&task=sector.edit&id='.$this->item->id); ?>">
+                <?php echo Text::_("COM_ACT_SECTORS_EDIT_ITEM_TITLE"); ?>
+            </a>
+        <?php endif; ?>
+        <a class="btn btn-warning" href="<?php echo Route::_('index.php?option=com_act&task=sectors') ?>">
+            <?php echo Text::_("COM_ACT_SECTORS"); ?>
+        </a>
+    </div>
 
