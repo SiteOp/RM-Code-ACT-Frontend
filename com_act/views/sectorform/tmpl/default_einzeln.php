@@ -18,6 +18,7 @@ $doc->addScript('media/com_routes_planning/js/einzel.js', true, true);
 $grade_start = $this->grade_start_individually;
 $grade_end = $this->grade_end_individually;
 
+$json = json_decode($this->item->routessoll_ind, true); 
 
 // Erstelle den JSON-String für die Farben
 $this->c10 = $this->c3;

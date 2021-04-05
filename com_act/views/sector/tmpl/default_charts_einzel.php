@@ -15,44 +15,44 @@ use \Joomla\CMS\Language\Text;
 $grade_start = $this->grade_start_individually;
 $grade_end = $this->grade_end_individually;
 
-$jsonroutes = json_decode($this->item->routessoll_ind, true); // Hole die Werte aus DB um die Inputfelder vorab zu füllen
 
-$routes_array = [];
-for($i = $grade_start; $i <= $grade_end; $i++) {
-    $grade = "g$i";
-    array_push($routes_array, $jsonroutes[$grade] );
-}
+if (!empty($this->item->routessoll_ind)) {
+    $jsonroutes = json_decode($this->item->routessoll_ind, true); // Hole die Werte aus DB um die Inputfelder vorab zu füllen
 
-
-$total_routes = array_sum($routes_array);         // Gesamtzahl Routen
-$total_lines = count($this->lines);               // Gesamtzahl Linien
-$density = round($total_routes/$total_lines, 2);  // Routendichte
-$json_routes = json_encode($routes_array);        // JSON-String für Charts
+    $routes_array = [];
+    for($i = $grade_start; $i <= $grade_end; $i++) {
+        $grade = "g$i";
+        array_push($routes_array, $jsonroutes[$grade] );
+    }
 
 
-// Erstelle den JSON-String für die Farben
-$colors = json_encode([$this->c3,$this->c3,$this->c4,$this->c4,$this->c4,$this->c5,$this->c5,$this->c5,$this->c6,$this->c6,$this->c6,
-                      $this->c7,$this->c7,$this->c7,$this->c8,$this->c8,$this->c8,$this->c9,$this->c9,$this->c9,$this->c10,$this->c10,
-                      $this->c10,$this->c11,$this->c11,$this->c11,$this->c12
-                      ]);
+    $total_routes = array_sum($routes_array);         // Gesamtzahl Routen
+    $total_lines = count($this->lines);               // Gesamtzahl Linien
+    $density = round($total_routes/$total_lines, 2);  // Routendichte
+    $json_routes = json_encode($routes_array);        // JSON-String für Charts
 
 
-// Label JSON [3,3-,3,3+ usw]
-$label = [];
-for($i = $grade_start; $i <= $grade_end; $i++) {
-  array_push($label, ActHelpersAct::uiaa($i));
+    // Erstelle den JSON-String für die Farben
+    $colors = json_encode([$this->c3,$this->c3,$this->c4,$this->c4,$this->c4,$this->c5,$this->c5,$this->c5,$this->c6,$this->c6,$this->c6,
+                        $this->c7,$this->c7,$this->c7,$this->c8,$this->c8,$this->c8,$this->c9,$this->c9,$this->c9,$this->c10,$this->c10,
+                        $this->c10,$this->c11,$this->c11,$this->c11,$this->c12
+                        ]);
+
+
+    // Label JSON [3,3-,3,3+ usw]
+    $label = [];
+    for($i = $grade_start; $i <= $grade_end; $i++) {
+    array_push($label, ActHelpersAct::uiaa($i));
+    };
+    $json_label = json_encode($label);
+
+    $json = json_decode($this->item->routessoll_ind, true);
+    for($i = $grade_start; $i <= $grade_end; $i++) {
+    };
 };
-$json_label = json_encode($label);
-
-$json = json_decode($this->item->routessoll_ind, true);
-for($i = $grade_start; $i <= $grade_end; $i++) {
-};
-
-
-
 
 ?>
-
+<?php if (!empty($this->item->routessoll_ind)) : ?>
     <div class="row mt-5">
         <div class="col">
             <div class="card">
@@ -63,7 +63,7 @@ for($i = $grade_start; $i <= $grade_end; $i++) {
             </div>
         </div> 
     </div>
-
+<?php endif; ?>
 
 <script>
 Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {

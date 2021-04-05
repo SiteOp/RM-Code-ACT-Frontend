@@ -16,9 +16,7 @@ use \Joomla\CMS\Language\Text;
 $doc = Factory::getDocument();
 $doc->addScript('media/com_routes_planning/js/prozent.js', true, true); 
 
-
 $user    = Factory::getUser();
-$canEdit = Act_buildingHelpersAct_building::canUserEdit($this->item, $user);
 
 // PARAMS Routes-Planning
 $grade_start = $this->grade_start_percent; 
