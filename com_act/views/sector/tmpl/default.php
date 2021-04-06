@@ -27,6 +27,7 @@ if ((1 == $this->record_should) && (2 == $this->record_sector_or_building)) { //
     $doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
     $doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
 };
+
 ?>
 
     <?php // Page-Header ?>
