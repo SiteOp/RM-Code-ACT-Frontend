@@ -20,24 +20,57 @@
                 <option value="2">COM_ACT_ARCHIVED </option>
                 <option value="-2">COM_ACT_TRASHED </option>
        </field>
-       <field name="cgrade" 
-              label="COM_ACT_SEARCH_FILTER_CGRADE" 
+       <field name="inorout"
               type="list"
               filter="integer"
-              multiple="multiple"
+              label="COM_ACT_SEARCH_FILTER_INOROUT"
+              class=""
               onchange="this.form.submit();"
               default="*">
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-       </field>   
+                <option value="">COM_ACT_SEARCH_FILTER_INOROUT</option>
+                <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
+                <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
+       </field>
+       <field name="building" 
+              type="sql"
+              filter="integer"
+              default="*"
+              label="COM_ACT_SECTORS_BUILDING"
+              sql_select="building, id"
+              sql_from="#__act_building"
+              sql_where="state = 1"
+              key_field="id"
+              value_field="building"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SECTORS_BUILDING</option>
+       </field>  
+       <field name="sector" 
+              type="sql"
+              filter="integer"
+              default="*"
+              label="COM_ACT_SEARCH_FILTER_SECTOR"
+              sql_select="sector, id"
+              sql_from="#__act_sector"
+              sql_where="state = 1"
+              key_field="id"
+              value_field="sector"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
+       </field>  
+       <field name="line"
+              type="sql"
+              filter="integer"
+              label="COM_ACT_SEARCH_FILTER_LINE"
+              default="*"
+              sql_select="l.line, l.id, l.state"
+              sql_from="#__act_line AS l"
+              multiple="falses"
+              key_field="id"
+              sql_where="state = 1"
+              value_field="line"
+              onchange="this.form.submit();">
+               <option value="">COM_ACT_SEARCH_FILTER_LINE</option>
+       </field> 
        <field name="settername"
               type="sql"
               filter="integer"
@@ -66,44 +99,8 @@
               onchange="this.form.submit();">
                <option value="">COM_ACT_SEARCH_FILTER_COLOR</option>
        </field>
-       <field name="sector" 
-              type="sql"
-              filter="integer"
-              default="*"
-              label="COM_ACT_SEARCH_FILTER_SECTOR"
-              sql_select="sector, id"
-              sql_from="#__act_sector"
-              sql_where="state = 1"
-              key_field="id"
-              value_field="sector"
-              onchange="this.form.submit();">
-               <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
-       </field>  
-       <field name="line"
-              type="sql"
-              filter="integer"
-              label="COM_ACT_SEARCH_FILTER_LINE"
-              default="*"
-              sql_select="l.line, l.id, l.state"
-              sql_from="#__act_line AS l"
-              multiple="falses"
-              key_field="id"
-              sql_where="state = 1"
-              value_field="line"
-              onchange="this.form.submit();">
-               <option value="">COM_ACT_SEARCH_FILTER_LINE</option>
-       </field>
-       <field name="inorout"
-              type="list"
-              filter="integer"
-              label="COM_ACT_SEARCH_FILTER_INOROUT"
-              class=""
-              onchange="this.form.submit();"
-              default="*">
-                <option value="">COM_ACT_SEARCH_FILTER_INOROUT</option>
-                <option value="1">COM_ACT_SEARCH_FILTER_INDOOR</option>
-                <option value="0">COM_ACT_SEARCH_FILTER_OUTDOOR</option>
-       </field>
+
+
        <field name="fixed"
               type="list"
               filter="integer"
@@ -131,6 +128,24 @@
               onchange="this.form.submit();">
 	         <option value="">Optionen</option>
         </field>
+        <field name="cgrade" 
+              label="COM_ACT_SEARCH_FILTER_CGRADE" 
+              type="list"
+              filter="integer"
+              multiple="multiple"
+              onchange="this.form.submit();"
+              default="*">
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+       </field>  
          <field name="datesort"
               type="list"
               filter="raw"

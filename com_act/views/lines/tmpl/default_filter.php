@@ -64,7 +64,6 @@ $customOptions = array(
 	'searchFieldSelector' => '#filter_search',
 	'orderFieldSelector'  => '#list_fullordering'
 );
-
 $customOptions['filterButton'] = 0;
 $customOptions['filtersHidden'] = 0;
 

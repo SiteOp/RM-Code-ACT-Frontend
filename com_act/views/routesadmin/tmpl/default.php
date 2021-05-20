@@ -77,7 +77,7 @@ $unix_date = strtotime(Factory::getDate());
                 <th class="r_line d-none d-xxl-table-cell">
                     <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_LINE', 'l.line', $listDirn, $listOrder); ?> 
                 </th>
-                <th class="r_color text-center d-none d-md-table-cell"><?php // Color ?>
+                <th class="r_color text-center"><?php // Color ?>
                     <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_COLOR', 'c.color', $listDirn, $listOrder); ?>
                 </th>
                 <th class="r_name"><?php // Name Route ?>
@@ -195,7 +195,7 @@ $unix_date = strtotime(Factory::getDate());
                         </a>
                     </td>
 
-                    <td class="text-center d-none d-md-table-cell"><?php // Color ?>
+                    <td class="text-center"><?php // Color ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routesadmin'); ?>?filter[color]=<?php echo $item->colorId; ?>">
                             <span class="routecolor" style="background: <?php echo $item->rgbcode; ?>;"></span>
                         </a>

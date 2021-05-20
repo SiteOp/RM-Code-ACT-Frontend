@@ -34,6 +34,7 @@ $colorTwo    = $params['colorTwo'];
 $colorThree  = $params['colorThree'];
 $colorFour   = $params['colorFour'];
 $colorZeiger = $params['colorZeiger'];
+$extendFormField   = $params['extendFormField']; // Griffhersteller ja/nein
 
 //  Tacho
 $tachoCGrade =  ActHelpersAct::uiaa(round($this->item->calc_grade,0));
@@ -46,7 +47,7 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
 
 
 <?php // Nach dem Kommentieren wird die Seite Refreshed. Dadurch kein HTTP_REFERER. Der Backlink muss daher unterschiedlich sein ?>
-<a href='<?php echo JURI::base(); ?>' 
+<a href='<?php echo URI::base(); ?>' 
    <?php if(isset($_SERVER['HTTP_REFERER'])) {
         echo "onclick='window.history.go(-1); return false;'> ";
     }
@@ -56,9 +57,10 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
     }
     ?>
     <button id='refresh-back' type='button' class='btn  btn-info'>
-    <i class='fas fa-chevron-left'></i>
+     <i class='fas fa-chevron-left'></i>
     </button>
 </a>
+
 
 <?php // Page-Header ?> 
 	<div class="page-header">
@@ -196,7 +198,12 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                     </div>
 
             </div><?php // CARD END ?>
-             
+        
+            <?php if($extendFormField) { // Griffhersteller ja/nein
+                echo $this->loadTemplate('extend_info');
+            }; ?>
+
+
             <?php if($routeAdmin) : ?><?php // Admin Info - Route ?>
                 <div class="card mt-5 mb-5">
                     <div class="card-header">
@@ -208,17 +215,17 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                     </div>
                     <div class="card-body">
                         <dl class="row">
-                            <dt class="col-6"><?php echo JText::_('COM_ACT_ID'); ?></i></dt>
+                            <dt class="col-6"><?php echo Text::_('COM_ACT_ID'); ?></i></dt>
                             <dd class="col-6"><?php echo $this->item->id; ?></dd>
                         </dl>
 						<?php if (1 == $indicator) : ?>
 							<dl class="row">
-								<dt class="col-6"><?php echo JText::_('COM_ACT_INDICATOR'); ?></i></dt>
+								<dt class="col-6"><?php echo Text::_('COM_ACT_INDICATOR'); ?></i></dt>
 								<dd class="col-6"><?php echo $this->item->indicator; ?></dd>
 							</dl>
 						<?php endif; ?>
                         <dl class="row">
-                           <dt class="col-6"><?php echo JText::_('COM_ACT_FORM_LBL_ROUTE_INFOADMIN'); ?></dt>
+                           <dt class="col-6"><?php echo Text::_('COM_ACT_FORM_LBL_ROUTE_INFOADMIN'); ?></dt>
                            <dd class="col-6"><?php echo nl2br($this->item->infoadmin); ?></dd>
                         </dl>
                     </div>
@@ -250,7 +257,7 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                 <?php // Load Form if User Registered  ?>    
                 <?php if ($user->get('guest')) : ?>
                 <div class="card mt-5" id="notlogin">
-                    <div class="card-header"><h3><i class="<?php echo Text::_('COM_ACT_FA_LOGIN'); ?>"></i> <?php echo JText::_('COM_ACT_ROUTE_NOT_LOGGIN'); ?></h3></div> 
+                    <div class="card-header"><h3><i class="<?php echo Text::_('COM_ACT_FA_LOGIN'); ?>"></i> <?php echo Text::_('COM_ACT_ROUTE_NOT_LOGGIN'); ?></h3></div> 
                 </div>
                 <?php else: ?>
 

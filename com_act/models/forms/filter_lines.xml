@@ -4,6 +4,7 @@
        <field name="search" type="text" 
               hint="COM_ACT_SEARCH_FILTER_LINE"
               label=""
+              onchange="this.form.submit();"
               class="js-stools-search-string" 
        />
        <field name="state" 

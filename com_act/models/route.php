@@ -160,13 +160,15 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
         // Where Route ID setState
         $query->select(array
                         ('a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.infoadmin', 'a.modified', 'a.settergrade', 'a.checked_out', 'a.exclude', 'a.infoextend',
+						 'a.routetype', 'a.extend_txt', 'a.extend_check1', 'a.extend_check2', 'a.info1_extend', 'a.info2_extend', 'a.info3_extend', 'a.info4_extend', 
                          'c.rgbcode', 'c.color',
                          's.settername', 
                          'g.uiaa', 'g.franzoesisch',
                          'l.line',  'l.height', 'l.indicator',
                          'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
                          'sp.name AS sp_name', 'sp.media AS sp_media', 'sp.txt AS sp_txt',
-                         't.calc_grade', 't.avg_stars'
+                         't.calc_grade', 't.avg_stars',
+						 'h.name AS extend_name'
                          )
                        )
                        
@@ -178,6 +180,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
               ->join('LEFT', '#__act_sponsor  AS sp ON a.sponsor     = sp.id')
               ->join('LEFT', '#__act_sector   AS sc ON sc.id         = l.sector')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id       = a.id')
+			  ->join('LEFT', '#__act_holds_manufacturer AS h ON h.id = a.extend_sql' )
               ->where('a.id ='. $id);
               //->where('a.hidden != 1');
               

@@ -135,6 +135,7 @@ class ActModelRoutesAdmin extends ListModel
 
               ->join('LEFT', '#__act_line AS l ON l.id = a.line')
               ->join('LEFT', '#__act_sector AS sc ON sc.id = l.sector')
+              ->join('LEFT', '#__act_building AS b ON b.id = sc.building')
               ->join('LEFT', '#__act_setter AS s ON a.setter = s.id')
               ->join('LEFT', '#__act_color AS c ON c.id = a.color')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id = a.id') // TRIGGER TABLE
@@ -198,6 +199,14 @@ class ActModelRoutesAdmin extends ListModel
             if ($filter_sector)
             {
                 $query->where($db->qn('sc.id') . '=' . (int) $filter_sector);
+            }
+
+        // Filtering building
+        $filter_building = $this->state->get("filter.building");
+
+            if ($filter_building)
+            {
+                $query->where($db->qn('b.id') . '=' . (int) $filter_building);
             }
 
         // Filtering Indoor - Ourdoor
