@@ -179,6 +179,7 @@ $unix_date = strtotime(Factory::getDate());
                                     <div class=''><?php echo $item->lineSectorName; ?> </div>
                                     <div class='pop_setter d-lg-none'><?php echo $item->settername; ?></div>
                                     <div class='pop_setterdate d-lg-none'> <?php echo HTMLHelper::_('date', $item->setterdate, Text::_('DATE_FORMAT_LC4')); ?></div>
+                                    <div><?php echo $item->settername; ?></div>
                                     
                                     ">
                             <?php if (1 == $item->inorout ) : ?>

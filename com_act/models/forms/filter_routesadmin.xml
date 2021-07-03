@@ -68,6 +68,7 @@
               key_field="id"
               sql_where="state = 1"
               value_field="line"
+              sql_order="l.line"
               onchange="this.form.submit();">
                <option value="">COM_ACT_SEARCH_FILTER_LINE</option>
        </field> 

@@ -82,7 +82,7 @@ class ActModelRoutesAdmin extends ListModel
         $ordering  = isset($list['filter_order'])     ? $list['filter_order']     : null;
         $direction = isset($list['filter_order_Dir']) ? $list['filter_order_Dir'] : null;
 
-        $list['limit']     = (int) Factory::getConfig()->get('list_limit', 10); // List Limit ist in der  Joomla Konfiguration (Config - Site- Listenl�nge )festgelegt
+        $list['limit']     = (int) 20;// Factory::getConfig()->get('list_limit', 10); // List Limit ist in der  Joomla Konfiguration (Config - Site- Listenl�nge )festgelegt
         $list['start']     = $app->input->getInt('start', 0);
         $list['ordering']  = $ordering;
         $list['direction'] = $direction;

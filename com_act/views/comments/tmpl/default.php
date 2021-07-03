@@ -3,7 +3,7 @@
  * @package    Com_Act
  * @author     Richard Gebhard <gebhard@site-optimierer.de>
  * @copyright  2019 Richard Gebhard
- * @license    GNU General Public License Version 2 oder später
+ * @license    GNU General Public License Version 2 oder spï¿½ter
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -196,7 +196,7 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                 </td>
                
 				<td>
-					<?php if(ActHelpersAct::getUserProfil($item->created_by, 'profile5.ascent_show') == '1' AND $item->ticklist_yn == 1) : ?> <?php // Im Profil ascent_show auf 1 gesetzt? ;?>
+					<?php if(ActHelpersAct::getUserProfilAscentShow($item->created_by) AND $item->ticklist_yn == 1) : ?> <?php // Im Profil ascent_show auf 1 gesetzt? ;?>
 						<?php echo ActHelpersAct::getUserAscentIcon($item->ascent); ?> <?php // Anzeige der Begehung als Icon ; ?>
 					<?php endif; ?>
 				</td>
@@ -219,7 +219,7 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                 </td>
                 
 				<?php if ($adminCommentEdit) : ?>
-                 <td class="text-center"><?php // Input - Welches Gerät Website, API ... ?>
+                 <td class="text-center"><?php // Input - Welches Gerï¿½t Website, API ... ?>
                     <?php switch ($item->input) {
                         case 1:
                              echo '<a class="" rel="popover" 

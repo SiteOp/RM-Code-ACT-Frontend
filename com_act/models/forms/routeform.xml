@@ -187,6 +187,20 @@
                   <option value="4">COM_ACT_FORM_LBL_ROUTE_ROUTETYPE_OPTION_4</option>
                   <option value="5">COM_ACT_FORM_LBL_ROUTE_ROUTETYPE_OPTION_5</option>
         </field>
+
+       <field name="routeoption"
+              type="sql"
+		filter="integer" 
+              default=""
+	       class="form-control" 
+              label="COM_ACT_FORM_LBL_LINE_LINEOPTION_LABEL"  
+              sql_select="l.name,l.id"
+              sql_from="#__routeoption_opt AS l"
+              key_field="id"
+              value_field="name"
+              sql_where="l.state = 1"
+              multiple="true">
+       </field>
 		
 	<field name="extend_sql" 
                type="sql"

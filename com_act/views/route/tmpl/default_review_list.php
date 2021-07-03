@@ -57,7 +57,7 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
 						</div>
 						<div class="route_comment_ascent">
 						<?php // Im Profil ascent_show auf 1 gesetzt? ;?>
-							<?php if(ActHelpersAct::getUserProfil($comment['created_by'], 'profile5.ascent_show') === '1' AND $comment['ticklist_yn'] == 1) : ?> 
+							<?php if(ActHelpersAct::getUserProfilAscentShow($comment['created_by']) AND $comment['ticklist_yn'] == 1) : ?> 
 								<?php echo ActHelpersAct::getUserAscentIcon($comment['ascent']); ?> <?php // Anzeige der Begehung als Icon ; ?>
 							<?php endif; ?>
 						</div>
@@ -114,7 +114,7 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
             <?php endforeach; ?>
 			 <div>
 			
-			 <?php if(ActHelpersAct::getUserProfil($userId, 'profile5.ascent_show') == 0 AND $userId != 0) : ?> <?php // Eingeloggt und Begehungsstil nicht freigeschalten - dann Link ; ?>
+			 <?php if(!ActHelpersAct::getUserProfilAscentShow($userId)) : ?> <?php // Eingeloggt und Begehungsstil nicht freigeschalten - dann Link ; ?>
 				<p class="mt-4">
 					<i class="fas fa-eye" style="font-size: 20px; padding-right: 3px"></i>
 					<b><a href="index.php?option=com_users&view=profile">

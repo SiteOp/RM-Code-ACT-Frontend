@@ -79,6 +79,52 @@ class ActHelpersAct
         $db->setQuery($query);
         return $db->loadResult();
     }   
+
+     /**
+    * Ist der Begehungstil sichtbar geschalten?
+    * @param User_Id
+    * @return Value 
+    */
+    public static function getUserProfilAscentShow($user) {
+      
+		$db	   = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select('value')
+            ->from('#__fields_values')
+            ->where('item_id = ' . (int) $user)
+            ->where('field_id = 17');
+
+        $db->setQuery($query);
+        return $db->loadResult();
+    }   
+
+
+     /**
+    * Anzahl Rankingpoints je nach Begehungsstil
+    * @param 
+    * @return 
+    */
+    public static function getRankingpoints($gradeID, $ascent) {
+      
+		$db	   = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select('CASE
+                        WHEN '.(int) $ascent.' = 3 THEN lead
+                        WHEN '.(int) $ascent.' = 1 THEN flash
+                        WHEN '.(int) $ascent.' = 2 THEN onsight
+                     END AS rankingpoint')
+            ->from('#__act_grade')
+            ->where('id = '.(int) $gradeID);
+
+        $db->setQuery($query);
+        return $db->loadResult();
+    }   
+
+   
     /**
     * Get Stars using $params
     * @param Variable 
@@ -400,6 +446,38 @@ class ActHelpersAct
 		}
     }
 
+
+    	/**
+     * Routeoption - Text und Icon 
+     * z.B Automat, Toprpbe
+     * @param   int     $pk     The item's id
+     * @return  mixed
+     */
+    public static function getRouteoptions($id)
+    {
+        $db	   = Factory::getDbo();
+        $query = $db->getQuery(true);
+
+        $query
+            ->select(array('icon', 'name', 'color'))
+            ->from('#__routeoption_opt')
+            ->where('id = ' . (int) $id);
+
+        $db->setQuery($query);
+        $options = $db->loadObjectList();
+		
+		foreach ($options as $option) {
+			echo '<span class="icon ml-1" 
+				 rel="popover" 
+				 data-html="true"
+				 data-trigger="hover" 
+				 data-placement="top"
+				 data-container="body"
+				 data-content=" '.$option->name.' ">
+				 ' .$option->icon. '
+				 </span>';
+		}
+    }
 
 
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    CVS: 1.1.0
+ * @version    CVS: 1.1.3
  * @package    Com_Act
  * @author     Richard Gebhard <gebhard@site-optimierer.de>
  * @copyright  2019 Richard Gebhard
@@ -13,15 +13,17 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modelform');
 jimport('joomla.event.dispatcher');
 
-use Joomla\CMS\Factory;
-use Joomla\Utilities\ArrayHelper;
+use \Joomla\CMS\Factory;
+use \Joomla\Utilities\ArrayHelper;
+use \Joomla\CMS\Language\Text;
+use \Joomla\CMS\Table\Table;
 
 /**
  * Act model.
  *
  * @since  1.6
  */
-class ActModelRouteForm extends JModelForm
+class ActModelRouteForm extends \Joomla\CMS\MVC\Model\FormModel
 {
     private $item = null;
 
@@ -37,10 +39,12 @@ class ActModelRouteForm extends JModelForm
      * @return void
      *
      * @since  1.6
+     *
+     * @throws Exception
      */
     protected function populateState()
     {
-        $app = Factory::getApplication('com_act');
+        $app = Factory::getApplication();
 
         // Load state from the request userState on edit or from the passed variable on default
         if (Factory::getApplication()->input->get('layout') == 'edit')
@@ -90,7 +94,7 @@ class ActModelRouteForm extends JModelForm
             // Get a level row instance.
             $table = $this->getTable();
 
-            if ($table !== false && $table->load($id))
+            if ($table !== false && $table->load($id) && !empty($table->id))
             {
                 $user = Factory::getUser();
                 $id   = $table->id;
@@ -105,7 +109,7 @@ class ActModelRouteForm extends JModelForm
 
                 if (!$canEdit)
                 {
-                        throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+                        throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
                 }
 
                 // Check published state.
@@ -121,6 +125,14 @@ class ActModelRouteForm extends JModelForm
                 $properties = $table->getProperties(1);
                 $this->item = ArrayHelper::toObject($properties, 'JObject');
                 
+		if (isset($this->item->category) && is_object($this->item->category))
+		{
+			$this->item->category = ArrayHelper::fromObject($this->item->category);
+		}
+		if (isset($this->item->sector) && is_object($this->item->sector))
+		{
+			$this->item->sector = ArrayHelper::fromObject($this->item->sector);
+		}
 
                 
             }
@@ -142,7 +154,7 @@ class ActModelRouteForm extends JModelForm
     {
         $this->addTablePath(JPATH_ADMINISTRATOR . '/components/com_act/tables');
 
-        return JTable::getInstance($type, $prefix, $config);
+        return Table::getInstance($type, $prefix, $config);
     }
 
     /**
@@ -163,10 +175,10 @@ class ActModelRouteForm extends JModelForm
         }
 
         $table->load(array('alias' => $alias));
-
+        $id = $table->id;
 
         
-            return $table->id;
+            return $id;
         
     }
 
@@ -271,8 +283,7 @@ class ActModelRouteForm extends JModelForm
     /**
      * Method to get the data that should be injected in the form.
      *
-     * @return    mixed    The data for the form.
-     *
+     * @return    array  The default data is an empty array.
      * @since    1.6
      */
     protected function loadFormData()
@@ -283,7 +294,10 @@ class ActModelRouteForm extends JModelForm
         {
             $data = $this->getItem();
         }
-        
+
+        if ($data)
+        {
+            
 		// Support for multiple or not foreign key field: settergrade
 		$array = array();
 
@@ -340,8 +354,39 @@ class ActModelRouteForm extends JModelForm
 
 		$data->setter = $array;
 		}
+		// Support for multiple or not foreign key field: sponsor
+		$array = array();
 
-        return $data;
+		foreach ((array) $data->sponsor as $value)
+		{
+			if (!is_array($value))
+			{
+				$array[] = $value;
+			}
+		}
+		if(!empty($array)){
+
+		$data->sponsor = $array;
+		}
+		// Support for multiple or not foreign key field: routeoption
+		$array = array();
+
+		foreach ((array) $data->routeoption as $value)
+		{
+			if (!is_array($value))
+			{
+				$array[] = $value;
+			}
+		}
+		if(!empty($array)){
+
+		$data->routeoption = $array;
+		}
+
+            return $data;
+        }
+
+        return array();
     }
 
     /**
@@ -374,7 +419,7 @@ class ActModelRouteForm extends JModelForm
 
         if ($authorised !== true)
         {
-            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         $table = $this->getTable();
@@ -413,19 +458,19 @@ class ActModelRouteForm extends JModelForm
 
             if ($pk == 0 || $this->getItem($pk) == null)
             {
-                    throw new Exception(JText::_('COM_ACT_ITEM_DOESNT_EXIST'), 404);
+                    throw new Exception(Text::_('COM_ACT_ITEM_DOESNT_EXIST'), 404);
             }
 
             if ($user->authorise('core.delete', 'com_act') !== true)
             {
-                    throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+                    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
             }
 
             $table = $this->getTable();
 
             if ($table->delete($pk) !== true)
             {
-                    throw new Exception(JText::_('JERROR_FAILED'), 501);
+                    throw new Exception(Text::_('JERROR_FAILED'), 501);
             }
 
             return $pk;
@@ -443,5 +488,14 @@ class ActModelRouteForm extends JModelForm
 
         return $table !== false;
     }
-    
+    public function getAliasFieldNameByView($view)
+	{
+		switch ($view)
+		{
+			case 'color':
+			case 'colorform':
+				return 'alias';
+			break;
+		}
+	}
 }
