@@ -5,12 +5,13 @@
                label=""
                class="js-stools-search-string"
         />
-
          <field name="myroutegrade" 
                 hint="COM_ACT_SEARCH_FILTER_MGRADE" 
                 type="list"
                 multiple="multiple"
                 label="Select an option"
+                onchange="this.form.submit();"
+                filter="integer"
                 default="*">
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -23,11 +24,11 @@
                     <option value="11">11</option>
                     <option value="12">12</option>
         </field>
-
-        
         <field name="stars" 
                label="COM_ACT_SEARCH_FILTER_STARS" 
-               type="list" 
+               type="list"
+               onchange="this.form.submit();"
+               filter="integer"
                default="COM_ACT_SEARCH_FILTER_STARS">
                   <option value="">COM_ACT_SEARCH_FILTER_STARS</option>
                     <option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
@@ -36,10 +37,11 @@
                     <option value="4">COM_ACT_SEARCH_FILTER_STARS_4</option>
                     <option value="5">COM_ACT_SEARCH_FILTER_STARS_5</option>
         </field>
-        
         <field name="ascent"
                label="COM_ACT_ASCENT_SELECT" 
-               type="list" 
+               type="list"
+               onchange="this.form.submit();"
+               filter="integer"
                default="COM_ACT_ASCENT_SELECT">
                   <option value="">COM_ACT_ASCENT_SELECT</option>
                   <option value="1">COM_ACT_ASCENT_OPTION_1</option>
@@ -49,7 +51,6 @@
                   <option value="5">COM_ACT_ASCENT_OPTION_5</option>
                   <option value="6">COM_ACT_ASCENT_OPTION_6</option>
         </field>
-        
         <field name="climbdate.from" 
                label="" 
                type="calendar" 
@@ -59,19 +60,7 @@
                class="inputbox" 
                filter="none" 
                hint="COM_ACT_SEARCH_FILTER_FROM"
+               onchange="this.form.submit();"
         />
-
-   <!--
-        
-         <field name="state"
-               type="list"
-               label="JOPTION_SELECT_PUBLISHED"
-               default="1"
-            >
-            <option value="1">COM_ACT_NOW</option>
-            <option value="3">COM_ACT_ARCHIVED</option>
-        </field>
-    --> 
-        
     </fields>
 </form>

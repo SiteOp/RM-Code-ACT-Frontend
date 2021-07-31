@@ -127,10 +127,8 @@ class ActModelMycomments extends JModelList
               ->from('#__act_comment AS a')
               
               ->join('LEFT', '#__act_route AS route     ON route.id  = a.route')
-              //->join('LEFT', '#__act_grade AS g         ON g.id      = a.myroutegrade')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id     = route.id')
-             // ->join('LEFT', '#__act_grade AS gt        ON gt.id     = t.calc_grade')
-              
+              ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
               ->where('a.created_by ='. $user);
         
             
@@ -159,7 +157,7 @@ class ActModelMycomments extends JModelList
             if ($filter_sgrade != '')
              {
                 JArrayHelper::toInteger($filter_sgrade);
-                $query->where($db->qn('gt.filter_uiaa') . 'IN (' . implode(',', $filter_sgrade).')');
+                $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_sgrade).')');
              }
 
         // Filtering stars

@@ -5,10 +5,12 @@
                hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
                label=""
                class="js-stools-search-string" />
-
+               
         <field name="stars" 
                label="COM_ACT_SEARCH_FILTER_STARS" 
-               type="list" 
+               type="list"
+               onchange="this.form.submit();"
+               filter="integer"
                default="COM_ACT_SEARCH_FILTER_STARS">
                <option value="">COM_ACT_SEARCH_FILTER_STARS</option>
                     <option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
@@ -17,24 +19,26 @@
                     <option value="4">COM_ACT_SEARCH_FILTER_STARS_4</option>
                     <option value="5">COM_ACT_SEARCH_FILTER_STARS_5</option>
         </field>
-
         <field name="user"
                type="sql"
                label=""
                default="*"
-               sql_select="u.username, c.created_by"
+               sql_select="u.username"
                sql_from="#__act_comment AS c"
                sql_join="#__users AS u ON u.id = c.created_by"
                sql_group="username"
-               key_field="created_by"
+               key_field="username"
                value_field="username"
+               onchange="this.form.submit();"
+               filter="username"
                >
-             <option value="">COM_ACT_SEARCH_FILTER_USERNAMME</option>
+                     <option value="">COM_ACT_SEARCH_FILTER_USERNAMME</option>
         </field>
-        
         <field name="input" 
                label="COM_ACT_SEARCH_FILTER_INPUT" 
                type="list" 
+               onchange="this.form.submit();"
+               filter="integer"
                default="COM_ACT_SEARCH_FILTER_INPUT">
                <option value="">COM_ACT_SEARCH_FILTER_INPUT</option>
                     <option value="1">COM_ACT_SEARCH_FILTER_INPUT_OPTION_1</option>
@@ -42,12 +46,10 @@
                     <option value="3">iOS</option>
                     <option value="9">Unknown</option>
         </field>
-        
         <!--
          Bug bei Benutzung von
                format="%d.%m.%Y"
                translateformat="true"
-         
          -->
           <field name="created.from" 
                label=""
@@ -58,8 +60,7 @@
                todaybutton="true" 
                translateformat="false" 
                hint="COM_ACT_SEARCH_FILTER_COMMENT_FROM"
-               
+              onchange="this.form.submit();"   
         />
-
     </fields>
 </form>

@@ -5,13 +5,15 @@
                type="text" 
                hint="COM_ACT_SEARCH_FILTER_SETTER_SUBMIT"
                label=""
+               filter="string"
                class="js-stools-search-string" />
 
         <field name="category" 
                label="" 
                type="category" 
                extension="com_act.setters" 
-               onchange="this.form.submit();" 
+               onchange="this.form.submit();"
+               filter="integer"
                default=""
                >
                 <option value="">COM_ACT_SEARCH_FILTER_KATEGORIE</option>

@@ -5,7 +5,8 @@
               hint="COM_ACT_SEARCH_FILTER_LINE"
               label=""
               onchange="this.form.submit();"
-              class="js-stools-search-string" 
+              class="js-stools-search-string"
+              filter="string"
        />
        <field name="state" 
               default="1" 

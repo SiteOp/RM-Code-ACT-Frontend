@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
+               label=""
+               class="js-stools-search-string"
+               
+	    />
+        <field name="sgrade"
+			   type="sql"
+			   default="*"
+			   sql_select="g.filter_uiaa"
+			   sql_from="#__act_grade AS g"
+			   sql_join="#__act_route AS r ON r.settergrade = g.filter_uiaa"
+               sql_group="g.filter_uiaa"
+			   key_field="filter_uiaa"
+			   value_field="filter_uiaa"
+			   multiple="multiple"
+			   onchange=""
+			   >
+		</field>
+		
+		<field name="stars" 
+		       label="COM_ACT_SEARCH_FILTER_STARS" 
+			   type="list" 
+			   default="COM_ACT_SEARCH_FILTER_STARS">
+				 <option value="">COM_ACT_SEARCH_FILTER_STARS</option>
+					<option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
+					<option value="2">COM_ACT_SEARCH_FILTER_STARS_2</option>
+					<option value="3">COM_ACT_SEARCH_FILTER_STARS_3</option>
+					<option value="4">COM_ACT_SEARCH_FILTER_STARS_4</option>
+					<option value="5">COM_ACT_SEARCH_FILTER_STARS_5</option>
+		</field>
+		
+
+        <field name="ticklist"
+               label="COM_ACT_TICKLIST" 
+			   type="list" 
+			   default="*">
+				  <option value="">COM_ACT_TICKLIST</option>
+				  <option value="1">JYES</option>
+				  <option value="0">JNO</option>
+		</field>
+        
+         <!--
+         Bug bei Benutzung von
+               format="%d.%m.%Y"
+               translateformat="true"
+         
+         -->
+         
+        <field name="created.from" 
+		       label=""
+			   type="calendar" 
+			   filter="none" 
+			   class="inputbox" 
+			   showtime="false" 
+			   todaybutton="false" 
+			   translateformat="false" 
+			   hint="COM_ACT_SEARCH_FILTER_COMMENT_FROM"
+			   
+		/>
+        
+        <field name="state"
+			   type="list"
+			   label="JOPTION_SELECT_PUBLISHED"
+			   class="admin"
+			   default=""
+               >
+            <option value="">COM_ACT_STATUS_0_1</option>
+			<option value="0">COM_ACT_UNPUBLISHED</option>
+			<option value="1">COM_ACT_PUBLISHED</option>
+			<option value="2">COM_ACT_ARCHIVED</option>
+		</field>
+		
+    </fields>
+</form>

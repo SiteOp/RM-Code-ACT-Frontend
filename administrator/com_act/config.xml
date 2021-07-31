@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset label="COM_ACT_ROUTES_LIST" name="routes_list">
+        <field name="sponsoringyn" default="1" type="radio" label="COM_ACT_CONFIG_LBL_SPONSORING">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="calculatedyn" default="1" type="radio" label="COM_ACT_CONFIG_LBL_CALCULATED">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="newroutedaterange" 
+               type="number" 
+               default="14" 
+               label="Neu" 
+               description="Label Neu - Zeitraum in Tagen" 
+               min="1" 
+               max="99" 
+               step="1" 
+        />
+    </fieldset>
+	
+
+	<fieldset label="Route anlegen" name="routeform">
+
+		<field name="txtRoute" type="note" label="Felder Route" />
+
+	 	<field name="routetype" 
+		 	   default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Routentype" 
+			   description="Z. B. im Landeskader usw">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="routetypeRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Routentype Required?"
+			   description=""
+			   showon="routetype:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="txtHolds" type="note" label="Erweiterte Felder z. B. Hersteller" />
+
+		<field name="extendFormField"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Erweiterte Felder laden?"
+			   description="">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="extendHeader"
+			   type="text" 
+			   default="" 
+			   label="Überschrift für Erweiterte Felder" 
+			   description="Bei Texteingabe wird dieser als H3 ausgegeben. Ansonsten keine Überschrift" 
+			   filter="string"
+			   showon="extendFormField:1"
+		/>
+
+		<field name="extend_check1"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Checkbox 1"
+			   description="z. B Leistungssport"
+			   showon="extendFormField:1">
+			   >
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="extend_check2" 
+			   default="0" 
+			   type="radio"
+			   class="btn-group btn-group-yesno" 
+			   label="Checkbox 2" 
+			   description="z. B. Breitensport"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="extend_sql" 
+			   default="0"
+			   type="radio"
+			   class="btn-group btn-group-yesno" 
+			   label="SQL Feld" 
+			   description="Z. B. Hersteller - SQL von Componete Holds"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="extend_sqlRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="SQL Feld Required ?"
+			   description="SQL Feldd = Pflichtfeld? - bisher kommen die Felder aus der Komponente Holds - Hersteller"
+			   showon="extend_sql:1[AND]extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+        <field name="extend_txt" 
+			   default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Textfeld" 
+			   description="Z. B. Hersteller freies Textfeld"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info1_extend" 
+			   default="0"
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Info 1 " 
+			   description="z. B. Anzahl Griffe"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info1_extendRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Required?"
+			   description="Info 1 = Pflichtfeld?"
+			   showon="info1_extend:1[AND]extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>		
+
+		<field name="info2_extend" 
+			   default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Info 2 " 
+			   description="z. B. Anzahl XXL-Griffe"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info2_extendRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Required?"
+			   description="Info 2 = Pflichtfeld?"
+			   showon="info2_extend:1[AND]extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info3_extend"
+			   default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Info 3 " 
+			   description="z. B. Anzahl GFK-Griffe"
+			   showon="extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info3_extendRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Required?"
+			   description="Info 3 = Pflichtfeld?"
+			   showon="info3_extend:1[AND]extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="info4_extend"
+		   	   default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Info 4 " 
+			   description="z. B. Anzahl PU-Volume"
+			   showon="extendFormField:1">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+        </field>
+
+		<field name="info4_extendRequired"
+		       default="0" 
+			   type="radio" 
+			   class="btn-group btn-group-yesno" 
+			   label="Required?"
+			   description="Info 4 = Pflichtfeld?"
+			   showon="info4_extend:1[AND]extendFormField:1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+        </field>
+
+		<field name="note31" 
+			   type="note" 
+			   class="alert alert-info" 
+			   close="true" 
+			   label="Achtung" 
+			   description="Die erweiterten Felder müssen auch im Plugin plg_jbackend_rm_export angepasst werden." />
+
+    </fieldset>
+    
+    
+    <fieldset label="COM_ACT_ADMIN_COMMENT" name="admin_comment">
+        <field name="admin_comment_id" default="1" type="radio" label="COM_ACT_CONFIG_LBL_ADMIN_COMMENT_ID">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		
+    </fieldset>
+	
+	 <fieldset label="Admin Lines" name="admin_lines">
+        <field name="admin_lines_indicator" default="0" type="radio" label="Indicator für Lines">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		
+    </fieldset>
+	
+	<fieldset label="Colors" name="colors">
+	
+		<field name="txttacho" type="note" label="Tacho" />
+
+        <field name="colorOne" 
+			   type="color" 
+			   default="#ffe6b8" 
+			   format="HEX"
+			   label="Tachofarbe 1"
+		/>
+		<field name="colorTwo" 
+			   type="color" 
+			   default="#ffd485" 
+			   format="HEX"
+			   label="Tachofarbe 2"
+		/>
+		<field name="colorThree" 
+			   type="color" 
+			   default="#ffc252" 
+			   format="HEX"
+			   label="Tachofarbe 3"
+		/>
+		<field name="colorFour" 
+			   type="color" 
+			   default="#ffb52e" 
+			   format="HEX"
+			   label="Tachofarbe 4"
+		/>
+		<field name="colorZeiger" 
+			   type="color" 
+			   default="#d9d9d9" 
+			   format="HEX"
+			   label="Tachofarbe Zeiger"
+		/>
+		
+		<field name="txtcharts" type="note" label="Charts-Farben" />
+		
+		<field name="primaryline" 
+			   type="color" 
+			   default="#d9d9d9" 
+			   format="HEX"
+			   label="Primary Linie Charts"
+		/>
+		
+		<field name="secondaryline" 
+			   type="color" 
+			   default="#d9d9d9" 
+			   format="HEX"
+			   label="Secondary Linie Charts"
+		/>
+		<field name="gradecolors" type="note" label="Farben für Schwierigkeitsgrade" />
+		<field name="color3grad" 
+			   type="color" 
+			   default="#a001f2" 
+			   format="HEX"
+			   label="Farbe: 3 Grad"
+		/>
+		<field name="color4grad" 
+			   type="color" 
+			   default="#ffc600" 
+			   format="HEX"
+			   label="Farbe: 4 Grad"
+		/>
+		<field name="color5grad" 
+			   type="color" 
+			   default="#a86301" 
+			   format="HEX"
+			   label="Farbe: 5 Grad"
+		/>
+		<field name="color6grad" 
+			   type="color" 
+			   default="#fa3a07" 
+			   format="HEX"
+			   label="Farbe: 6 Grad"
+		/>
+		<field name="color7grad" 
+			   type="color" 
+			   default="#98c920" 
+			   format="HEX"
+			   label="Farbe: 7 Grad"
+		/>
+		<field name="color8grad" 
+			   type="color" 
+			   default="#019abc" 
+			   format="HEX"
+			   label="Farbe: 8 Grad"
+		/>
+		<field name="color9grad" 
+			   type="color" 
+			   default="#fc8c26" 
+			   format="HEX"
+			   label="Farbe: 3 Grad"
+		/>
+		<field name="color9grad" 
+			   type="color" 
+			   default="#a001f2" 
+			   format="HEX"
+			   label="Farbe: 9 Grad"
+		/>
+		<field name="color10grad" 
+			   type="color" 
+			   default="#2a82cd" 
+			   format="HEX"
+			   label="Farbe: 10 Grad"
+		/>
+		<field name="color11grad" 
+			   type="color" 
+			   default="#ff00ff" 
+			   format="HEX"
+			   label="Farbe: 11 Grad"
+		/>
+		<field name="color12grad" 
+			   type="color" 
+			   default="#444444" 
+			   format="HEX"
+			   label="Farbe: 12 Grad"
+		/>
+		<field name="color_undefined" 
+			   type="color" 
+			   default="#f2f2f2" 
+			   format="HEX"
+			   label="Farbe: undefiniert"
+			   description="Z. B Routenplanung. Wenn in der Prozentwerterfassung nicht 100% Auslastung ist dann gibt es einen Anteil undefinierte Routenanzahl"
+		/>
+
+    </fieldset>
+	
+	 <fieldset label="COM_ACT_ADMIN_DEFAULTS" name="admin_defaults">
+		 <field name="admin_lines_pdf" default="1" type="radio" label="COM_ACT_CONFIG_LBL_ADMIN_LINES_PDF">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+        </field>
+		<field name="grade_offset_comment" 
+               type="number" 
+               default="3" 
+               label="Offset für Grade" 
+               description="Um wieviel kann die Route auf- oder abgewertet werden (Aktuell nur für API)" 
+               min="1" 
+               max="8" 
+               step="1" 
+        />
+    </fieldset>
+
+    <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+        <field name="rules" type="rules" component="com_act" class="inputbox" filter="rules" validate="rules" label="JCONFIG_PERMISSIONS_LABEL" section="component" />
+	</fieldset>
+
+    <fieldset name="component">
+        <field name="save_history" type="radio" class="btn-group btn-group-yesno" default="0" label="JGLOBAL_SAVE_HISTORY_OPTIONS_LABEL" description="JGLOBAL_SAVE_HISTORY_OPTIONS_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="history_limit" type="text" filter="integer" label="JGLOBAL_HISTORY_LIMIT_OPTIONS_LABEL" description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC" default="5"/>
+    </fieldset>
+</config>

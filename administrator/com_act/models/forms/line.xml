@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset>
+    <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+    <field name="checked_out" type="hidden" filter="unset"/>
+    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+    <field name="created_by" type="createdby" default="0" label="COM_ACT_FORM_LBL_LINE_CREATED_BY" description="COM_ACT_FORM_DESC_LINE_CREATED_BY" hidden="true" hint="COM_ACT_FORM_LBL_LINE_CREATED_BY"/>
+    <field name="modified_by" type="modifiedby" default="0" label="COM_ACT_FORM_LBL_LINE_MODIFIED_BY" description="COM_ACT_FORM_DESC_LINE_MODIFIED_BY" hidden="true" hint="COM_ACT_FORM_LBL_LINE_MODIFIED_BY"/>
+    <field name="line" filter="string" type="text" required="true" message="In Verwendung" label="COM_ACT_FORM_LBL_LINE_LINE" description="COM_ACT_FORM_DESC_LINE_LINE" hint="COM_ACT_FORM_LBL_LINE_LINE"/>
+    <field name="sector" extension="com_act.lines" type="category" label="COM_ACT_FORM_LBL_LINE_SECTOR" description="COM_ACT_FORM_DESC_LINE_SECTOR" hint="COM_ACT_FORM_LBL_LINE_SECTOR"/>
+    <field name="building" type="list" label="COM_ACT_FORM_LBL_LINE_BUILDING" description="COM_ACT_FORM_DESC_LINE_BUILDING" hint="COM_ACT_FORM_LBL_LINE_BUILDING">
+      <option value="altbau">COM_ACT_LINES_BUILDING_OPTION_ALTBAU</option>
+      <option value="neubau">COM_ACT_LINES_BUILDING_OPTION_NEUBAU</option>
+    </field>
+    <field name="inorout" type="list" required="true" label="COM_ACT_FORM_LBL_LINE_INOROUT" description="COM_ACT_FORM_DESC_LINE_INOROUT" hint="COM_ACT_FORM_LBL_LINE_INOROUT">
+      <option value="Indoor">COM_ACT_LINES_INOROUT_OPTION_INDOOR</option>
+      <option value="Outdoor">COM_ACT_LINES_INOROUT_OPTION_OUTDOOR</option>
+    </field>
+    <field name="ordering"/>
+    <field name="state" default="1" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1">
+      <option value="1">JPUBLISHED</option>
+      <option value="0">JUNPUBLISHED</option>
+      <option value="2">JARCHIVED</option>
+      <option value="-2">JTRASHED</option>
+    </field>
+    <field name="lineoption" multiple="true" default="0" type="list" label="COM_ACT_FORM_LBL_LINE_LINEOPTION" description="COM_ACT_FORM_DESC_LINE_LINEOPTION" hint="COM_ACT_FORM_LBL_LINE_LINEOPTION">
+      <option value="1">COM_ACT_LINES_LINEOPTION_OPTION_1</option>
+      <option value="2">COM_ACT_LINES_LINEOPTION_OPTION_2</option>
+    </field>
+    <field name="interval" label="COM_ACT_FORM_LBL_LINE_INTERVAL" description="COM_ACT_FORM_DESC_LINE_INTERVAL" hint="COM_ACT_FORM_LBL_LINE_INTERVAL"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+  </fieldset>
+</form>

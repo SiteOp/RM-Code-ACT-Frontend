@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset>
+    <field name="id" type="text" readonly="true" class="readonly" default="0" description="JGLOBAL_FIELD_ID_DESC"/>
+    <field name="name" filter="safehtml" type="text" required="true" label="COM_ACT_FORM_LBL_SPONSOR_NAME" description="COM_ACT_FORM_DESC_SPONSOR_NAME" hint="COM_ACT_FORM_LBL_SPONSOR_NAME"/>
+    <field name="media" directory="sponsoring" type="media" label="COM_ACT_FORM_LBL_SPONSOR_MEDIA" description="COM_ACT_FORM_DESC_SPONSOR_MEDIA" hint="COM_ACT_FORM_LBL_SPONSOR_MEDIA"/>
+    <field name="url" validate="url" type="url" label="COM_ACT_FORM_LBL_SPONSOR_URL" description="COM_ACT_FORM_DESC_SPONSOR_URL" hint="COM_ACT_FORM_LBL_SPONSOR_URL"/>
+    <field name="txt" cols="2" rows="3" filter="safehtml" type="textarea" label="COM_ACT_FORM_LBL_SPONSOR_TXT" description="COM_ACT_FORM_DESC_SPONSOR_TXT" hint="COM_ACT_FORM_LBL_SPONSOR_TXT"/>
+    <field name="contact" filter="string" type="text" label="COM_ACT_FORM_LBL_SPONSOR_CONTACT" description="COM_ACT_FORM_DESC_SPONSOR_CONTACT" hint="COM_ACT_FORM_LBL_SPONSOR_CONTACT"/>
+    <field name="email" validate="email" type="email" label="COM_ACT_FORM_LBL_SPONSOR_EMAIL" description="COM_ACT_FORM_DESC_SPONSOR_EMAIL" hint="COM_ACT_FORM_LBL_SPONSOR_EMAIL"/>
+    <field name="state" default="1" type="list" label="JSTATUS" description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1">
+      <option value="1">JPUBLISHED</option>
+      <option value="0">JUNPUBLISHED</option>
+      <option value="2">JARCHIVED</option>
+      <option value="-2">JTRASHED</option>
+    </field>
+    <field name="ordering"/>
+    <field name="checked_out" type="hidden" filter="unset"/>
+    <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
+    <field name="created_by" type="createdby" default="0" label="COM_ACT_FORM_LBL_SPONSOR_CREATED_BY" description="COM_ACT_FORM_DESC_SPONSOR_CREATED_BY" hidden="true" hint="COM_ACT_FORM_LBL_SPONSOR_CREATED_BY"/>
+    <field name="modified_by" type="modifiedby" default="0" label="COM_ACT_FORM_LBL_SPONSOR_MODIFIED_BY" description="COM_ACT_FORM_DESC_SPONSOR_MODIFIED_BY" hidden="true" hint="COM_ACT_FORM_LBL_SPONSOR_MODIFIED_BY"/>
+    <field name="info" cols="3" rows="3" filter="safehtml" type="textarea" label="COM_ACT_FORM_LBL_SPONSOR_INFO" description="COM_ACT_FORM_DESC_SPONSOR_INFO" hint="COM_ACT_FORM_LBL_SPONSOR_INFO"/>
+    <field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC" class="inputbox" size="45" labelclass="control-label"/>
+  </fieldset>
+</form>

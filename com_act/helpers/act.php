@@ -80,7 +80,9 @@ class ActHelpersAct
         return $db->loadResult();
     }   
 
-     /**
+
+
+    /**
     * Ist der Begehungstil sichtbar geschalten?
     * @param User_Id
     * @return Value 

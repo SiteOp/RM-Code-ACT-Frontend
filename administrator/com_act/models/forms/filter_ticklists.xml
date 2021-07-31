@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
+               label=""
+               class="js-stools-search-string"
+	    />
+  
+	    <field name="myroutegrade"  
+		       type="groupedlist"  
+			   multiple="multiple"   
+			   default="*" 
+			   label=" You can use Ctrl-click to select more than one item.">
+				 <option value="10">COM_ACT_ROUTES_GRADE_OPTION_10</option>
+                    <option value="11">COM_ACT_ROUTES_GRADE_OPTION_11</option>
+                    <option value="12">COM_ACT_ROUTES_GRADE_OPTION_12</option>
+                    <option value="13">COM_ACT_ROUTES_GRADE_OPTION_13</option>
+                    <option value="14">COM_ACT_ROUTES_GRADE_OPTION_14</option>
+                    <option value="15">COM_ACT_ROUTES_GRADE_OPTION_15</option>
+                    <option value="16">COM_ACT_ROUTES_GRADE_OPTION_16</option>
+                    <option value="17">COM_ACT_ROUTES_GRADE_OPTION_17</option>
+                    <option value="18">COM_ACT_ROUTES_GRADE_OPTION_18</option>
+                    <option value="19">COM_ACT_ROUTES_GRADE_OPTION_19</option>
+                    <option value="20">COM_ACT_ROUTES_GRADE_OPTION_20</option>
+                    <option value="21">COM_ACT_ROUTES_GRADE_OPTION_21</option>
+                    <option value="22">COM_ACT_ROUTES_GRADE_OPTION_22</option>
+                    <option value="23">COM_ACT_ROUTES_GRADE_OPTION_23</option>
+                    <option value="24">COM_ACT_ROUTES_GRADE_OPTION_24</option>
+                    <option value="25">COM_ACT_ROUTES_GRADE_OPTION_25</option>
+                    <option value="26">COM_ACT_ROUTES_GRADE_OPTION_26</option>
+                    <option value="27">COM_ACT_ROUTES_GRADE_OPTION_27</option>
+                    <option value="28">COM_ACT_ROUTES_GRADE_OPTION_28</option>
+                    <option value="29">COM_ACT_ROUTES_GRADE_OPTION_29</option>
+                    <option value="30">COM_ACT_ROUTES_GRADE_OPTION_30</option>
+                    <option value="31">COM_ACT_ROUTES_GRADE_OPTION_31</option>
+                    <option value="32">COM_ACT_ROUTES_GRADE_OPTION_32</option>
+                    <option value="33">COM_ACT_ROUTES_GRADE_OPTION_33</option>
+                    <option value="34">COM_ACT_ROUTES_GRADE_OPTION_34</option>
+                    <option value="35">COM_ACT_ROUTES_GRADE_OPTION_35</option>
+                    <option value="36">COM_ACT_ROUTES_GRADE_OPTION_36</option>
+		</field>
+		
+		<field name="stars" 
+		       label="COM_ACT_SEARCH_FILTER_STARS" 
+			   type="list" 
+			   default="COM_ACT_SEARCH_FILTER_STARS">
+				  <option value="">COM_ACT_SEARCH_FILTER_STARS</option>
+					<option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
+					<option value="2">COM_ACT_SEARCH_FILTER_STARS_2</option>
+					<option value="3">COM_ACT_SEARCH_FILTER_STARS_3</option>
+					<option value="4">COM_ACT_SEARCH_FILTER_STARS_4</option>
+					<option value="5">COM_ACT_SEARCH_FILTER_STARS_5</option>
+		</field>
+		
+		<field name="ascent"
+               label="COM_ACT_ASCENT_SELECT" 
+			   type="list" 
+			   default="COM_ACT_ASCENT_SELECT">
+				  <option value="">COM_ACT_ASCENT_SELECT</option>
+				  <option value="1">COM_ACT_ASCENT_OPTION_1</option>
+				  <option value="2">COM_ACT_ASCENT_OPTION_2</option>
+				  <option value="3">COM_ACT_ASCENT_OPTION_3</option>
+				  <option value="4">COM_ACT_ASCENT_OPTION_4</option>
+		</field>
+		
+		<field name="climbdate.from" 
+		       label="" 
+               type="calendar" 
+               format=""
+               singleheader="true"
+               translateformat=""
+               class="inputbox" 
+               filter="none" 
+			   hint="COM_ACT_SEARCH_FILTER_FROM"
+		/>
+        
+
+
+   <!--
+        
+         <field name="state"
+			   type="list"
+			   label="JOPTION_SELECT_PUBLISHED"
+			   default="1"
+            >
+            <option value="1">COM_ACT_NOW</option>
+			<option value="3">COM_ACT_ARCHIVED</option>
+		</field>
+    --> 
+		
+    </fields>
+</form>

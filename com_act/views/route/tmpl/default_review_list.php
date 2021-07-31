@@ -114,7 +114,7 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
             <?php endforeach; ?>
 			 <div>
 			
-			 <?php if(!ActHelpersAct::getUserProfilAscentShow($userId)) : ?> <?php // Eingeloggt und Begehungsstil nicht freigeschalten - dann Link ; ?>
+			 <?php if(!ActHelpersAct::getUserProfilAscentShow($userId)  AND $userId != 0) : ?> <?php // Eingeloggt und Begehungsstil nicht freigeschalten - dann Link ; ?>
 				<p class="mt-4">
 					<i class="fas fa-eye" style="font-size: 20px; padding-right: 3px"></i>
 					<b><a href="index.php?option=com_users&view=profile">

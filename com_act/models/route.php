@@ -28,9 +28,6 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 {
     public $_item;
 
-        
-    
-        
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -94,8 +91,8 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
               ->from('#__act_comment AS c')
               ->join('LEFT', '#__users AS user ON c.created_by = user.id')
               ->join('LEFT', '#__act_route AS a ON c.route = a.id')
-              ->where('c.route ='. $id)
-              ->order('c.id DESC');
+              ->where($db->qn('c.route').'='. (int) $id)
+              ->order($db->qn('c.id') . 'DESC');
               
         $db->setQuery($query);
 
@@ -150,8 +147,9 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				{
 					throw new Exception(Text::_('COM_ACT_ITEM_NOT_LOADED'), 404);
 				}
+				
             }
-        
+
         // Get a db connection
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
@@ -181,19 +179,14 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
               ->join('LEFT', '#__act_sector   AS sc ON sc.id         = l.sector')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id       = a.id')
 			  ->join('LEFT', '#__act_holds_manufacturer AS h ON h.id = a.extend_sql' )
-              ->where('a.id ='. $id);
-              //->where('a.hidden != 1');
-              
-    
-        $db->setQuery($query);
+              ->where($db->qn('a.id') . '='. (int) $id);
 
-        // Load the results returns an associated array from a single record in the table
-        $query = $db->loadAssoc();
         
+        $db->setQuery($query);
+        $query = $db->loadAssoc();
+		
         //$this->_item = $query;
         $this->_item = ArrayHelper::toObject($query);    
-
-
 
             return $this->_item;
         }

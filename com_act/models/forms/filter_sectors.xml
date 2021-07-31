@@ -6,6 +6,7 @@
               hint="COM_ACT_SEARCH_FILTER_SECTOR"
               label="COM_ACT_SEARCH_FILTER_SECTOR"
               class="js-stools-search-string"
+              filter="string"
        />
        <field name="state"
               type="list"

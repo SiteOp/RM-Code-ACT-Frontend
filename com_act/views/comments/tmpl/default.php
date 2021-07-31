@@ -202,7 +202,7 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
 				</td>
                 <td><?php // Created Name ?>
 				<?php if ($adminCommentEdit) : ?>
-                    <a href="<?php echo Route::_('index.php?option=com_act&view=comments'); ?>?filter[user]=<?php print_R(Factory::getUser($item->created_by)->id); ?>">
+                    <a href="<?php echo Route::_('index.php?option=com_act&view=comments'); ?>?filter[user]=<?php print_R(Factory::getUser($item->created_by)->username); ?>">
                         <?php echo Factory::getUser($item->created_by)->username; ?>
                     </a>
 				<?php else : ?>

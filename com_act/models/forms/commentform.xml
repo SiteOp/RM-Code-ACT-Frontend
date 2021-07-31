@@ -72,6 +72,7 @@
     <field name="ticklist_yn" 
            default="0" 
            label=""
+           filter="integer"
            type="radio" 
            class="btn-group btn-group-yesno" 
             >
@@ -83,6 +84,7 @@
     <field name="ascent"      
            type="list" 
            label=""
+           filter="integer"
            showon="ticklist_yn:1"
            >
               <option value="1">COM_ACT_ASCENT_OPTION_1</option>

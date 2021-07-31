@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_SUBMIT"
+               label="COM_USERS_FILTER_SEARCH_DESC"
+               class="js-stools-search-string" />
+
+        <field name="state"
+               type="status"
+               label="COM_ACT_FILTER_STATE"
+               description="COM_ACT_FILTER_STATE_DESC"
+               onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field name="settergrade" label="COM_ACT_FORM_LBL_ROUTE_SETTERGRADE" type="list" onchange="this.form.submit();" default="COM_ACT_ROUTES_SETTERGRADE_FILTER">
+  <option value="">COM_ACT_ROUTES_SETTERGRADE_FILTER</option>
+  <option value="10">COM_ACT_ROUTES_SETTERGRADE_OPTION_10</option>
+  <option value="11">COM_ACT_ROUTES_SETTERGRADE_OPTION_11</option>
+  <option value="12">COM_ACT_ROUTES_SETTERGRADE_OPTION_12</option>
+  <option value="13">COM_ACT_ROUTES_SETTERGRADE_OPTION_13</option>
+  <option value="14">COM_ACT_ROUTES_SETTERGRADE_OPTION_14</option>
+  <option value="15">COM_ACT_ROUTES_SETTERGRADE_OPTION_15</option>
+  <option value="16">COM_ACT_ROUTES_SETTERGRADE_OPTION_16</option>
+  <option value="17">COM_ACT_ROUTES_SETTERGRADE_OPTION_17</option>
+  <option value="18">COM_ACT_ROUTES_SETTERGRADE_OPTION_18</option>
+  <option value="19">COM_ACT_ROUTES_SETTERGRADE_OPTION_19</option>
+  <option value="20">COM_ACT_ROUTES_SETTERGRADE_OPTION_20</option>
+  <option value="21">COM_ACT_ROUTES_SETTERGRADE_OPTION_21</option>
+  <option value="22">COM_ACT_ROUTES_SETTERGRADE_OPTION_22</option>
+  <option value="23">COM_ACT_ROUTES_SETTERGRADE_OPTION_23</option>
+  <option value="24">COM_ACT_ROUTES_SETTERGRADE_OPTION_24</option>
+  <option value="25">COM_ACT_ROUTES_SETTERGRADE_OPTION_25</option>
+  <option value="26">COM_ACT_ROUTES_SETTERGRADE_OPTION_26</option>
+  <option value="27">COM_ACT_ROUTES_SETTERGRADE_OPTION_27</option>
+  <option value="28">COM_ACT_ROUTES_SETTERGRADE_OPTION_28</option>
+  <option value="29">COM_ACT_ROUTES_SETTERGRADE_OPTION_29</option>
+  <option value="30">COM_ACT_ROUTES_SETTERGRADE_OPTION_30</option>
+  <option value="31">COM_ACT_ROUTES_SETTERGRADE_OPTION_31</option>
+  <option value="32">COM_ACT_ROUTES_SETTERGRADE_OPTION_32</option>
+  <option value="33">COM_ACT_ROUTES_SETTERGRADE_OPTION_33</option>
+  <option value="34">COM_ACT_ROUTES_SETTERGRADE_OPTION_34</option>
+  <option value="35">COM_ACT_ROUTES_SETTERGRADE_OPTION_35</option>
+  <option value="36">COM_ACT_ROUTES_SETTERGRADE_OPTION_36</option>
+</field>
+<field name="modified.from" label="COM_ACT_ROUTES_MODIFIED_FILTER_FROM" type="calendar" onchange="this.form.submit();" filter="safehtml" class="inputbox" showtime="true" translateformat="true" hint="COM_ACT_ROUTES_MODIFIED_FILTER_FROM"/>
+<field name="modified.to" label="COM_ACT_ROUTES_MODIFIED_FILTER_TO" type="calendar" onchange="this.form.submit();" filter="safehtml" class="inputbox" showtime="true" translateformat="true" hint="COM_ACT_ROUTES_MODIFIED_FILTER_TO"/>
+
+
+    </fields>
+
+    <fields name="list">
+
+        <field name="fullordering"
+               type="list"
+               label="COM_CONTENT_LIST_FULL_ORDERING"
+               description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+               onchange="this.form.submit();"
+               default="a.id DESC"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.`id` ASC">ID Ascending</option><option value="a.`id` DESC">ID Descending</option><option value="a.`name` ASC">Name Ascending</option><option value="a.`name` DESC">Name Descending</option><option value="a.`state` ASC">State Ascending</option><option value="a.`state` DESC">State Descending</option><option value="a.`settergrade` ASC">Settergrade Ascending</option><option value="a.`settergrade` DESC">Settergrade Descending</option><option value="a.`color` ASC">Farbe Ascending</option><option value="a.`color` DESC">Farbe Descending</option><option value="a.`line` ASC">Linie Ascending</option><option value="a.`line` DESC">Linie Descending</option><option value="a.`setter` ASC">Routenschrauber Ascending</option><option value="a.`setter` DESC">Routenschrauber Descending</option><option value="a.`createdate` ASC">Schraubdatum Ascending</option><option value="a.`createdate` DESC">Schraubdatum Descending</option><option value="a.`info` ASC">Info Ascending</option><option value="a.`info` DESC">Info Descending</option><option value="a.`infoadmin` ASC">Infoadmin Ascending</option><option value="a.`infoadmin` DESC">Infoadmin Descending</option><option value="a.`sponsor` ASC">Id Ascending</option><option value="a.`sponsor` DESC">Id Descending</option><option value="a.`modified` ASC">Modified Ascending</option><option value="a.`modified` DESC">Modified Descending</option>
+
+        </field>
+
+        <field name="limit"
+               type="limitbox"
+               class="input-mini"
+               default="25"
+               onchange="this.form.submit();"
+        />
+
+    </fields>
+
+</form>

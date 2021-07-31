@@ -172,12 +172,14 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
             $query->where($db->qn('a.created') . '>=' . $db->q($filter_created_from));
         }
 
-        // Filtering Username (Filter width ID)
+        // Filtering Username
         $filter_user = $this->state->get("filter.user");
+        // Hole die ID des User anhand des Username
+		$user_id   = JUserHelper::getUserId($filter_user);
 
         if ($filter_user !== null && !empty($filter_user))
         {
-           $query->where($db->qn('a.created_by') . '=' . (int) $filter_user);
+           $query->where($db->qn('a.created_by') . '=' . (int) $user_id);
         }
 
         // Add the list ordering clause.
@@ -302,9 +304,12 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
         // Filtering Username (Filter width ID)
         $filter_user = $this->state->get("filter.user");
 
+        // Hole die ID des User anhand des Username
+		$user_id   = JUserHelper::getUserId($filter_user);
+
         if ($filter_user !== null && !empty($filter_user))
         {
-           $query->where($db->qn('c.created_by') . '=' . (int) $filter_user);
+           $query->where($db->qn('c.created_by') . '=' . (int) $user_id);
         }
         
         // Filtering Input

@@ -1,0 +1,109 @@
+.icon-48-routes {
+      background-image: url(../images/l_routes.png);
+      padding-left:60px!important;
+}
+
+.icon-48-route {
+      background-image: url(../images/l_routes.png);
+      padding-left:60px!important;
+}
+
+.color-box-routes { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-comments {
+      background-image: url(../images/l_comments.png);
+      padding-left:60px!important;
+}
+
+.icon-48-comment {
+      background-image: url(../images/l_comments.png);
+      padding-left:60px!important;
+}
+
+.color-box-comments { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-setters {
+      background-image: url(../images/l_setters.png);
+      padding-left:60px!important;
+}
+
+.icon-48-setter {
+      background-image: url(../images/l_setters.png);
+      padding-left:60px!important;
+}
+
+.color-box-setters { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-colors {
+      background-image: url(../images/l_colors.png);
+      padding-left:60px!important;
+}
+
+.icon-48-color {
+      background-image: url(../images/l_colors.png);
+      padding-left:60px!important;
+}
+
+.color-box-colors { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-lines {
+      background-image: url(../images/l_lines.png);
+      padding-left:60px!important;
+}
+
+.icon-48-line {
+      background-image: url(../images/l_lines.png);
+      padding-left:60px!important;
+}
+
+.color-box-lines { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-grades {
+      background-image: url(../images/l_grades.png);
+      padding-left:60px!important;
+}
+
+.icon-48-grade {
+      background-image: url(../images/l_grades.png);
+      padding-left:60px!important;
+}
+
+.color-box-grades { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-sponsors {
+      background-image: url(../images/l_sponsors.png);
+      padding-left:60px!important;
+}
+
+.icon-48-sponsor {
+      background-image: url(../images/l_sponsors.png);
+      padding-left:60px!important;
+}
+
+.color-box-sponsors { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+.icon-48-sectors {
+      background-image: url(../images/l_sectors.png);
+      padding-left:60px!important;
+}
+
+.icon-48-sector {
+      background-image: url(../images/l_sectors.png);
+      padding-left:60px!important;
+}
+
+.color-box-sectors { 
+      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
+
+
+
+.other-filters{
+    padding: 0 14px;
+}

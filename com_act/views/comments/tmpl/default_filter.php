@@ -65,6 +65,9 @@ $customOptions = array(
 	'orderFieldSelector'  => '#list_fullordering'
 );
 
+$customOptions['filterButton'] = 0;
+$customOptions['filtersHidden'] = 0;
+
 $data['options'] = array_unique(array_merge($customOptions, $data['options']));
 
 $formSelector = !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm';

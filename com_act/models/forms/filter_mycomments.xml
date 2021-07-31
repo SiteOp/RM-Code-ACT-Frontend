@@ -4,12 +4,15 @@
         <field name="search" type="text" hint="COM_ACT_SEARCH_FILTER_ROUTE_SUBMIT"
                label=""
                class="js-stools-search-string"
+               filter="string"
                
         />
          <field name="sgrade" 
                 hint="COM_ACT_SEARCH_FILTER_MGRADE" 
                 type="list"
                 multiple="multiple"
+                onchange="this.form.submit();"
+                filter="integer"
                 default="*">
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -25,7 +28,9 @@
 
         <field name="stars" 
                label="COM_ACT_SEARCH_FILTER_STARS" 
-               type="list" 
+               type="list"
+               onchange="this.form.submit();"
+               filter="integer"
                default="COM_ACT_SEARCH_FILTER_STARS">
                  <option value="">COM_ACT_SEARCH_FILTER_STARS</option>
                     <option value="1">COM_ACT_SEARCH_FILTER_STARS_1</option>
@@ -38,7 +43,9 @@
 
         <field name="ticklist"
                label="COM_ACT_TICKLIST" 
-               type="list" 
+               type="list"
+               onchange="this.form.submit();"
+               filter="integer" 
                default="*">
                   <option value="">COM_ACT_TICKLIST</option>
                   <option value="1">JYES</option>
@@ -61,6 +68,7 @@
                todaybutton="false" 
                translateformat="false" 
                hint="COM_ACT_SEARCH_FILTER_COMMENT_FROM"
+               onchange="this.form.submit();"
                
         />
         
@@ -68,6 +76,8 @@
                type="list"
                label="JOPTION_SELECT_PUBLISHED"
                class="admin"
+               onchange="this.form.submit();"
+               filter="integer"
                default="1"
                >
             <option value="1">COM_ACT_PUBLISHED</option>

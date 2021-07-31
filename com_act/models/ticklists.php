@@ -105,7 +105,7 @@ class ActModelTicklists extends JModelList
      */
     protected function getListQuery()
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         $user = $user->get('id');
 
         // Create a new query object.
@@ -124,12 +124,11 @@ class ActModelTicklists extends JModelList
               ->from('#__act_comment AS a')
 
               ->join('LEFT', '#__act_route AS route ON route.id = a.route')
-              //->join('LEFT', '#__act_grade AS g     ON g.id     = a.myroutegrade')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id     = route.id')
-             // ->join('LEFT', '#__act_grade AS gt    ON gt.id     = t.calc_grade')
-              ->where('a.created_by ='. $user)
-              ->where('ticklist_yn = 1')
-              ->where('a.climbdate  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
+              ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
+              ->where($db->qn('a.created_by') . '='. (int) $user)
+              ->where($db->qn('ticklist_yn') . '= 1')
+              ->where($db->qn('a.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
 
         // Filter by search in title - Filter Name of Route
         $search = $this->getState('filter.search');
@@ -143,7 +142,7 @@ class ActModelTicklists extends JModelList
             else
             {
                 $search = $db->Quote('%' . $db->escape($search, true) . '%');
-                $query->where('(route.name LIKE ' . $search . ' )');
+                $query->where($db->qn('route.name') . ' LIKE ' . $search );
             }
         }
             
@@ -151,7 +150,6 @@ class ActModelTicklists extends JModelList
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
         if ($filter_myroutegrade != '')
         {
-
             $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_myroutegrade).')');
         }
 
@@ -159,14 +157,14 @@ class ActModelTicklists extends JModelList
         $filter_stars = $this->state->get("filter.stars");
         if ($filter_stars != '')
         {
-            $query->where("a.stars = '".$db->escape($filter_stars)."'");
+            $query->where($db->qn('a.stars') . '=' . $db->q($filter_stars));
         }
 
         // Filtering ascent
         $filter_ascent = $this->state->get("filter.ascent");
         if ($filter_ascent != '') 
         {
-            $query->where("a.ascent = '".$db->escape($filter_ascent)."'");
+           $query->where($db->qn('a.ascent') . '=' . $db->q($filter_ascent));
         }
 
          // Filtering climbdate
@@ -174,7 +172,7 @@ class ActModelTicklists extends JModelList
 
         if ($filter_climbdate_from !== null && !empty($filter_climbdate_from))
         {
-            $query->where("a.climbdate >= '".$db->escape($filter_climbdate_from)."'");
+            $query->where($db->qn('a.climbdate') . '>='.$db->q($filter_climbdate_from));
         }
 
 
@@ -231,9 +229,9 @@ class ActModelTicklists extends JModelList
                     
             ->from('#__act_comment AS c')
             ->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
-            ->where('c.created_by =' .$user)
-            ->where('ticklist_yn = 1')
-            ->where('c.climbdate  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
+            ->where($db->qn('c.created_by') . '=' . (int) $user)
+            ->where($db->qn('ticklist_yn') . '= 1')
+            ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
             
              // Filtering myroutegrade
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
@@ -256,8 +254,8 @@ class ActModelTicklists extends JModelList
       public function getRoutesAscent()
     {
       // Get a db connection.
-      $db = JFactory::getDbo();
-      $user    = JFactory::getuser()->id;
+      $db   = Factory::getDbo();
+      $user = Factory::getuser()->id;
 
       // Create a new query object.
       $query = $db->getQuery(true);
@@ -278,9 +276,9 @@ class ActModelTicklists extends JModelList
                     
             ->from('#__act_comment AS c')
             ->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
-            ->where('c.created_by =' .$user)
-            ->where('ticklist_yn = 1')
-            ->where('c.climbdate  > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
+            ->where($db->qn('c.created_by') . '=' . (int) $user)
+            ->where($db->qn('ticklist_yn') . '= 1')
+            ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
 
         // Filtering myroutegrade
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
@@ -293,7 +291,7 @@ class ActModelTicklists extends JModelList
         $filter_ascent = $this->state->get("filter.ascent");
         if ($filter_ascent != '') 
         {
-            $query->where("c.ascent = '".$db->escape($filter_ascent)."'");
+            $query->where($db->qn('c.ascent') . '='.$db->escape($filter_ascent));
         }
 
        $db->setQuery($query);
