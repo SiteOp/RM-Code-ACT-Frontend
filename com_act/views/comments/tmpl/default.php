@@ -180,9 +180,9 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                                        </div>
                                      " 
                         ><?php // Wenn die Route Status 1 dann route_active sonst route_archiv ?>
-                        <i class="<?php echo Text::_('COM_ACT_FA_INFO'); ?> pr-2 <?php echo ($item->route_state == 1 ) ? 'route_active"' : 'route_archiv"'; ?>"></i>
+                        <i class="<?php echo Text::_('COM_ACT_FA_INFO'); ?> pr-2 <?php echo ($item->route_state == 1 OR  $item->route_state == -1) ? 'route_active"' : 'route_archiv"'; ?>"></i>
                     </a>
-					<?php if (($item->route_state == 1) OR ($adminCommentEdit)) : ?>
+					<?php if (($item->route_state == 1) OR ($item->route_state == -1) OR ($adminCommentEdit)) : ?>
 						<a href="<?php echo Route::_('index.php?option=com_act&view=route&id='.(int) $item->route_id); ?>"><?php echo $this->escape($item->route_name); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($item->route_name); ?>
