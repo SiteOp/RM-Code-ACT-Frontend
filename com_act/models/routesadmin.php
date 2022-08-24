@@ -139,7 +139,7 @@ class ActModelRoutesAdmin extends ListModel
               ->join('LEFT', '#__act_setter AS s ON a.setter = s.id')
               ->join('LEFT', '#__act_color AS c ON c.id = a.color')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id = a.id') // TRIGGER TABLE
-              ->join('LEFT', '#__act_grade AS g ON g.id = t.calc_grade'); // GRADE CONVERSIONN TABLE
+              ->join('LEFT', '#__act_grade AS g ON g.id = t.calc_grade_round'); // GRADE CONVERSIONN TABLE
 ;
 
 

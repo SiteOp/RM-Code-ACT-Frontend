@@ -120,6 +120,7 @@ class ActModelRoutes extends ListModel
     {
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
+        $grade = "grade";
 
         // Route (a), Setter (s), Color (c), Categorie (cat), Line (l), Trigger (t), Grade (g) Sector (sc)
         $query->select(array('a.id', 'a.name', 'a.setterdate', 'a.exclude',
@@ -130,13 +131,13 @@ class ActModelRoutes extends ListModel
                              'sc.sector AS lineSectorName',
                             // Trigger TABLE
                              't.count_stars', 't.avg_stars AS AvgStars', 
-                             't.calc_grade AS Calc_Grad',
+                             't.calc_'.$grade.' AS Calc_Grad',
                             )
                        )
 
               ->from('#__act_route AS a')
               ->join('LEFT', '#__act_trigger_calc AS t  ON t.id     = a.id') // TRIGGER TABLE
-              ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
+              ->join('LEFT', '#__act_'.$grade.'     AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
               ->join('LEFT', '#__act_line         AS l  ON l.id     = a.line')
               ->join('LEFT', '#__act_sector       AS sc ON sc.id    = l.sector')
               ->join('LEFT', '#__act_setter       AS s  ON a.setter = s.id')

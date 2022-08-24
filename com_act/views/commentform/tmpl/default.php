@@ -28,6 +28,15 @@ $canState = JFactory::getUser()->authorise('core.edit.state','com_act');
 $canChange  = $user->authorise('core.edit.state', 'com_act');
 $canDelete  = $user->authorise('core.delete', 'com_act');
 
+$params      = JComponentHelper::getParams( 'com_act' );
+$grade_offset_comment   = $params['grade_offset_comment'];
+$stars_no_rating = $params['stars_no_rating'];
+
+
+// Start und Ende der Grade unter Berücksichtigung der Anzahl wieviel rauf und runter bewertet werden darf ($grade_offset_comment)
+$start_grade = $this->route->settergrade - $grade_offset_comment;
+$end_grade =  $this->route->settergrade + $grade_offset_comment;
+
 if($this->item->state == 1){
 	$state_string = 'Publish';
 	$state_value = 1;
@@ -35,10 +44,10 @@ if($this->item->state == 1){
 	$state_string = 'Unpublish';
 	$state_value = 0;
 }
-
+$routeStateOk = array(1,-1);
 ?>
 <?php // Wenn die Route im Archiv ist darf keine Bearbeitung von Kommentaren möglich sein ?>
-<?php if ((!$canEdit) OR (1 != $this->route->state )) : ?> 
+<?php if ((!$canEdit) OR (!in_array($this->route->state, $routeStateOk))) : ?> 
     <h3><?php throw new Exception(JText::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
 <?php else : ?>
 
@@ -74,53 +83,59 @@ if($this->item->state == 1){
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <?php echo $this->form->getInput('stars'); ?>
+                                <fieldset>
+                                    <select id="jform_stars" name="jform[stars]" required="required" class="form-control" >
+                                        <option value=""> <?php echo Text::_('COM_ACT_SEARCH_FILTER_STARS'); ?></option>
+                                        <?php if(1== $stars_no_rating) : ?>
+                                        <option value="0"  
+                                            <?php echo (0 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>
+                                            <?php echo Text::_('COM_ACT_NO_RATING'); ?>
+                                        </option>
+                                        <?php endif; ?>
+                                        <option value="1" 
+                                            <?php echo (1 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>
+                                            <?php echo Text::_('COM_ACT_RATING_ONE'); ?>
+                                        </option>
+                                        <option value="2" 
+                                            <?php echo (2 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>
+                                            <?php echo Text::_('COM_ACT_RATING_TWO'); ?>
+                                        </option>
+                                        <option value="3" 
+                                            <?php echo (3 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>    
+                                            <?php echo Text::_('COM_ACT_RATING_THREE'); ?>
+                                        </option>
+                                        <option value="4" 
+                                            <?php echo (4 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>
+                                            <?php echo Text::_('COM_ACT_RATING_FOUR'); ?>
+                                        </option>
+                                        <option value="5" 
+                                            <?php echo (5 === ((int)$this->item->stars[0]) ? 'selected="selected"' : '');  ?>>
+                                            <?php echo Text::_('COM_ACT_RATING_FIVE'); ?>
+                                        </option>
+                                    </select> 
+                                </fieldset>
                                 </div>
                                 <div class="col-12 col-md-6 ">
                                     <div class="controls">
                                         <select id="jform_myroutegrade" name="jform[myroutegrade]" > 
                                             <option value="0" selected="selected"><?php echo JText::_('COM_ACT_FORM_LBL_HINT_NO_GRAD'); ?></option> 
-                                        <?php // The level is less than 3 or larger 12-do not allow any other selection ?>
-                                            <?php if((int)$this->route->settergrade  >= (int)11) : ?>
-                                                <option value="<?php echo $this->route->settergrade -3; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade -3) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade -3); ?>
-                                                </option> 
-                                            <?php endif; ?>
-                                            <?php if((int)$this->route->settergrade  >= (int)12) : ?>
-                                                <option value="<?php echo $this->route->settergrade -2; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade -2) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade -2); ?>
-                                                </option> 
-                                            <?php endif; ?>
-                                            <?php if((int)$this->route->settergrade  >= (int)11) : ?>
-                                                <option value="<?php echo $this->route->settergrade -1; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade -1) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade -1); ?>
-                                                </option> 
-                                             <?php endif; ?>
-                                                <option value="<?php echo $this->route->settergrade; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade   ); ?>
-                                                </option> 
-                                             <?php if((int)$this->route->settergrade  <= (int)35) : ?>
-                                                <option value="<?php echo $this->route->settergrade +1; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade +1) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade +1); ?>
-                                                </option>
-                                            <?php endif; ?>
-                                            <?php if((int)$this->route->settergrade  <= (int)34) : ?>
-                                                <option value="<?php echo $this->route->settergrade +2; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade +2) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade +2); ?>
-                                                </option> 
-                                             <?php endif; ?>
-                                            <?php if((int)$this->route->settergrade  <= (int)33) : ?>
-                                                <option value="<?php echo $this->route->settergrade +3; ?>" 
-                                                    <?php echo ( ($this->item->myroutegrade[0]) == ($this->route->settergrade +3) ? 'selected="selected"' : '');  ?>>
-                                                    <?php echo ActHelpersAct::uiaa($this->route->settergrade +3); ?>
-                                                </option> 
-                                             <?php endif; ?>
+                                             <?php if($this->route->settergrade !=0) : ?>
+                                            <?php foreach (range($start_grade, $end_grade) as $i) : ?>
+                                                <?php if($i >= 10 && $i <= 36) :?>
+                                                    <option value="<?php echo $i; ?>"
+                                                        <?php echo (($i == $this->item->myroutegrade[0]) ? 'selected="selected"' : '');  ?>>
+                                                        <?php echo ActHelpersAct::uiaa($i); ?>
+                                                    </option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php // Wenn VR-Grade unbekannt dann erlaube alle Grade zum bewerten ?>
+                                        <?php else : ?>
+                                            <?php foreach (range(10, 36) as $i) : ?>
+                                                <option value="<?php echo $i; ?>"
+                                                <?php echo (($i == $this->item->myroutegrade[0]) ? 'selected="selected"' : '');  ?>>
+                                                <?php echo ActHelpersAct::uiaa($i); ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                          </select> 
                                     </div> 
                                 </div> 

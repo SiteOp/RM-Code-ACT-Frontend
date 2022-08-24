@@ -27,6 +27,16 @@ $document->addStyleSheet('../media/system/css/fields/calendar.css');
 $document->addStyleSheet($path.'/css/jui/chosen.css');
 
 $now = Factory::getDate()->Format('d.m.Y'); 
+
+$params      = JComponentHelper::getParams( 'com_act' );
+$grade_offset_comment   = $params['grade_offset_comment'];
+$stars_no_rating = $params['stars_no_rating'];
+
+
+// Start und Ende der Grade unter Berücksichtigung der Anzahl wieviel rauf und runter bewertet werden darf ($grade_offset_comment)
+$start_grade = $this->item->settergrade - $grade_offset_comment;
+$end_grade =  $this->item->settergrade + $grade_offset_comment;
+
 ?>
 
     
@@ -84,7 +94,9 @@ if (isset($_POST["submit"])) : ?>
                                 <fieldset>
                                     <select name="stars" required="required" class="form-control" >
                                         <option value=""> <?php echo Text::_('COM_ACT_SEARCH_FILTER_STARS'); ?></option>
+                                        <?php if(1== $stars_no_rating) : ?>
                                         <option value="0"><?php echo Text::_('COM_ACT_NO_RATING'); ?></option>
+                                        <?php endif; ?>
                                         <option value="1"><?php echo Text::_('COM_ACT_RATING_ONE'); ?></option>
                                         <option value="2"><?php echo Text::_('COM_ACT_RATING_TWO'); ?></option>
                                         <option value="3"><?php echo Text::_('COM_ACT_RATING_THREE'); ?></option>
@@ -98,26 +110,18 @@ if (isset($_POST["submit"])) : ?>
                                     <select name="myroutegrade" class="form-control" required="required" > 
                                         <option value=""><?php echo Text::_('COM_ACT_SELECT_GRADE'); ?></option> 
                                         <option value="0"><?php echo Text::_('COM_ACT_NO_RATING'); ?></option> 
-                                        <?php // The level is less than 3 or larger 12-do not allow any other selection ?>
-                                        <?php if((int)$this->item->settergrade  >= (int)13) : ?>
-                                        <option value="<?php echo $this->item->settergrade -3; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade -3); ?></option> 
+                                        <?php if($this->item->settergrade !=0) : ?>
+                                            <?php foreach (range($start_grade, $end_grade) as $i) : ?>
+                                                <?php if($i >= 10 && $i <= 36) :?>
+                                                    <option value="<?php echo $i; ?>"><?php echo ActHelpersAct::uiaa($i); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php // Wenn VR-Grade unbekannt dann erlaube alle Grade zum bewerten ?>
+                                        <?php else : ?>
+                                            <?php foreach (range(10, 36) as $i) : ?>
+                                                <option value="<?php echo $i; ?>"><?php echo ActHelpersAct::uiaa($i); ?></option>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
-                                        <?php if((int)$this->item->settergrade  >= (int)12) : ?>
-                                        <option value="<?php echo $this->item->settergrade -2; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade -2); ?></option> 
-                                        <?php endif; ?>
-                                        <?php if((int)$this->item->settergrade  >= (int)11) : ?>
-                                        <option value="<?php echo $this->item->settergrade -1; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade -1); ?></option> 
-                                        <?php endif; ?>
-                                        <option value="<?php echo $this->item->settergrade;    ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade   ); ?></option> 
-                                        <?php if((int)$this->item->settergrade  <= (int)35) : ?>
-                                        <option value="<?php echo $this->item->settergrade +1; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade +1); ?></option> 
-                                         <?php endif; ?>
-                                        <?php if((int)$this->item->settergrade  <= (int)34) : ?>
-                                        <option value="<?php echo $this->item->settergrade +2; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade +2); ?></option> 
-                                         <?php endif; ?>
-                                         <?php if((int)$this->item->settergrade  <= (int)33) : ?>
-                                        <option value="<?php echo $this->item->settergrade +3; ?>"><?php echo ActHelpersAct::uiaa($this->item->settergrade +3); ?></option> 
-                                         <?php endif; ?>
                                     </select> 
                                 </fieldset> 
                             </div>

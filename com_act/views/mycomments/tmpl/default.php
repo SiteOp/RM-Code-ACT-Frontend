@@ -32,6 +32,9 @@ $canCheckin = $user->authorise('core.manage', 'com_act');
 $canChange  = $user->authorise('core.edit.state', 'com_act');
 $canDelete  = $user->authorise('core.delete', 'com_act');
 
+// Routenstatus 1 = Freigegeben, -1 Vorgemerkt
+$routeStateOk = array(1,-1);
+
 ?>
 
 <?php // Page-Header ?>
@@ -102,7 +105,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 						<?php $canEdit = Factory::getUser()->id == $item->created_by; ?>
 					<?php endif; ?>
 						<td class="pl-2"><?php // Route Name - If Route State 1 - Then link else echo Name  ?>
-							<?php if ($item->route_state == 1) : ?>
+							<?php if (!in_array($this->route->state, $routeStateOk)) : ?>	
 								<a href="<?php echo Route::_('index.php?option=com_act&view=route&id='.(int) $item->route_id); ?>"><?php echo $this->escape($item->route_name); ?></a>
 							<?php else :?>
 								<?php echo $this->escape($item->route_name); ?>
@@ -146,7 +149,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
                         </td>
                         
 						<td class="text-center"><?php // Edit ?>
-							<?php if (($canEdit) AND ($item->route_state == 1)) : ?>
+							<?php if ((!$canEdit) OR (!in_array($this->route->state, $routeStateOk))) : ?> 
 								<a href="<?php echo Route::_('index.php?option=com_act&task=commentform.edit&id=' . $item->id, false, 2); ?>" class="btn btn-mini" type="button">
 									<i class="<?php echo Text::_('COM_ACT_FA_EDIT'); ?>"></i>
 								

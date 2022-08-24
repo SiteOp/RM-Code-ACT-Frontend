@@ -165,7 +165,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
                          'l.line',  'l.height', 'l.indicator',
                          'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
                          'sp.name AS sp_name', 'sp.media AS sp_media', 'sp.txt AS sp_txt',
-                         't.calc_grade', 't.avg_stars',
+                         't.calc_grade_round AS calc_grade', 't.avg_stars',
 						 'h.name AS extend_name'
                          )
                        )

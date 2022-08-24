@@ -52,7 +52,6 @@ if($this->item->state == 1){
 	$state_value = 0;
  }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
-
 ?>
 
 <?php if (!$canEdit) : ?>
@@ -102,14 +101,11 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
             </div>
 			
 			 
-			
-			<div class="form-group row">
-                <?php if(1==$routetype) : ?>
+			<?php if(1==$routetype) : ?>
+				<div class="form-group row">
 				   <div class="col-md-5"><?php echo $this->form->renderField('routetype'); ?></div>
-                <?php endif; ?>
-                <div class="col-md-5"><?php echo $this->form->renderField('routeoption'); ?></div>
-			</div>
-			
+				</div>
+			<?php endif; ?>
 			
 
             <?php // Wird das Template für die erweiterten Felder (z. B. Hersteller) benötigt?>
