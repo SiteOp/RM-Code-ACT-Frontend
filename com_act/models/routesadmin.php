@@ -39,11 +39,13 @@ class ActModelRoutesAdmin extends ListModel
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'name', 'a.name',
+                'color', 'c.color',
                 'settergrade', 'a.settergrade',
                 'routegrade', 'a.routegrade',
-                'color', 'c.color',
                 'l.line', 'l.id AS lineId', 'l.lineoption',
                 'Calc_Grad', 'Calc_Grad',
+                'orderCGrade', 'orderCGrade',
+                'orderVrGrade', 'orderVrGrade',
                 'AvgStars', 'AvgStars',
                 'line', 'l.line',
                 'inorout', 'sc.inorout',
@@ -116,31 +118,46 @@ class ActModelRoutesAdmin extends ListModel
     */
     protected function getListQuery()
     {
+        $params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        // Route (a), Setter (s), Color (c), Categorie (cat), Comment (r),
-        $query->select(array('a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.created_by', 'a.exclude', 'a.hidden', 'a.fixed',
-                             's.settername', 'a.settergrade', 's.id AS setterId',
+        $query->select(array(// Route
+                             'a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info',
+                              'a.created_by', 'a.exclude', 'a.hidden', 'a.fixed',
+                             // Setter
+                             's.settername', 's.id AS setterId',
+                             // Color
                              'c.rgbcode', 'c.id AS colorId',
+                             // Line
                              'l.line', 'l.id AS lineId',
+                             // Sector
                              'sc.inorout',  'sc.building', 'sc.inorout',
                              'sc.sector AS lineSectorName',
-                             // Trigger Table
+                             // Trigger
                              't.count_stars', 't.avg_stars AS AvgStars', 
                              't.calc_grade AS Calc_Grad',
+                             // VR-Grade
+                             'vr.grade AS s_grade', 
+                             'vr.id_grade AS orderVrGrade',
+                             // C-Grade
+                             'cg.grade AS c_grade', 
+                             'cg.id_grade AS orderCGrade',
                             )
                          )
               ->from('#__act_route AS a')
 
-              ->join('LEFT', '#__act_line AS l ON l.id = a.line')
-              ->join('LEFT', '#__act_sector AS sc ON sc.id = l.sector')
-              ->join('LEFT', '#__act_building AS b ON b.id = sc.building')
-              ->join('LEFT', '#__act_setter AS s ON a.setter = s.id')
-              ->join('LEFT', '#__act_color AS c ON c.id = a.color')
-              ->join('LEFT', '#__act_trigger_calc AS t ON t.id = a.id') // TRIGGER TABLE
-              ->join('LEFT', '#__act_grade AS g ON g.id = t.calc_grade_round'); // GRADE CONVERSIONN TABLE
-;
+              ->join('LEFT', '#__act_trigger_calc AS t  ON t.id             = a.id')               // TRIGGER TABLE
+              ->join('LEFT', '#__'.$grade_table.' AS cg ON cg.id_grade      = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS vr ON vr.id_grade      = a.settergrade')      // Convertierter Grad vr = VR-Grade
+              ->join('LEFT', '#__act_line         AS l  ON l.id             = a.line')             // Linie
+              ->join('LEFT', '#__act_sector       AS sc ON sc.id            = l.sector')           // Sector
+              ->join('LEFT', '#__act_building     AS b  ON b.id             = sc.building')        // Building
+              ->join('LEFT', '#__act_setter       AS s  ON a.setter         = s.id')               // Setter
+              ->join('LEFT', '#__act_color        AS c  ON c.id             = a.color')           // Color
+              ->where('cg.id_grade IS NOT NULL');
 
 
         // ########################### Filter ##################
@@ -177,12 +194,12 @@ class ActModelRoutesAdmin extends ListModel
 
         // Filtering c-grade - Value from Multiple List - Array
         $filter_cgrade = $this->state->get("filter.cgrade");
-
-            if ($filter_cgrade != '')
-             {
-                JArrayHelper::toInteger($filter_cgrade);
-                $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_cgrade).')');
-             }
+        if ($filter_cgrade != '')
+         {
+            JArrayHelper::toInteger($filter_cgrade);
+            $query->where($db->qn('cg.filter') . 'IN (' . implode(',', $filter_cgrade).')');
+         }
+         
              
         // Filtering Line
         $filter_line = $this->state->get("filter.line");

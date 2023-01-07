@@ -19,7 +19,6 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
-
 // Load admin language file
 $lang = Factory::getLanguage();
 $lang->load('com_act', JPATH_SITE);
@@ -30,7 +29,7 @@ $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
 
 // Lade die Globale Sprachdatei für ACT
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $extension = 'com_act_global';
 $base_dir = JPATH_SITE;
 $language_tag = '';
@@ -40,6 +39,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 // ACT Params 
 $params          = JComponentHelper::getParams('com_act');
 //$holds           = $params['holds']; // Werden die Angaben Hersteller - Griffe benötigt?
+$grade_table = $params['grade_table'];             // Welche Tabelle für Schwierigkeitsgrade
 $routetype       = $params['routetype']; 
 $extendFormField = $params['extendFormField'];
 
@@ -52,7 +52,13 @@ if($this->item->state == 1){
 	$state_value = 0;
  }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
+
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+// Liste der Schwierigkeitsgrade aus der jeweiligen Tabelle UIAA/Franz usw
+$gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
+
 ?>
+
 
 <?php if (!$canEdit) : ?>
     <h3><?php throw new Exception(Text::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
@@ -87,7 +93,21 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
             </div> 
             <div class="form-group row">
                 <div class="col-md-5"><?php echo $this->form->renderField('setter'); ?></div>
-                <div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('settergrade'); ?></div>
+                <div class="col-md-5 col-md-offset-1">
+                    <?php echo $this->form->getLabel('setter'); ?>
+                    <div class="controls">
+                        <select id="jform_settergrade" name="jform[settergrade]" class="required" required aria-required="true">
+                            <option value="" ><?php echo Text::_('COM_ACT_ROUTES_GRADE_OPTION_0'); ?></option>
+                            <option value="0" ><?php echo Text::_('COM_ACT_ROUTES_GRADE_OPTION_100');?></option>
+                            <?php foreach($gradeList AS $value) : ?>
+                                <option value="<?php echo $value->id_grade; ?>" 
+                                <?php echo ($value->id_grade === ($this->item->settergrade[0]) ? 'selected="selected"' : '');  ?>>
+                                 <?php echo $value->grade; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                 </div>
             </div>
             
             <div class="form-group row">

@@ -53,7 +53,7 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
 						<div class="route_comment_rating Stars" style=" --star-size: 140%; --rating: <?php echo ActHelpersAct::getStarsRound($comment['stars']); ?>;"></div>
 
                         <div class="route_comment_usergrade ">
-                            <?php echo (empty($comment['myroutegrade'])) ? '' : ActHelpersAct::uiaa($comment['myroutegrade']); ?><?php // Short if else ?>
+                            <?php echo (empty($comment['grade'])) ? '' : $comment['grade']; ?><?php // Short if else ?>
 						</div>
 						<div class="route_comment_ascent">
 						<?php // Im Profil ascent_show auf 1 gesetzt? ;?>

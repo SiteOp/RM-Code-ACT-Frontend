@@ -14,14 +14,14 @@ use \Joomla\Utilities\ArrayHelper;
 use \Joomla\CMS\Factory;
 use \Joomla\CMS\Access\Access;
 use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Table\Table as Table;
+use \Joomla\CMS\Table\Table;
 
 /**
  * line Table class
  *
  * @since  1.6
  */
-class ActTableline extends Table
+class ActTableline extends \Joomla\CMS\Table\Table
 {
 	/**
 	 * Check if a field is unique
@@ -35,25 +35,11 @@ class ActTableline extends Table
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$categories = explode(',', $this->sector);
-		$andWhereCondition = array();
-		foreach($categories as $categoryid)
-		{
-			$andWhereCondition[] = $db->quoteName('sector') . ' like "%' . $categoryid . '%"';
-		}
-
-
 		$query
 			->select($db->quoteName($field))
 			->from($db->quoteName($this->_tbl))
 			->where($db->quoteName($field) . ' = ' . $db->quote($this->$field))
 			->where($db->quoteName('id') . ' <> ' . (int) $this->{$this->_tbl_key});
-
-			if (!empty($andWhereCondition))
-			{
-				$query->andWhere($andWhereCondition);
-			}
-
 
 		$db->setQuery($query);
 		$db->execute();
@@ -69,12 +55,10 @@ class ActTableline extends Table
 	public function __construct(&$db)
 	{
 		parent::__construct('#__act_line', 'id', $db);
-		
 		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_act.line'));
 		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_act.line'));
-		$this->setColumnAlias('published', 'state');
-		
-	}
+        $this->setColumnAlias('published', 'state');
+    }
 
 	/**
 	 * Overloaded bind function to pre-process the params.
@@ -291,6 +275,87 @@ class ActTableline extends Table
 	}
 
 	/**
+	 * Method to set the publishing state for a row or list of rows in the database
+	 * table.  The method respects checked out rows by other users and will attempt
+	 * to checkin rows that it can after adjustments are made.
+	 *
+	 * @param   mixed    $pks     An optional array of primary key values to update.  If not
+	 *                            set the instance property value is used.
+	 * @param   integer  $state   The publishing state. eg. [0 = unpublished, 1 = published]
+	 * @param   integer  $userId  The user id of the user performing the operation.
+	 *
+	 * @return   boolean  True on success.
+	 *
+	 * @since    1.0.4
+	 *
+	 * @throws Exception
+	 */
+	public function publish($pks = null, $state = 1, $userId = 0)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Sanitize input.
+		ArrayHelper::toInteger($pks);
+		$userId = (int) $userId;
+		$state  = (int) $state;
+
+		// If there are no primary keys set check to see if the instance key is set.
+		if (empty($pks))
+		{
+			if ($this->$k)
+			{
+				$pks = array($this->$k);
+			}
+			// Nothing to set publishing state on, return false.
+			else
+			{
+				throw new Exception(500, Text::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+			}
+		}
+
+		// Build the WHERE clause for the primary keys.
+		$where = $k . '=' . implode(' OR ' . $k . '=', $pks);
+
+		// Determine if there is checkin support for the table.
+		if (!property_exists($this, 'checked_out') || !property_exists($this, 'checked_out_time'))
+		{
+			$checkin = '';
+		}
+		else
+		{
+			$checkin = ' AND (checked_out = 0 OR checked_out = ' . (int) $userId . ')';
+		}
+
+		// Update the publishing state for rows with the given primary keys.
+		$this->_db->setQuery(
+			'UPDATE `' . $this->_tbl . '`' .
+			' SET `state` = ' . (int) $state .
+			' WHERE (' . $where . ')' .
+			$checkin
+		);
+		$this->_db->execute();
+
+		// If checkin is supported and all rows were adjusted, check them in.
+		if ($checkin && (count($pks) == $this->_db->getAffectedRows()))
+		{
+			// Checkin each row.
+			foreach ($pks as $pk)
+			{
+				$this->checkin($pk);
+			}
+		}
+
+		// If the JTable instance value is in the list of primary keys that were set, set the instance.
+		if (in_array($this->$k, $pks))
+		{
+			$this->state = $state;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Define a namespaced asset name for inclusion in the #__assets table
 	 *
 	 * @return string The asset name
@@ -334,23 +399,18 @@ class ActTableline extends Table
 		return $assetParentId;
 	}
 
-	
-    /**
-     * Delete a record by id
-     *
-     * @param   mixed  $pk  Primary key value to delete. Optional
-     *
-     * @return bool
-     */
-    public function delete($pk = null)
-    {
-        $this->load($pk);
-        $result = parent::delete($pk);
-        
-        return $result;
-    }
-
-	
-
-	
+	/**
+	 * Delete a record by id
+	 *
+	 * @param   mixed  $pk  Primary key value to delete. Optional
+	 *
+	 * @return bool
+	 */
+	public function delete($pk = null)
+	{
+		$this->load($pk);
+		$result = parent::delete($pk);
+		
+		return $result;
+	}
 }

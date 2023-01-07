@@ -17,7 +17,7 @@ jimport('joomla.application.component.controllerform');
  *
  * @since  1.6
  */
-class ActControllerColor extends \Joomla\CMS\MVC\Controller\FormController
+class ActControllerColor extends JControllerForm
 {
 	/**
 	 * Constructor

@@ -11,7 +11,6 @@
 defined('_JEXEC') or die;
 
 use \Joomla\CMS\Factory;
-use \Joomla\CMS\Language\Text;
 
 /**
  * Act helper.
@@ -30,25 +29,25 @@ class ActHelper
 	public static function addSubmenu($vName = '')
 	{
 		JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_ROUTES'),
+			JText::_('COM_ACT_TITLE_ROUTES'),
 			'index.php?option=com_act&view=routes',
 			$vName == 'routes'
 		);
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_COMMENTS'),
+			JText::_('COM_ACT_TITLE_COMMENTS'),
 			'index.php?option=com_act&view=comments',
 			$vName == 'comments'
 		);
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_SETTERS'),
+			JText::_('COM_ACT_TITLE_SETTERS'),
 			'index.php?option=com_act&view=setters',
 			$vName == 'setters'
 		);
 
 		JHtmlSidebar::addEntry(
-			Text::_('JCATEGORIES') . ' (' . Text::_('COM_ACT_TITLE_SETTERS') . ')',
+			JText::_('JCATEGORIES') . ' (' . JText::_('COM_ACT_TITLE_SETTERS') . ')',
 			"index.php?option=com_categories&extension=com_act.setters",
 			$vName == 'categories.setters'
 		);
@@ -57,19 +56,19 @@ JHtmlSidebar::addEntry(
 		}
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_COLORS'),
+			JText::_('COM_ACT_TITLE_COLORS'),
 			'index.php?option=com_act&view=colors',
 			$vName == 'colors'
 		);
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_LINES'),
+			JText::_('COM_ACT_TITLE_LINES'),
 			'index.php?option=com_act&view=lines',
 			$vName == 'lines'
 		);
 
 		JHtmlSidebar::addEntry(
-			Text::_('JCATEGORIES') . ' (' . Text::_('COM_ACT_TITLE_LINES') . ')',
+			JText::_('JCATEGORIES') . ' (' . JText::_('COM_ACT_TITLE_LINES') . ')',
 			"index.php?option=com_categories&extension=com_act.lines",
 			$vName == 'categories.lines'
 		);
@@ -78,30 +77,30 @@ JHtmlSidebar::addEntry(
 		}
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_GRADES'),
+			JText::_('COM_ACT_TITLE_GRADES'),
 			'index.php?option=com_act&view=grades',
 			$vName == 'grades'
 		);
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_SPONSORS'),
+			JText::_('COM_ACT_TITLE_SPONSORS'),
 			'index.php?option=com_act&view=sponsors',
 			$vName == 'sponsors'
 		);
 
 JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_SECTORS'),
+			JText::_('COM_ACT_TITLE_SECTORS'),
 			'index.php?option=com_act&view=sectors',
 			$vName == 'sectors'
 		);
 
 		JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_TICKLISTS'),
+			JText::_('COM_ACT_TITLE_TICKLISTS'),
 			'index.php?option=com_act&view=ticklists',
 			$vName == 'ticklists'
 		);
 		JHtmlSidebar::addEntry(
-			Text::_('COM_ACT_TITLE_MYCOMMENTS'),
+			JText::_('COM_ACT_TITLE_MYCOMMENTS'),
 			'index.php?option=com_act&view=mycomments',
 			$vName == 'mycomments'
 		);

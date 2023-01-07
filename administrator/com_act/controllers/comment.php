@@ -17,7 +17,7 @@ jimport('joomla.application.component.controllerform');
  *
  * @since  1.6
  */
-class ActControllerComment extends \Joomla\CMS\MVC\Controller\FormController
+class ActControllerComment extends JControllerForm
 {
 	/**
 	 * Constructor

@@ -103,28 +103,7 @@ class ActHelpersAct
     }   
 
 
-     /**
-    * Anzahl Rankingpoints je nach Begehungsstil
-    * @param 
-    * @return 
-    */
-    public static function getRankingpoints($gradeID, $ascent) {
-      
-		$db	   = Factory::getDbo();
-        $query = $db->getQuery(true);
 
-        $query
-            ->select('CASE
-                        WHEN '.(int) $ascent.' = 3 THEN lead
-                        WHEN '.(int) $ascent.' = 1 THEN flash
-                        WHEN '.(int) $ascent.' = 2 THEN onsight
-                     END AS rankingpoint')
-            ->from('#__act_grade')
-            ->where('id = '.(int) $gradeID);
-
-        $db->setQuery($query);
-        return $db->loadResult();
-    }   
 
    
     /**
@@ -349,23 +328,7 @@ class ActHelpersAct
         return $permission;
     }
     
-    
-    /**
-     * Gets the Grade as Uiaa
-     *
-     * @param integer $params The Grad z.b Settergrade 
-     *
-     * @return  string
-     */
-    
-    public static function uiaa($params)
-    {
-    // Reihenfolge normal
-    $params = str_replace(array('10', '11', '12', '13', '14', '15', '16','17', '18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','40',),    
-                          array('3', '3+', '4-', '4', '4+','5-','5','5+','6-','6','6+','7-','7','7+','8-','8','8+','9-','9','9+','10-','10','10+','11-','11','11+','12-','?'), 
-                          $params);
-    return $params;
-    }
+
 
 
      /**
@@ -449,7 +412,7 @@ class ActHelpersAct
     }
 
 
-    	/**
+    /**
      * Routeoption - Text und Icon 
      * z.B Automat, Toprpbe
      * @param   int     $pk     The item's id

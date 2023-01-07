@@ -62,7 +62,7 @@ $unix_date = strtotime(Factory::getDate());
 
 <?php echo LayoutHelper::render('default_filter', array('view' => $this), dirname(__FILE__)); ?>
 
-<?php if (sizeof($this->items) !== 0 ) : ?> <?php // Pr�fe ob es �berhaubpt Ergebnisse gibt ?>
+<?php if (sizeof($this->items) !== 0 ) : ?> <?php // Prüfe ob es überhaubpt Ergebnisse gibt ?>
 
     <div class="table-responsive ">
         <table class="table table-striped table-sm" id="routeList">
@@ -86,12 +86,12 @@ $unix_date = strtotime(Factory::getDate());
                 <?php if ($calcgrade == 1 ) : ?>
                 <th class="r_cgrade text-center"> <?php // C-Grade ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_C_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_C_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'Calc_Grad', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'orderCGrade', $listDirn, $listOrder); ?>
                 </th>
                 <?php endif; ?>   
                 <th class="r_vrgrade text-center"><?php // VR_Grade ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_VR_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_VR_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTER_GRADE', 'a.settergrade', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTER_GRADE', 'orderVrGrade', $listDirn, $listOrder); ?>
                 </th>	
                 <th class="r_admininfo d-none d-xl-table-cell" ><?php // Route Info ? Admin ?>
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_INFO', 'a.info', $listDirn, $listOrder); ?>
@@ -189,13 +189,11 @@ $unix_date = strtotime(Factory::getDate());
                             <?php endif; ?>
                         </a>
                     </td>
-                   
                     <td class="d-none d-xxl-table-cell">
                          <a href="<?php echo Route::_('index.php?option=com_act&view=routesadmin'); ?>?filter[line]=<?php echo $item->lineId; ?>">
                             <?php echo $item->line; ?>
                         </a>
                     </td>
-
                     <td class="text-center"><?php // Color ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routesadmin'); ?>?filter[color]=<?php echo $item->colorId; ?>">
                             <span class="routecolor" style="background: <?php echo $item->rgbcode; ?>;"></span>
@@ -212,17 +210,13 @@ $unix_date = strtotime(Factory::getDate());
 						</a>
                           <?php if (strtotime($item->setterdate) > ($unix_date - 1209600) ): ?><span class="new_route"><?php echo Text::_('COM_ACT_ROUTE_NEW_ROUTE'); ?></span> <?php endif; ?>
                     </td>
-                    <?php if ($calcgrade == 1 ) : ?><?php // C-Grade - UIAA by helper ?>
+                    <?php if ($calcgrade == 1 ) : ?><?php // C-Grade ?>
                     <td  class="text-center">
-                        <?php if ($item->Calc_Grad == 0) :?>
-                            <?php echo '-'; ?>
-                        <?php else: ?>
-                              <?php echo ActHelpersAct::uiaa(round($item->Calc_Grad,0)); ?>
-                        <?php endif; ?>
+                    <?php echo (0 == (int)$item->c_grade) ? '-' : $item->c_grade; ?>
                     </td>
                     <?php endif; ?>
                     <td class="text-center"><?php // VR_Grade Wenn Null dann - Wichtig f�r Speedroute ?>
-                    <?php echo (1 == $item->exclude) ? '-' : ActHelpersAct::uiaa($item->settergrade); ?><?php // Short if else ?>
+                    <?php echo (1 == $item->exclude OR 0 == (int)$item->s_grade) ? '-' : $item->s_grade; ?><?php // Short if else ?>
                     </td> 
                     <td class="d-none d-xl-table-cell"><?php // Info Route Admin? ?>
                         <?php if (!empty($item->info)) : ?>

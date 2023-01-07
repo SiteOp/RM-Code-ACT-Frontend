@@ -36,8 +36,8 @@ class ActModelTicklists extends JModelList
             $config['filter_fields'] = array(
                 'route', 'a.route',
                 'comment', 'a.comment',
-                'calc_grade', 't.calc_grade',
-                'myroutegrade', 'a.myroutegrade',
+                'orderCGrade', 'orderCGrade',
+                'orderMyGrade', 'orderMyGrade',
                 'stars', 'a.stars',
                 'ascent', 'a.ascent',
                 'tries', 'a.tries',
@@ -112,22 +112,35 @@ class ActModelTicklists extends JModelList
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        // Select record from Comment (a), Route (route), Grade (g/gr)
-        // Where Comment User ID setState
-        // Where is publish or unpublish / not Trash or Archiv
-        // NOTE - ID is required for delet
-        $query->select(array('a.id', 'a.comment', 'a.stars', 'a.ascent', 'a.tries', 'a.climbdate', 'a.state', 'ticklist_yn',  'a.tick_comment', 'a.myroutegrade as my_uiaa',
-                             'route.id AS route_id', 'route.state AS route_state', 'route.name AS route_name',
-							 't.calc_grade as cgrade_uiaa',
+
+		// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+        JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+        $grade_table = GradeHelpersGrade::getGradeTable()[0];
+        $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+        
+        $query->select(array(// Comment
+                             'a.id', // NOTE - ID is required for delet
+                             'a.comment', 'a.stars', 'a.ascent', 'a.tries', 'a.climbdate', 
+                             'a.state', 'ticklist_yn',  'a.tick_comment',
+                             // Route
+                             'r.id AS route_id', 'r.state AS route_state', 'r.name AS route_name',
+                             // My-Grade
+                             'mg.grade AS my_grade', 
+                             'mg.'.$id_grade.' AS orderMyGrade',
+                             // C-Grade
+                             'cg.grade AS c_grade', 
+                             'cg.'.$id_grade.' AS orderCGrade', 
                              )
                       )
               ->from('#__act_comment AS a')
 
-              ->join('LEFT', '#__act_route AS route ON route.id = a.route')
-              ->join('LEFT', '#__act_trigger_calc AS t ON t.id     = route.id')
-              ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
+              ->join('LEFT', '#__act_route        AS r     ON r .id             = a.route')
+              ->join('LEFT', '#__act_trigger_calc AS t     ON t.id              = r.id')
+              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = My-Grade
               ->where($db->qn('a.created_by') . '='. (int) $user)
               ->where($db->qn('ticklist_yn') . '= 1')
+              ->where('cg.'.$id_grade.' IS NOT NULL')
               ->where($db->qn('a.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
 
         // Filter by search in title - Filter Name of Route
@@ -142,7 +155,7 @@ class ActModelTicklists extends JModelList
             else
             {
                 $search = $db->Quote('%' . $db->escape($search, true) . '%');
-                $query->where($db->qn('route.name') . ' LIKE ' . $search );
+                $query->where($db->qn('r.name') . ' LIKE ' . $search );
             }
         }
             
@@ -150,7 +163,7 @@ class ActModelTicklists extends JModelList
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
         if ($filter_myroutegrade != '')
         {
-            $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_myroutegrade).')');
+            $query->where($db->qn('mg.filter') . 'IN (' . implode(',', $filter_myroutegrade).')');
         }
 
         // Filtering stars
@@ -206,11 +219,15 @@ class ActModelTicklists extends JModelList
      */
       public function getRoutesTotal()
     {
-      // Get a db connection.
-      $db = JFactory::getDbo();
-      $user    = JFactory::getuser()->id;
+      $db   = Factory::getDbo();
+      $user = Factory::getuser()->id;
 
-      // Create a new query object.
+
+	  // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+      JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+      $grade_table = GradeHelpersGrade::getGradeTable()[0];
+      $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+
       $query = $db->getQuery(true);
       $query->select(array('COUNT(CASE WHEN MONTH(c.climbdate) =  1 then 1 ELSE NULL END) as Jan',
                            'COUNT(CASE WHEN MONTH(c.climbdate) =  2 then 1 ELSE NULL END) as Feb',
@@ -228,16 +245,17 @@ class ActModelTicklists extends JModelList
                     )
                     
             ->from('#__act_comment AS c')
-            ->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
+            //->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
+            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = c.myroutegrade') // Convertierter Grad  My Grade
             ->where($db->qn('c.created_by') . '=' . (int) $user)
             ->where($db->qn('ticklist_yn') . '= 1')
             ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
             
-             // Filtering myroutegrade
+        // Filtering myroutegrade
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
         if ($filter_myroutegrade != '')
         {
-            $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_myroutegrade).')');
+            $query->where($db->qn('mg.filter') . 'IN (' . implode(',', $filter_myroutegrade).')');
         }
         
        $db->setQuery($query);
@@ -257,6 +275,12 @@ class ActModelTicklists extends JModelList
       $db   = Factory::getDbo();
       $user = Factory::getuser()->id;
 
+
+	  // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+      JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+      $grade_table = GradeHelpersGrade::getGradeTable()[0];
+      $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+
       // Create a new query object.
       $query = $db->getQuery(true);
       $query->select(array('COUNT(CASE WHEN MONTH(c.climbdate) =  1 then 1 ELSE NULL END) as Jan',
@@ -275,7 +299,7 @@ class ActModelTicklists extends JModelList
                     )
                     
             ->from('#__act_comment AS c')
-            ->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
+            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = c.myroutegrade') // Convertierter Grad  My Grade
             ->where($db->qn('c.created_by') . '=' . (int) $user)
             ->where($db->qn('ticklist_yn') . '= 1')
             ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
@@ -284,7 +308,7 @@ class ActModelTicklists extends JModelList
         $filter_myroutegrade = $this->state->get("filter.myroutegrade");
         if ($filter_myroutegrade != '')
         {
-            $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_myroutegrade).')');
+            $query->where($db->qn('mg.filter') . 'IN (' . implode(',', $filter_myroutegrade).')');
         }
 
          // Filtering ascent

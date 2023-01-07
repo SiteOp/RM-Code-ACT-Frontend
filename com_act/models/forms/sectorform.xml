@@ -120,6 +120,21 @@
        <field name="soll34" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_34" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade34" labelclass="lblg grade11"/>
        <field name="soll35" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_35" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade35" labelclass="lblg grade11"/>
        <field name="soll36" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_36" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade36" labelclass="lblg grade12"/>
+       <field name="soll37" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_37" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade37" labelclass="lblg grade9"/>
+       <field name="soll38" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_38" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade38" labelclass="lblg grade9"/>
+       <field name="soll39" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_39" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade39" labelclass="lblg grade9"/>
+       <field name="soll40" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_41" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade40" labelclass="lblg grade12"/>
+       <field name="soll41" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_42" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade41" labelclass="lblg grade12"/>
+       <field name="soll42" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_43" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade42" labelclass="lblg grade12"/>
+       <field name="soll43" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_44" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade43" labelclass="lblg grade12"/>
+       <field name="soll44" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_48" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade44" labelclass="lblg grade12"/>
+       <field name="soll45" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_45" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade45" labelclass="lblg grade12"/>
+       <field name="soll46" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_46" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade46" labelclass="lblg grade12"/>
+       <field name="soll47" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_47" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade47" labelclass="lblg grade12"/>
+       <field name="soll48" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_48" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade48" labelclass="lblg grade12"/>
+       <field name="soll49" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_49" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade49" labelclass="lblg grade12"/>
+       <field name="soll50" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_50" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade50" labelclass="lblg grade12"/>
+       <field name="soll53" type="text" filter="integer" label="COM_ACT_ROUTES_GRADE_OPTION_53" pattern="[0-9]+([\.][0-9]+)?" class="form-control grade" id="grade53" labelclass="lblg grade12"/>
 
        <field name="routestotal" 
            type="number" 

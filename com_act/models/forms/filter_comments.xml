@@ -51,6 +51,7 @@
                format="%d.%m.%Y"
                translateformat="true"
          -->
+         <!--
           <field name="created.from" 
                label=""
                type="calendar" 
@@ -62,5 +63,6 @@
                hint="COM_ACT_SEARCH_FILTER_COMMENT_FROM"
               onchange="this.form.submit();"   
         />
+        -->
     </fields>
 </form>

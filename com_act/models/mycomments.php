@@ -37,8 +37,8 @@ class ActModelMycomments extends JModelList
                 'id', 'a.id',
                 'route', 'a.route',
                 'comment', 'a.comment',
-                'calc_grade', 't.calc_grade',
-                'myroutegrade', 'a.myroutegrade',
+                'orderCGrade', 'orderCGrade',
+                'orderMyGrade', 'orderMyGrade',
                 'stars', 'a.stars',
                 'ascent', 'a.ascent',
                 'tries', 'a.tries',
@@ -108,27 +108,42 @@ class ActModelMycomments extends JModelList
      */
     protected function getListQuery()
     {
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         $user = $user->get('id');
         
         // Create a new query object.
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        // Select record from Comment (a), Route (route), Grade (g/gr)
-        // Where Comment User ID setState
-        // Where is publish or unpublish / not Trash or Archiv
-        // NOTE - ID is required for delet
-        $query->select(array('a.id, a.comment, a.stars, a.created, a.state', 'a.ticklist_yn', 'a.myroutegrade as my_uiaa', 
+
+		// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+        JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+        $grade_table = GradeHelpersGrade::getGradeTable()[0];
+        $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+
+        $query->select(array(// Comment
+                             'a.id', //ID is required for delet
+                             'a.comment, a.stars, a.created, a.state', 'a.ticklist_yn',
+                            //  'a.myroutegrade as my_uiaa', 
+                              // Route
                              'route.id AS route_id', 'route.state AS route_state', 'route.name AS route_name',
-                             ' t.calc_grade as cgrade_uiaa'
+                             // Trigger
+                          //   ' t.calc_grade as cgrade_uiaa',
+                             // My-Grade
+                             'mg.grade AS my_grade', 
+                             'mg.'.$id_grade.' AS orderMyGrade',
+                             // C-Grade
+                             'cg.grade AS c_grade', 
+                             'cg.'.$id_grade.' AS orderCGrade', 
                              )
                       )
               ->from('#__act_comment AS a')
               
               ->join('LEFT', '#__act_route AS route     ON route.id  = a.route')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id     = route.id')
-              ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
+             // ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
+              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = a.myroutegrade') // Convertierter Grad cg = My-Grade
               ->where('a.created_by ='. $user);
         
             
@@ -157,7 +172,7 @@ class ActModelMycomments extends JModelList
             if ($filter_sgrade != '')
              {
                 JArrayHelper::toInteger($filter_sgrade);
-                $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_sgrade).')');
+                $query->where($db->qn('cg.filter') . 'IN (' . implode(',', $filter_sgrade).')');
              }
 
         // Filtering stars

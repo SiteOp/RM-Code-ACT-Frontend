@@ -18,9 +18,15 @@ $doc->addScript('media/com_routes_planning/js/prozent.js', true, true);
 
 $user    = Factory::getUser();
 
-// PARAMS Routes-Planning
-$grade_start = $this->grade_start_percent; 
-$grade_end = $this->grade_end_percent; 
+// Helper Grade aus ACT Grade.php
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+$gradeList   = GradeHelpersGrade::getGradeListPlanningPercent(); // JSON String der Grade
+$color_array = json_decode(GradeHelpersGrade::getGradeColorList());  // JSON String der Farben
+$listRange   = GradeHelpersGrade::getSettergradeListRange(); // JSON String der Grade
+
+// ACT Params wichtig um die Farbe der Grade zu erhalten
+$params      = JComponentHelper::getParams('com_act');
 
 
 if(!empty($this->item->id)) {                            // Nur wenn es die ID bzw. das Gebäude schon gibt
@@ -28,8 +34,13 @@ if(!empty($this->item->id)) {                            // Nur wenn es die ID b
 	$total_lines = count($this->lines);
 } else {
 	$total_lines = 0;
+
 }
+print_R($json);
+
 ?>
+
+             
 		
 	<h3 class="mt-5"><?php echo Text::_('COM_ACT_SHOULD_DISTRIBUTE_GRADES'); ?></h3>
 	<div><?php echo Text::_('COM_ACT_TOTAL_LINES'); ?>: <span id="total_lines"><?php echo $total_lines ; ?></span></div>
@@ -44,33 +55,36 @@ if(!empty($this->item->id)) {                            // Nur wenn es die ID b
             <thead>
                 <tr id="gradelabel">
 				<td><?php echo Text::_('COM_ACT_GRADE'); ?></td>
-                <?php for ($i = $grade_start; $i <= $grade_end; $i++) : ?>
-                     <?php $color = "c$i";
-                           $varname = 'color';
-                           ${$varname.$i} = $this->$color; 
-                     ?>
-					<td class="grade">
-						<label id="gradelbl<?php echo $i; ?>" class="lblg grade<?php echo $i; ?>" style="border-color:<?php echo $this->$color; ?>"><?php echo $i; ?></label>
-					</td>
-					<?php endfor; ?>
+                <?php foreach($gradeList AS $value) : ?>
+                    <td class="grade">
+                        <label id="gradelbl<?php echo $value->id_grade; ?>" class="lblg grade<?php echo $value->id_grade; ?>" 
+                               style="border-color:<?php echo  $params['color'.$value->filter.'grad']; ?>">
+                            <?php echo $value->grade; ?>
+                        </label>
+                    </td>
+
+                <?php endforeach; ?>
                 </tr>
             </thead>
             <tbody>
 			<tr id="percent_val"> 
-                    <td><?php echo Text::_('COM_ACT_PERCENT'); ?></td>   
-					<?php for ($i = $grade_start; $i <=$grade_end; $i++) : ?>
-						<td class="grade">
-							<input type="number" id="percent<?php echo $i; ?>" class="form-control" min="0" max="100" step="1" value="<?php echo $json[$i]; ?>">
+                    <td><?php echo Text::_('COM_ACT_PERCENT'); ?></td>
+         
+                    <?php foreach($gradeList AS $value) : ?>
+                        <td class="grade">
+							<input type="number" id="percent<?php echo $value->filter; ?>" class="form-control" min="0" max="100" step="1" value="<?php echo $json[$value->filter]; ?>">
 						</td>
-					<?php endfor; ?>
+       
+                    <?php endforeach; ?>
                 </tr>
 				<tr id="allroutes">
-                    <td  width="110px"><?php echo Text::_('COM_ACT_NUMBER_ROUTES'); ?></td>
-                    <?php for($i = $grade_start; $i <= $grade_end; $i++) : ?>
+                    <td  width="110px"><?php echo Text::_('COM_ACT_NUMBER_ROUTES'); ?></td> 
+                    <?php foreach($gradeList AS $value) : ?>
                         <td>
-						<input type="text" id="routes_grade<?php echo $i; ?>" class="form-control" name="routes_grade<?php echo $i; ?>" value="" readonly>
+						<input type="text" id="routes_grade<?php echo $value->filter; ?>" class="form-control" name="routes_grade<?php echo $value->grade; ?>" value="" readonly>
 						</td>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
+
                 </tr>
 				<tr>
                     <td><?php echo Text::_('COM_ACT_FULFILLMENT'); ?></td>

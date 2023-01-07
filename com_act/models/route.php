@@ -80,17 +80,22 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
     
     { 
         $id = $this->getState('route.id');
+
+		$params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
          
-        // Get a db connection.
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
         
-        // Select record from - Comment (c), User (user), Route (a)
-        // Where Route ID setState
-        $query->select(array('c.id as c_id', 'c.state', 'c.stars', 'c.comment', 'c.myroutegrade', 'username AS user_name', 'a.settergrade', 'c.created_by', 'c.ascent', 'c.ticklist_yn'))
+        $query->select(array('c.id as c_id', 'c.state', 'c.stars', 'c.comment', 
+		                     'username AS user_name', 'c.created_by', 'c.ascent', 'c.ticklist_yn',
+							 'a.settergrade',
+							 'g.grade'
+							 ))
               ->from('#__act_comment AS c')
               ->join('LEFT', '#__users AS user ON c.created_by = user.id')
               ->join('LEFT', '#__act_route AS a ON c.route = a.id')
+			  ->join('LEFT', '#__'.$grade_table.' AS g ON g.id_grade = c.myroutegrade') // Convertierter Grad cg = C-Grade
               ->where($db->qn('c.route').'='. (int) $id)
               ->order($db->qn('c.id') . 'DESC');
               
@@ -139,7 +144,6 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
                     // Convert the JTable to a clean JObject.
                     $properties  = $table->getProperties(1);
                     $this->_item = ArrayHelper::toObject($properties, 'JObject');
-
                     
                 }
 
@@ -150,35 +154,54 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				
             }
 
-        // Get a db connection
+		$params      = JComponentHelper::getParams('com_act');
+		$grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
-        
-        // Select record from - Route (a), Color (c), Setter (s), Line (l), Line Kategorie (cat), Sponsoring (sp)
+
         // Where Route ID setState
-        $query->select(array
-                        ('a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.infoadmin', 'a.modified', 'a.settergrade', 'a.checked_out', 'a.exclude', 'a.infoextend',
-						 'a.routetype', 'a.extend_txt', 'a.extend_check1', 'a.extend_check2', 'a.info1_extend', 'a.info2_extend', 'a.info3_extend', 'a.info4_extend', 
-                         'c.rgbcode', 'c.color',
-                         's.settername', 
-                         'g.uiaa', 'g.franzoesisch',
-                         'l.line',  'l.height', 'l.indicator',
-                         'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
-                         'sp.name AS sp_name', 'sp.media AS sp_media', 'sp.txt AS sp_txt',
-                         't.calc_grade_round AS calc_grade', 't.avg_stars',
-						 'h.name AS extend_name'
-                         )
-                       )
+        $query->select(array(
+				// Route
+				'a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.infoadmin', 'a.settergrade',
+				'a.modified', 'a.checked_out', 'a.exclude', 'a.infoextend',
+				'a.routetype', 'a.extend_txt', 'a.extend_check1', 'a.extend_check2', 
+				'a.info1_extend', 'a.info2_extend', 'a.info3_extend', 'a.info4_extend', 
+				// Color
+                'c.rgbcode', 'c.color',
+				// Setter
+                's.settername', 
+				// Line
+                'l.line',  'l.height', 'l.indicator',
+				// Sector
+                'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
+				// Sponsor
+                'sp.name AS sp_name', 'sp.media AS sp_media', 'sp.txt AS sp_txt',
+				// Trigger
+                't.calc_grade_round AS calc_grade', // Für Berechnung des Tacho 
+				't.avg_stars',
+				// Holds Manufacturer
+				'h.name AS extend_name',
+				// VR-Grade
+				'vr.grade AS s_grade', 
+				// C-Grade
+				'cg.grade AS c_grade',
+				'cg.id_grade',
+				// Grade Convert
+                'cg.grade_convert'
+                )
+             )
                        
               ->from('#__act_route AS a')
-              ->join('LEFT', '#__act_color    AS c  ON a.color       = c.id')
-              ->join('LEFT', '#__act_setter   AS s  ON a.setter      = s.id')
-              ->join('LEFT', '#__act_line     AS l  ON a.line        = l.id')
-              ->join('LEFT', '#__act_grade    AS g  ON a.settergrade = g.id')
-              ->join('LEFT', '#__act_sponsor  AS sp ON a.sponsor     = sp.id')
-              ->join('LEFT', '#__act_sector   AS sc ON sc.id         = l.sector')
-              ->join('LEFT', '#__act_trigger_calc AS t ON t.id       = a.id')
-			  ->join('LEFT', '#__act_holds_manufacturer AS h ON h.id = a.extend_sql' )
+			  ->join('LEFT', '#__act_trigger_calc       AS t  ON t.id        = a.id')               // Trigger
+			  ->join('LEFT', '#__'.$grade_table.'       AS cg ON cg.id_grade = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.'       AS vr ON vr.id_grade = a.settergrade')      // Convertierter Grad vr = VR-Grade
+              ->join('LEFT', '#__act_color              AS c  ON a.color     = c.id')               // Color
+              ->join('LEFT', '#__act_setter             AS s  ON a.setter    = s.id')               // Setter
+              ->join('LEFT', '#__act_line               AS l  ON a.line      = l.id')               // Line
+              ->join('LEFT', '#__act_sponsor            AS sp ON a.sponsor   = sp.id')              // Sponsor
+              ->join('LEFT', '#__act_sector             AS sc ON sc.id       = l.sector')           // Sector
+			  ->join('LEFT', '#__act_holds_manufacturer AS h  ON h.id        = a.extend_sql' )      // Holds
               ->where($db->qn('a.id') . '='. (int) $id);
 
         
@@ -340,9 +363,8 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 	public function delete($id)
 	{
 		$table = $this->getTable();
-
-                
-                    return $table->delete($id);
+     
+        return $table->delete($id);
                 
 	}
 

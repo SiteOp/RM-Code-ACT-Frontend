@@ -9,6 +9,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 JHtml::_('behavior.keepalive');
@@ -17,25 +18,34 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
 // Load admin language file
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $lang->load('com_act', JPATH_SITE);
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 $doc->addScript(JUri::base() . '/media/com_act/js/form.js');
 
-$user    = JFactory::getUser();
-$canEdit = ActHelpersAct::canUserEdit($this->item, $user);
-$canState = JFactory::getUser()->authorise('core.edit.state','com_act');
+$user       = Factory::getUser();
+$canEdit    = ActHelpersAct::canUserEdit($this->item, $user);
+$canState   = Factory::getUser()->authorise('core.edit.state','com_act');
 $canChange  = $user->authorise('core.edit.state', 'com_act');
 $canDelete  = $user->authorise('core.delete', 'com_act');
 
-$params      = JComponentHelper::getParams( 'com_act' );
-$grade_offset_comment   = $params['grade_offset_comment'];
-$stars_no_rating = $params['stars_no_rating'];
-
+// ACT Params 
+$params                = JComponentHelper::getParams( 'com_act' );
+$grade_offset_comment  = $params['grade_offset_comment'];
+$stars_no_rating       = $params['stars_no_rating'];
 
 // Start und Ende der Grade unter Berücksichtigung der Anzahl wieviel rauf und runter bewertet werden darf ($grade_offset_comment)
 $start_grade = $this->route->settergrade - $grade_offset_comment;
-$end_grade =  $this->route->settergrade + $grade_offset_comment;
+$end_grade   =  $this->route->settergrade + $grade_offset_comment;
+
+// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+// Niedrigster und Höchster Wert (id_grade) der Schwierigkeiten 
+// Beispiel 10 = 3, 36 = 12-
+$range      = GradeHelpersGrade::getSettergradeListRange();
+$minGrade   = $range[0]->min_id_grade; 
+$maxGrade   = $range[0]->max_id_grade;
 
 if($this->item->state == 1){
 	$state_string = 'Publish';
@@ -44,21 +54,22 @@ if($this->item->state == 1){
 	$state_string = 'Unpublish';
 	$state_value = 0;
 }
+
 $routeStateOk = array(1,-1);
 ?>
 <?php // Wenn die Route im Archiv ist darf keine Bearbeitung von Kommentaren möglich sein ?>
-<?php if ((!$canEdit) OR (!in_array($this->route->state, $routeStateOk))) : ?> 
-    <h3><?php throw new Exception(JText::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
+<?php if ((!$canEdit) OR (!in_array($this->route->state, $routeStateOk))) : ?>  
+    <h3><?php throw new Exception(Text::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
 <?php else : ?>
 
     <?php // Pager-Header Start ?>
     <?php if (!empty($this->item->id)): ?>
         <div class="page-header">
-            <h1><?php echo JText::sprintf('COM_ACT_FORM_COMMENT_EDIT_ITEM_TITLE', $this->item->id); ?></h1>
+            <h1><?php echo Text::sprintf('COM_ACT_FORM_COMMENT_EDIT_ITEM_TITLE', $this->item->id); ?></h1>
         </div>
 	<?php else: ?>
         <div class="page-header">
-            <h1 itemprop="headline"><?php echo JText::_('COM_ACT_COMMENT_COLOR_APPLY_ITEM_TITLE'); ?></h1>
+            <h1 itemprop="headline"><?php echo Text::_('COM_ACT_COMMENT_COLOR_APPLY_ITEM_TITLE'); ?></h1>
         </div>
     <?php endif; ?>
     <?php // Pager-Header END ?>
@@ -77,7 +88,7 @@ $routeStateOk = array(1,-1);
                         <div class="card-header">
                             <h3>
                                 <i class="<?php echo Text::_('COM_ACT_FA_COMMENT'); ?>"></i> 
-                                <?php echo JText::_('COM_ACT_FORM_LBL_COMMENT_COMMENT'); ?> 
+                                <?php echo Text::_('COM_ACT_FORM_LBL_COMMENT_COMMENT'); ?> 
                             </h3>
                         </div>
                         <div class="card-body">
@@ -117,32 +128,36 @@ $routeStateOk = array(1,-1);
                                 </div>
                                 <div class="col-12 col-md-6 ">
                                     <div class="controls">
-                                        <select id="jform_myroutegrade" name="jform[myroutegrade]" > 
-                                            <option value="0" selected="selected"><?php echo JText::_('COM_ACT_FORM_LBL_HINT_NO_GRAD'); ?></option> 
-                                             <?php if($this->route->settergrade !=0) : ?>
-                                            <?php foreach (range($start_grade, $end_grade) as $i) : ?>
-                                                <?php if($i >= 10 && $i <= 36) :?>
-                                                    <option value="<?php echo $i; ?>"
-                                                        <?php echo (($i == $this->item->myroutegrade[0]) ? 'selected="selected"' : '');  ?>>
-                                                        <?php echo ActHelpersAct::uiaa($i); ?>
-                                                    </option>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                        <?php // Wenn VR-Grade unbekannt dann erlaube alle Grade zum bewerten ?>
-                                        <?php else : ?>
-                                            <?php foreach (range(10, 36) as $i) : ?>
-                                                <option value="<?php echo $i; ?>"
-                                                <?php echo (($i == $this->item->myroutegrade[0]) ? 'selected="selected"' : '');  ?>>
-                                                <?php echo ActHelpersAct::uiaa($i); ?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
+                                    <select id="jform_myroutegrade" name="jform[myroutegrade]" > 
+                                            <option value="0" selected="selected"><?php echo Text::_('COM_ACT_FORM_LBL_HINT_NO_GRAD'); ?></option> 
+                                            <?php // Wenn VR-Grad vorhanden ?>
+                                            <?php if($this->route->settergrade != 0) : ?>
+                                                <?php foreach (range($start_grade, $end_grade) as $i) : ?>
+                                                    <?php if($i >= $minGrade && $i <= $maxGrade) :?>
+                                                        <option value="<?php echo $i; ?>"
+                                                            <?php echo (($this->item->myroutegrade[0]) == ($i) ? 'selected="selected"' : '');  ?>>
+                                                            <?php echo GradeHelpersGrade::getGrade($i); ?>
+                                                        </option>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            <?php // Wenn VR-Grade unbekannt dann erlaube alle Grade zum bewerten ?>
+                                            <?php else : ?>
+                                                <?php foreach (range($minGrade, $maxGrade) as $i) : ?>
+                                                    <?php if($i >= $minGrade && $i <= $maxGrade) :?>
+                                                        <option value="<?php echo $i; ?>"
+                                                            <?php echo (($this->item->myroutegrade[0]) == ($i) ? 'selected="selected"' : '');  ?>>
+                                                            <?php echo GradeHelpersGrade::getGrade($i); ?>
+                                                        </option>
+                                                    <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                            <?php endif; ?>
                                          </select> 
                                     </div> 
                                 </div> 
+                                
                                  <div class="col-12 mt-3">
                                     <?php echo $this->form->getInput('comment'); ?>
                                 </div>
-                               
                             </div><?php // row END ?>
                         </div> <?php // Card-Body END ?>
                     </div> <?php // Card END ?>   
@@ -155,27 +170,32 @@ $routeStateOk = array(1,-1);
                         </div>
                         <div class="card-body">
                             <dl class="row">                    
-                                <dt class="col-5">Route</dt>
+                                <dt class="col-5"><?php echo Text::_('COM_ACT_ROUTE'); ?></dt>
                                 <dd class="col-7"><?php echo ActHelpersAct::getRouteByID($this->item->route[0]); ?></dd>
                             </dl>
                             <dl class="row">                    
-                                <dt class="col-5">Kommentar von:</dt>
-                                <dd class="col-7"> <?php echo $this->form->renderField('created'); ?></dd>
+                                <dt class="col-5"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_C_GRADE');?></dt>
+                                <dd class="col-7">
+                                    <?php $c_grade = GradeHelpersGrade::getCGradeFromRouteId($this->item->route[0]); ?>
+                                    <?php echo $c_grade != 0 ? $c_grade : '-'; ?>
+                                </dd>
                             </dl>
                             <dl class="row">                    
-                                <dt class="col-5">Kommentar geändert</dt>
-                                <dd class="col-7"><?php echo $this->form->renderField('modified'); ?></dd>
+                                <dt class="col-5"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_SETTER_GRADE');?></dt>
+                                <dd class="col-7">
+                                    <?php $s_grade = GradeHelpersGrade::getVrGradeFromRouteId($this->item->route[0]); ?>
+                                    <?php echo $s_grade != 0 ? $s_grade : '-'; ?>
+                                </dd>
                             </dl>
                         </div>
                     </div>
                 </div>
 
-
                 <div class="col-12 col-md-8 order-2 ">
                     <div class="card" id="mycomments_ticklistform">
                         <div class="card-header">
                             <h3> <i class="<?php echo Text::_('COM_ACT_FA_TICKLIST'); ?>"></i>
-                            <?php echo JText::_('COM_ACT_TICKLIST'); ?> </h3>
+                            <?php echo Text::_('COM_ACT_TICKLIST'); ?> </h3>
                             <?php echo $this->form->renderField('ticklist_yn'); ?>
                         </div>
                         <div class="card-body">
@@ -196,14 +216,7 @@ $routeStateOk = array(1,-1);
                         </div>
                     </div>
                 </div><?php // Col END ?>
-                 
-               
             </div><?php // row END ?>
-            
-
-
-
-
             
             <div class="row">
                 <div class="col-12 col-md-8 mt-3">
@@ -212,16 +225,16 @@ $routeStateOk = array(1,-1);
 
                             <?php if ($this->canSave): ?>
                                 <button type="submit" class="validate btn btn-secondary mr-1">
-                                    <?php echo JText::_('COM_ACT_SUBMIT_SAVE'); ?>
+                                    <?php echo Text::_('COM_ACT_SUBMIT_SAVE'); ?>
                                 </button>
                             <?php endif; ?>
                             <a class="btn btn-warning mr-1"
                                href="<?php echo JRoute::_('index.php?option=com_act&task=commentform.cancel'); ?>"
-                               title="<?php echo JText::_('JCANCEL'); ?>">
-                                <?php echo JText::_('JCANCEL'); ?>
+                               title="<?php echo Text::_('JCANCEL'); ?>">
+                                <?php echo Text::_('JCANCEL'); ?>
                             </a>
                             <a href="<?php echo JRoute::_('index.php?option=com_act&task=commentform.remove&id=' .$this->item->id, false, 2); ?>"
-                            class="btn btn-danger delete-button" type="button"><?php echo JText::_('JACTION_DELETE'); ?></a>
+                            class="btn btn-danger delete-button" type="button"><?php echo Text::_('JACTION_DELETE'); ?></a>
                         </div>
                     </div>
                 </div>

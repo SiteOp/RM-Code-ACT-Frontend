@@ -17,7 +17,7 @@ jimport('joomla.application.component.controllerform');
  *
  * @since  1.6
  */
-class ActControllerTicklist extends \Joomla\CMS\MVC\Controller\FormController
+class ActControllerTicklist extends JControllerForm
 {
 	/**
 	 * Constructor

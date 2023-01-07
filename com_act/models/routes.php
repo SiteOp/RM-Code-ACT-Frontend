@@ -39,10 +39,7 @@ class ActModelRoutes extends ListModel
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'name', 'a.name',
-				'settergrade', 'a.settergrade',
-				'routegrade', 'a.routegrade',
 				'color', 'c.color',
-				'Calc_Grad', 'Calc_Grad',
                 'count_stars', 't.count_stars',
 				'AvgStars', 'AvgStars',
 				'line', 'l.line',
@@ -51,7 +48,8 @@ class ActModelRoutes extends ListModel
 				'settername', 's.settername',
 				'setterdate', 'a.setterdate',
 				'stars', 'stars',
-				'cgrade', 'cgrade',
+				'orderCGrade', 'orderCGrade',
+				'orderVrGrade', 'orderVrGrade',
                 'sector', 'sector',
                 'lineoption', 'l.lineoption',
 			);
@@ -118,31 +116,43 @@ class ActModelRoutes extends ListModel
     */
     protected function getListQuery()
     {
+        $params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
-        $grade = "grade";
 
-        // Route (a), Setter (s), Color (c), Categorie (cat), Line (l), Trigger (t), Grade (g) Sector (sc)
-        $query->select(array('a.id', 'a.name', 'a.setterdate', 'a.exclude',
-                             's.settername', 'a.settergrade', 's.id AS setterId',
+        $query->select(array(// Route
+                             'a.id', 'a.name', 'a.setterdate', 'a.exclude',
+                             // Setter
+                             's.id AS setterId', 's.settername', 
+                             // Color
                              'c.rgbcode', 'c.id AS colorId',
+                             // Line
                              'l.line', 'l.id AS lineId', 'l.lineoption',
-                             'sc.inorout',  'sc.building', 'sc.inorout', 'sc.id AS sectorID',
-                             'sc.sector AS lineSectorName',
-                            // Trigger TABLE
-                             't.count_stars', 't.avg_stars AS AvgStars', 
-                             't.calc_'.$grade.' AS Calc_Grad',
+                             // Sector
+                             'sc.inorout',  'sc.building', 'sc.id AS sectorID', 'sc.sector AS lineSectorName',
+                             // Trigger
+                             't.count_stars', 't.avg_stars AS AvgStars',
+                             // VR-Grade
+                             'vr.grade AS s_grade', 
+                             'vr.id_grade AS orderVrGrade',
+                             // C-Grade
+                             'cg.grade AS c_grade', 
+                             'cg.id_grade AS orderCGrade',
                             )
                        )
 
               ->from('#__act_route AS a')
-              ->join('LEFT', '#__act_trigger_calc AS t  ON t.id     = a.id') // TRIGGER TABLE
-              ->join('LEFT', '#__act_'.$grade.'     AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
-              ->join('LEFT', '#__act_line         AS l  ON l.id     = a.line')
-              ->join('LEFT', '#__act_sector       AS sc ON sc.id    = l.sector')
-              ->join('LEFT', '#__act_setter       AS s  ON a.setter = s.id')
-              ->join('LEFT', '#__act_color        AS c  ON c.id     = a.color')
-              ->where($db->qn('a.state') . 'IN (1,-1)')
+              ->join('LEFT', '#__act_trigger_calc AS t  ON t.id        = a.id')               // TRIGGER TABLE
+              ->join('LEFT', '#__'.$grade_table.' AS cg ON cg.id_grade = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS vr ON vr.id_grade = a.settergrade')      // Convertierter Grad vr = VR-Grade
+              ->join('LEFT', '#__act_line         AS l  ON l.id        = a.line')             // Line
+              ->join('LEFT', '#__act_sector       AS sc ON sc.id       = l.sector')           // Sector
+              ->join('LEFT', '#__act_setter       AS s  ON a.setter    = s.id')               // Setter  
+              ->join('LEFT', '#__act_color        AS c  ON c.id        = a.color')            // Color
+              ->where($db->qn('a.state') . 'IN (1,-1)')                                       // Freigegeben und Vorgemerkt
+              ->where('cg.id_grade IS NOT NULL')
               ->where($db->qn('a.hidden') . ' != 1');
 
         // Filter by search in title
@@ -167,7 +177,7 @@ class ActModelRoutes extends ListModel
             if ($filter_cgrade != '')
              {
                 JArrayHelper::toInteger($filter_cgrade);
-                $query->where($db->qn('g.filter_uiaa') . 'IN (' . implode(',', $filter_cgrade).')');
+                $query->where($db->qn('cg.filter') . 'IN (' . implode(',', $filter_cgrade).')');
              }
 			 
 		// Filtering Lineoptions - Value from Multiple List - Array (Automat, Toprobe usw)

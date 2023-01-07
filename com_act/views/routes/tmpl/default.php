@@ -34,8 +34,6 @@ $unix_date = strtotime(Factory::getDate());
 $listOrder   = $this->state->get('list.ordering');
 $listDirn    = $this->state->get('list.direction');
 
-
-
 ?>
 
 <?php // Page-Header ?>
@@ -78,12 +76,12 @@ $listDirn    = $this->state->get('list.direction');
                 <?php if ($calcgrade == 1 ) : ?>
                 <th class="r_cgrade text-center"> <?php // C-Grade ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_C_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_C_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'Calc_Grad', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'orderCGrade', $listDirn, $listOrder); ?>
                 </th>
                 <?php endif; ?>   
                 <th class="r_vrgrade text-center"><?php // VR_Grade ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_VR_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_VR_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTER_GRADE', 'a.settergrade', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTER_GRADE', 'orderVrGrade', $listDirn, $listOrder); ?>
                 </th>    
                
                 <th class="r_avg"><?php // AVG ?>
@@ -149,7 +147,7 @@ $listDirn    = $this->state->get('list.direction');
                             <span class="routecolor" style="background: <?php echo $item->rgbcode; ?>;"></span>
                         </a>
                     </td>
-					
+
                     <td class=""> <?php // Setterdate older then 14 Day ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=route&id='.(int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
                           <?php if (strtotime($item->setterdate) > ($unix_date - $newRouteDateRange) ): ?><span class="new_route"><?php echo Text::_('COM_ACT_ROUTE_NEW_ROUTE'); ?></span> <?php endif; ?>
@@ -157,33 +155,26 @@ $listDirn    = $this->state->get('list.direction');
 						<?php foreach ($options as $option) : ?>
 						  <?php echo ActHelpersAct::getLineoptions($option); ?>
 						<?php endforeach ; ?>
-						 
                     </td>
-                    <?php if ($calcgrade == 1 ) : ?><?php // C-Grade - UIAA by helper ?>
+                    <?php if ($calcgrade == 1 ) : ?><?php // C-Grade ?>
                     <td  class="text-center">
-                        <?php if ($item->Calc_Grad == 0) :?>
-                            <?php echo '-'; ?>
-                        <?php else: ?>
-                              <?php echo ActHelpersAct::uiaa(round($item->Calc_Grad,0)); ?>
-                        <?php endif; ?>
+                        <?php echo (0 == (int)$item->c_grade) ? '-' : $item->c_grade; ?>
                     </td>
                     <?php endif; ?>
-                    <td class="text-center"><?php // VR_Grade Wenn Kommentare gesperrt dann - Wichtig f�r Speedroute ?>
-                     <?php echo (1 == $item->exclude) ? '-' : ActHelpersAct::uiaa($item->settergrade); ?><?php // Short if else ?>
+                    <td class="text-center"><?php // VR_Grade Wenn Kommentare gesperrt dann - Wichtig für Speedroute ?>
+                     <?php echo (1 == $item->exclude OR 0 == (int)$item->s_grade) ? '-' : $item->s_grade; ?><?php // Short if else ?>
                     </td> 
                     <td class="d-none d-sm-table-cell" >  <?php // AVG  ?>
                         <?php if (0 == $item->exclude) : ?>
 							<div class="Stars" style="--star-size: 160%; --rating: <?php echo ActHelpersAct::getStarsRound($item->AvgStars); ?>;"></div>
-
                         <?php endif; ?>
                     </td>
-                    <td class="d-sm-none text-center" >  <?php // AVG nur Ausgabe Text f�r Smartphone  ?>
+                    <td class="d-sm-none text-center" >  <?php // AVG nur Ausgabe Text für Smartphone  ?>
                         <?php echo round($item->AvgStars,0); ?>
                     </td>
                     <td  class=" d-none d-md-table-cell"><?php // Count User ?>
                         <?php echo (empty($item->count_stars)) ? '(0)' : '(' .$item->count_stars. ')'; ?><?php // Short if else ?>
                     </td>
-
                     <td class="d-none d-lg-table-cell">
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[settername]=<?php echo $item->setterId; ?>">
                              <?php echo $item->settername; ?>

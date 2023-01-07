@@ -88,13 +88,13 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                 </th>
                 <th class="ac_vrgrade"><?php // VR Grade ?>
                 <?php echo ($adminCommentEdit) 
-					? HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_COMMENTS_SETTER_GRADE', 'settergrade', $listDirn, $listOrder)
+					? HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_COMMENTS_SETTER_GRADE', 'orderSGrade', $listDirn, $listOrder)
 					:  Text::_('COM_ACT_TABLE_HEADER_COMMENTS_SETTER_GRADE');
 				?>
                 </th>
                 <th class="ac_mygrade"><?php // MY Grade ?>
 				<?php echo ($adminCommentEdit)
-					? HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_COMMENTS_USER_GRADE', 'a.myroutegrade', $listDirn, $listOrder) 
+					? HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_COMMENTS_USER_GRADE', 'orderMyGrade', $listDirn, $listOrder) 
 					: Text::_('COM_ACT_TABLE_HEADER_COMMENTS_USER_GRADE');
 				?>
                     
@@ -172,10 +172,10 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                                       <div><?php echo $item->lineSectorName; ?></div>
                                       <div class='pop_setter'><?php echo $item->settername; ?></div>
                                       <div class='pop_cgrade'>C-Grade:
-                                          <?php if ($item->Calc_Grad == 0) :?><?php // Wenn Communitiy Grade vorhanden (berechnet) dann ausgeben. ## View Table ?>
+                                          <?php if ($item->c_grade == 0) :?><?php // Wenn Communitiy Grade vorhanden (berechnet) dann ausgeben. ## View Table ?>
                                             <?php echo '-'; ?>
                                           <?php else: ?>
-                                            <?php echo ActHelpersAct::uiaa(round($item->Calc_Grad,0)); ?>
+                                            <?php echo $item->c_grade; ?>
                                           <?php endif; ?>
                                        </div>
                                      " 
@@ -188,11 +188,11 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
 						<?php echo $this->escape($item->route_name); ?>
 					<?php endif; ?>
                 </td>
-                <td><?php // VR Grade # Conversion by Helper ?>
-                     <?php echo ActHelpersAct::uiaa(round($item->settergrade,0)); ?>
+                <td><?php // VR Grade ?>
+                    <?php echo (0 == (int)$item->s_grade) ? '-' : $item->s_grade; ?>
                 </td>
-                <td><?php // MY Grade # Conversion by Helper  ?>
-                    <?php echo ActHelpersAct::uiaa(round($item->myroutegrade,0)); ?>
+                <td><?php // MY Grade ?>
+                    <?php echo (0 == (int)$item->my_grade) ? '-' : $item->my_grade; ?>
                 </td>
                
 				<td>

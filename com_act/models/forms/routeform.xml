@@ -42,7 +42,8 @@
                required="true" 
                >
                   <option value="">COM_ACT_ROUTES_GRADE_OPTION_0</option>
-                  <option value="0">COM_ACT_ROUTES_GRADE_OPTION_41</option>
+                  <option value="1">COM_ACT_ROUTES_GRADE_OPTION_40</option>
+                  <option value="2">COM_ACT_ROUTES_GRADE_OPTION_41</option>
                   <option value="10">COM_ACT_ROUTES_GRADE_OPTION_10</option>
                   <option value="11">COM_ACT_ROUTES_GRADE_OPTION_11</option>
                   <option value="12">COM_ACT_ROUTES_GRADE_OPTION_12</option>

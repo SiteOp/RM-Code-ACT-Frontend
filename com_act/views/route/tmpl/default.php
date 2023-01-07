@@ -17,8 +17,6 @@ use Joomla\CMS\Uri\Uri;
 
 $doc = Factory::getDocument();
 $doc->addScript(Uri::base() . '/media/com_act/js/form.js');
-//$doc->addScript(Uri::base() . '/media/com_act/js/jquery-gauge.min.js', false, true);
-//$doc->addScript(Uri::base() . '/media/com_act/js/tacho.js', false, true);
 
 $user        = Factory::getUser();
 $userId      = $user->get('id');
@@ -27,23 +25,23 @@ $routeAdmin  = 	$user->authorise('route.edit', 'com_act');
 $canEdit     = Factory::getUser()->authorise('core.edit', 'com_act');
 
 // ACT Params 
-$params      = JComponentHelper::getParams( 'com_act' );
+$params      = JComponentHelper::getParams('com_act');
 $indicator   = $params['admin_lines_indicator'];
 $colorOne    = $params['colorOne'];
 $colorTwo    = $params['colorTwo'];
 $colorThree  = $params['colorThree'];
 $colorFour   = $params['colorFour'];
 $colorZeiger = $params['colorZeiger'];
-$extendFormField   = $params['extendFormField']; // Griffhersteller ja/nein
+$extendFormField   = $params['extendFormField'];  // Griffhersteller ja/nein
 
-//  Tacho
-$tachoCGrade =  ActHelpersAct::uiaa(round($this->item->calc_grade,0));
-$tachoCGradeBefore =  ActHelpersAct::uiaa(round(($this->item->calc_grade -1),0));
-$tachoCGradeAfter = ActHelpersAct::uiaa(round(($this->item->calc_grade +1),0));
-$tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/2) *100);
-
+// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+//  Tacho 
+$tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
+$tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);
+$tachoCGradeAfter  = GradeHelpersGrade::getGrade(($this->item->id_grade) +1);
+$tachoZeiger       = ((($this->item->id_grade - ($this->item->id_grade)+1)/2) *100);
 ?>
-
 
 
 <?php // Nach dem Kommentieren wird die Seite Refreshed. Dadurch kein HTTP_REFERER. Der Backlink muss daher unterschiedlich sein ?>
@@ -74,8 +72,6 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
         </h1>
 	</div>
 	
-
-
 <div class="row">
         <div class="col-12 col-md-12 col-xl-4"> <?php // Detail Route ?>
 		
@@ -84,8 +80,8 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                 <div class="card-header">
                     <h3><i class="<?php echo Text::_('COM_ACT_FA_ROUTE'); ?>"></i> 
 					<?php echo Text::_('COM_ACT_ROUTE_Details'); ?> 
-					<?php if($adminUser) : ?>
-					<span class="float-right"><small><?php print_r($tachoZeiger); ?> </small> / <?php echo $this->item->calc_grade; ?></span>
+					<?php if($adminUser) : ?> <?php // Für Admin - Tachoanzeige und Grade-ID ?>
+					    <span class="float-right"><?php echo $tachoZeiger; ?> / <?php echo $this->item->id_grade; ?></span>
 					<?php endif; ?>
 					
 					</h3>
@@ -105,8 +101,8 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                                 </label>
 							</dt>
 							
-							   <dd class="col-6">
-								<div class="gauge tacho1"></div>       
+							   <dd class="col-6"> <?php // Tacho ?>
+								    <div class="gauge tacho1"></div>       
 							   </dd>
                         </dl>
                         <dl class="row">
@@ -122,9 +118,11 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                                 </label>
                             </dt>
                             <dd class="col-6">
-                                <?php echo ActHelpersAct::uiaa(round($this->item->calc_grade,0)); ?>
+                                <?php echo $this->item->c_grade != 0 ? $this->item->c_grade : '-'; ?>
+                                <?php echo $this->item->c_grade != 0 ? ' | ' .$this->item->grade_convert : ''; ?>
                             </dd>
                         </dl>
+
                         <dl class="row">
                            <dt class="col-6"><?php // VR-Grade & Popover ?>
                                 <label data-toggle="popover"
@@ -137,7 +135,9 @@ $tachoZeiger = ((($this->item->calc_grade - round($this->item->calc_grade,0)+1)/
                                         <?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_SETTER_GRADE'); ?>
                                 </label>
                            </dt>
-                           <dd class="col-6"><?php echo $this->item->uiaa; ?> || <?php echo $this->item->franzoesisch; ?></dd>
+                           <dd class="col-6">
+                                <?php echo $this->item->s_grade != 0 ? $this->item->s_grade : '-'; ?>
+                            </dd>
                         </dl>
                     <?php endif; ?>
                         <dl class="row  mt-4"><?php // Color ?>

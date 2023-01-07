@@ -37,8 +37,8 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
                 'id', 'a.id',
                 'route', 'route_name',
                 'comment', 'a.comment',
-                'myroutegrade', 'a.myroutegrade',
-                'settergrade','r.settergrade',
+                'orderMyGrade', 'orderMyGrade',
+                'orderSGrade','orderSGrade',
                 'stars', 'a.stars',
                 'created_by', 'a.created_by',
                 'created', 'a.created',
@@ -108,28 +108,50 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
      */
     protected function getListQuery()
     {
-        // Create a new query object.
+        $params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        // Comment (a), Route (r), Color(c), Line (l), Setter (s), Categorie (cat)
-        $query->select(array('a.id', 'a.route', 'a.comment', 'a.stars', 'a.created_by', 'a.created', 'a.myroutegrade', 'a.input', 'a.ascent', 'a.ticklist_yn',
-                             'r.id AS route_id', 'r.state AS route_state', 'r.name AS route_name', 'r.settergrade',
+        $query->select(array(// Comment
+                             'a.id', 'a.route', 'a.comment', 'a.stars', 'a.created_by', 'a.created',
+                             //'a.myroutegrade', 
+                             'a.input', 
+                             'a.ascent', 'a.ticklist_yn', // Stil benötigt Ticklist_yn
+                             // Route
+                             'r.id AS route_id', 'r.state AS route_state', 'r.name AS route_name',
+                            // 'r.settergrade',
+                             // Color
                              'c.rgbcode',
+                             // Line
                              'l.line',
+                             // Setter
                              's.settername',
+                             // Sector
                              'sc.sector AS lineSectorName',
-                             't.calc_grade AS Calc_Grad',
+                             // Trigger
+                            // 't.calc_grade_round AS Calc_Grad',
+                             // C-Grade
+                             'vg.grade AS s_grade', 
+                             'vg.id_grade AS orderSGrade',
+                              // My-Grade
+                              'mg.grade AS my_grade', 
+                              'mg.id_grade AS orderMyGrade',
+                              // C-Grade
+                              'cg.grade AS c_grade',
                             )
                        );
         $query->from('#__act_comment AS a') 
-                ->join('LEFT', '#__act_route        AS r   ON r.id   = a.route')
-                ->join('LEFT', '#__act_setter       AS s   ON s.id   = r.setter')
-                ->join('LEFT', '#__act_color        AS c   ON c.id   = r.color')
-                ->join('LEFT', '#__act_line         AS l   ON l.id   = r.line')
-                ->join('LEFT', '#__act_sector       AS sc  ON sc.id  = l.sector')
-                ->join('LEFT', '#__act_trigger_calc AS t   ON t.id   = r.id')
-                ->join('LEFT', '#__act_grade        AS g   ON g.id   = t.calc_grade')
+                ->join('LEFT', '#__act_route        AS r   ON r.id        = a.route')
+                ->join('LEFT', '#__act_setter       AS s   ON s.id        = r.setter')
+                ->join('LEFT', '#__act_color        AS c   ON c.id        = r.color')
+                ->join('LEFT', '#__act_line         AS l   ON l.id        = r.line')
+                ->join('LEFT', '#__act_sector       AS sc  ON sc.id       = l.sector')
+                ->join('LEFT', '#__act_trigger_calc AS t   ON t.id        = r.id')
+                ->join('LEFT', '#__'.$grade_table.' AS vg  ON vg.id_grade = t.calc_grade_round')
+                ->join('LEFT', '#__'.$grade_table.' AS mg  ON mg.id_grade = t.calc_grade_round')
+                ->join('LEFT', '#__'.$grade_table.' AS cg  ON cg.id_grade = t.calc_grade_round')
 
                 ->where('a.created  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
       

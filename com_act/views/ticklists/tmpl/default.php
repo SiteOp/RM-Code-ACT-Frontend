@@ -80,10 +80,10 @@ $routeStateOk = array(1,-1);
                 </th>
                 <th class="tl_vrgrade text-center"><?php // C-Grade ?>
                     <div class=""> <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_C_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_C_GRADE'); ?></div>
-                    <?php echo JHtml::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 't.calc_grade', $listDirn, $listOrder); ?>
+                    <?php echo JHtml::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'orderCGrade', $listDirn, $listOrder); ?>
                 </th>
                 <th class="tl_mygrade text-center"><?php // My Grade ?>
-                    <?php echo JHtml::_('grid.sort',  'COM_ACT_TABLE_HEADER_TICKLIST_MYGRADE', 'a.myroutegrade', $listDirn, $listOrder); ?>
+                    <?php echo JHtml::_('grid.sort',  'COM_ACT_TABLE_HEADER_TICKLIST_MYGRADE', 'orderMyGrade', $listDirn, $listOrder); ?>
                 </th>
                 <th class="tl_avg d-none d-lg-table-cell"><?php // AVG ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_STARS', 'COM_ACT_ROUTE_POPOVER_TXT_STARS'); ?><br />
@@ -129,11 +129,11 @@ $routeStateOk = array(1,-1);
                                 <?php echo $this->escape($item->route_name); ?>
                             <?php endif; ?>
                         </td>
-                        <td class="text-center"><?php // VR-Grade Conversion per Helper ?>
-							<?php echo ActHelpersAct::uiaa(round($item->cgrade_uiaa,0)); ?>
+                        <td class="text-center"><?php // Settergrade ?>
+                            <?php echo (0 == (int)$item->c_grade) ? '-' : $item->c_grade; ?>
                         </td>
-                        <td class="text-center"><?php // MY-Grade  Conversion per Helper ?>
-                            <?php echo ActHelpersAct::uiaa($item->my_uiaa); ?>
+                        <td class="text-center"><?php // MY-Grade ?>
+                            <?php echo (0 == (int)$item->my_grade) ? '-' : $item->my_grade; ?>
                         </td>
                         <td class="d-none d-lg-table-cell"><?php // AVG ?>
                             <div class="Stars" style=" --star-size: 150%; --rating: <?php echo ActHelpersAct::getStarsRound($item->stars); ?>;"></div>

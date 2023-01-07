@@ -77,8 +77,6 @@ class ActControllerLines extends \Joomla\CMS\MVC\Controller\AdminController
 		return $model;
 	}
 
-	
-
 	/**
 	 * Method to save the submitted ordering values for records via AJAX.
 	 *

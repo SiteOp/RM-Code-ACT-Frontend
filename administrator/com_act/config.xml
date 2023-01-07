@@ -364,8 +364,13 @@
 
     </fieldset>
 	
-	 <fieldset label="COM_ACT_ADMIN_DEFAULTS" name="admin_defaults">
-		 <field name="admin_lines_pdf" default="1" type="radio" label="COM_ACT_CONFIG_LBL_ADMIN_LINES_PDF">
+	 <fieldset label="Defaults" name="admin_defaults">
+		<field name="grade_table" default="1" type="radio" label="Tabelle Schwierigkeitsgrade">
+			<option value="act_grade_uiaa">UIAA</option>
+			<option value="act_grade_uiaa_zwg">UIAA mit Zwischengraden</option>
+			<option value="act_grade_franz">Franz</option>
+        </field>
+		 <field name="admin_lines_pdf" default="1" type="radio" label="PDF">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
         </field>
@@ -378,6 +383,10 @@
                max="8" 
                step="1" 
         />
+		<field name="stars_no_rating" default="1" type="radio" label="Sterne - Keine Bewertung erlauben?" description="Kann man auch 0 Sterne bzw. Keine Bewertung wählen ">
+			<option value="0">Sterne als Pflicht</option>
+			<option value="1">0 Sterne erlauben</option>
+        </field>
     </fieldset>
 
     <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">

@@ -69,11 +69,11 @@ $routeStateOk = array(1,-1);
                 </th>
 				<th class="myc_vrgrade text-center"><?php // C-Grade ?>
                    <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_C_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_C_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 't.calc_grade', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_C_GRADE', 'orderCGrade', $listDirn, $listOrder); ?>
                 </th>
 				<th class="myc_mygrade text-center"><?php // My-Grad ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_COMMENT_POPOVER_HEAD_MY_GRADE', 'COM_ACT_COMMENT_POPOVER_TXT_MY_GRADE'); ?><br />
-                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_MYCOMMENTS_MYGRADE', 'a.myroutegrade', $listDirn, $listOrder); ?>
+                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_MYCOMMENTS_MYGRADE', 'orderMyGrade', $listDirn, $listOrder); ?>
                 </th>
 				<th class="myc_avg"><?php // AVG ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_STARS', 'COM_ACT_ROUTE_POPOVER_TXT_STARS'); ?><br />
@@ -123,10 +123,10 @@ $routeStateOk = array(1,-1);
                         <?php endif; ?>
                         </td>
 						<td class="text-center"><?php // VR-Grade  ?>
-                            <?php echo ActHelpersAct::uiaa(round($item->cgrade_uiaa,0)); ?>
+							<?php echo (0 == (int)$item->c_grade) ? '-' : $item->c_grade; ?>
                         </td>
 						<td class="text-center"><?php // My-Grade ?>
-                             <?php echo ActHelpersAct::uiaa($item->my_uiaa); ?>
+							<?php echo (0 == (int)$item->my_grade) ? '-' : $item->my_grade; ?>
                         </td>
 						<td class="d-none d-sm-table-cell" >  <?php // AVG  ?>
                            <div class="Stars" style=" --star-size: 150%; --rating: <?php echo ActHelpersAct::getStarsRound($item->stars); ?>;"></div>

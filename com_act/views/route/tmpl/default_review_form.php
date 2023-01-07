@@ -28,15 +28,24 @@ $document->addStyleSheet($path.'/css/jui/chosen.css');
 
 $now = Factory::getDate()->Format('d.m.Y'); 
 
-$params      = JComponentHelper::getParams( 'com_act' );
-$grade_offset_comment   = $params['grade_offset_comment'];
-$stars_no_rating = $params['stars_no_rating'];
+// ACT Params 
+$params               = JComponentHelper::getParams( 'com_act' );
+$grade_offset_comment = $params['grade_offset_comment'];
+$stars_no_rating      = $params['stars_no_rating'];
 
+
+// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+// Niedrigster und Höchster Wert (id_grade) der Schwierigkeiten 
+// Beispiel 10 = 3, 36 = 12-
+$range      = GradeHelpersGrade::getSettergradeListRange();
+$minGrade   = $range[0]->min_id_grade; 
+$maxGrade   = $range[0]->max_id_grade;
 
 // Start und Ende der Grade unter Berücksichtigung der Anzahl wieviel rauf und runter bewertet werden darf ($grade_offset_comment)
 $start_grade = $this->item->settergrade - $grade_offset_comment;
-$end_grade =  $this->item->settergrade + $grade_offset_comment;
-
+$end_grade   =  $this->item->settergrade + $grade_offset_comment;
 ?>
 
     
@@ -109,21 +118,26 @@ if (isset($_POST["submit"])) : ?>
                                 <fieldset>
                                     <select name="myroutegrade" class="form-control" required="required" > 
                                         <option value=""><?php echo Text::_('COM_ACT_SELECT_GRADE'); ?></option> 
-                                        <option value="0"><?php echo Text::_('COM_ACT_NO_RATING'); ?></option> 
-                                        <?php if($this->item->settergrade !=0) : ?>
+                                        <option value="0"><?php echo Text::_('COM_ACT_NO_RATING'); ?></option>
+                                        <?php // Wenn VR-Grad vorhanden ?>
+
+                                        <?php if(!empty((int)$this->item->s_grade)) : ?> <?php // IS NULL deshalb wichtig (int) ?>
                                             <?php foreach (range($start_grade, $end_grade) as $i) : ?>
-                                                <?php if($i >= 10 && $i <= 36) :?>
-                                                    <option value="<?php echo $i; ?>"><?php echo ActHelpersAct::uiaa($i); ?></option>
+                                                <?php if($i >= $minGrade && $i <= $maxGrade) :?>
+                                                    <option value="<?php echo $i; ?>"><?php echo (GradeHelpersGrade::getGrade($i)); ?></option>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         <?php // Wenn VR-Grade unbekannt dann erlaube alle Grade zum bewerten ?>
                                         <?php else : ?>
-                                            <?php foreach (range(10, 36) as $i) : ?>
-                                                <option value="<?php echo $i; ?>"><?php echo ActHelpersAct::uiaa($i); ?></option>
-                                            <?php endforeach; ?>
+                                            <?php foreach (range($minGrade, $maxGrade) as $i) : ?>
+                                                <?php if($i >= $minGrade && $i <= $maxGrade) :?>
+                                                    <option value="<?php echo $i; ?>"><?php echo (GradeHelpersGrade::getGrade($i)); ?></option>
+                                                <?php endif; ?>
+                                                <?php endforeach; ?>
                                         <?php endif; ?>
                                     </select> 
-                                </fieldset> 
+                                </fieldset>
+
                             </div>
                             </div>
                          <textarea id="comment" name="comment" class="form-control mt-3" placeholder="<?php echo Text::_('COM_ACT_COMMENTS_WRITE'); ?>" maxlength="600"></textarea>
@@ -132,15 +146,12 @@ if (isset($_POST["submit"])) : ?>
                                 <span id="current">0</span>
                                 <span id="maximum">/ 600</span>
                               </div>
-
                     </div><?php // Card-Body END ?>
-                    
                 </div><?php // Card END ?>
-
             </div><?php // Col END ?>
 
-        
-            <div class="col-12"> <?php // Ticklist ?> 
+            <?php // Ticklist ?> 
+            <div class="col-12"> 
                 <div class="card mt-2" id="ticklistform">
                     <div class="card-header">
                          <h3> <i class="<?php echo Text::_('COM_ACT_FA_TICKLIST'); ?>"></i> <?php echo JText::_('COM_ACT_TICKLIST'); ?> </h3>
@@ -154,10 +165,7 @@ if (isset($_POST["submit"])) : ?>
                     </div><div id="div2" class="hide" style="display: none">   
                     <div class="card-body">
                         <div class="row">
-                        
-                        
-                               
-                    
+
                                 <div class="col-12 col-sm-4">
                                     <fieldset>
                                             <select name="ascent" class="form-control">
@@ -220,7 +228,7 @@ if (isset($_POST["submit"])) : ?>
                         </div>
                          <?php echo JHtml::_('form.token'); ?>
     </form>
-<?php //print_R($this->item->name); ?>
+
 <?php endif; ?>
 <script src="/media/com_act/js/form.js" type="text/javascript"></script>
 <script src="/media/system/js/fields/calendar-locales/de.js" type="text/javascript"></script>
@@ -284,7 +292,6 @@ $('#comment').keyup(function() {
     maximum.css('color','#6d5555');
     theCount.css('font-weight','normal');
   }
-  
       
 });
 </script>

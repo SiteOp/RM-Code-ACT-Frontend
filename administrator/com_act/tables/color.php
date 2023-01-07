@@ -10,43 +10,15 @@
 // No direct access
 defined('_JEXEC') or die;
 
-use \Joomla\Utilities\ArrayHelper;
-use \Joomla\CMS\Factory;
-use \Joomla\CMS\Access\Access;
-use \Joomla\CMS\Language\Text;
-use \Joomla\CMS\Table\Table as Table;
-
+use Joomla\Utilities\ArrayHelper;
 /**
  * color Table class
  *
  * @since  1.6
  */
-class ActTablecolor extends Table
+class ActTablecolor extends JTable
 {
-	/**
-	 * Check if a field is unique
-	 *
-	 * @param   string  $field  Name of the field
-	 *
-	 * @return bool True if unique
-	 */
-	private function isUnique ($field)
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query
-			->select($db->quoteName($field))
-			->from($db->quoteName($this->_tbl))
-			->where($db->quoteName($field) . ' = ' . $db->quote($this->$field))
-			->where($db->quoteName('id') . ' <> ' . (int) $this->{$this->_tbl_key});
-
-		$db->setQuery($query);
-		$db->execute();
-
-		return ($db->getNumRows() == 0) ? true : false;
-	}
-
+	
 	/**
 	 * Constructor
 	 *
@@ -54,13 +26,10 @@ class ActTablecolor extends Table
 	 */
 	public function __construct(&$db)
 	{
+		JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'ActTablecolor', array('typeAlias' => 'com_act.color'));
 		parent::__construct('#__act_color', 'id', $db);
-		
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_act.color'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_act.color'));
-		$this->setColumnAlias('published', 'state');
-		
-	}
+        $this->setColumnAlias('published', 'state');
+    }
 
 	/**
 	 * Overloaded bind function to pre-process the params.
@@ -72,13 +41,14 @@ class ActTablecolor extends Table
 	 *
 	 * @see     JTable:bind
 	 * @since   1.5
-     * @throws Exception
 	 */
 	public function bind($array, $ignore = '')
 	{
-	    $date = Factory::getDate();
-		$task = Factory::getApplication()->input->get('task');
+	    $date = JFactory::getDate();
+		$task = JFactory::getApplication()->input->get('task');
 	    
+		$input = JFactory::getApplication()->input;
+		$task = $input->getString('task', '');
 
 		if ($array['id'] == 0 && empty($array['created_by']))
 		{
@@ -94,33 +64,6 @@ class ActTablecolor extends Table
 		{
 			$array['modified_by'] = JFactory::getUser()->id;
 		}
-		$input = JFactory::getApplication()->input;
-		$task = $input->getString('task', '');
-
-		// Support for alias field: alias
-		if (empty($array['alias']))
-		{
-			if (empty($array['color']))
-			{
-				$array['alias'] = JFilterOutput::stringURLSafe(date('Y-m-d H:i:s'));
-			}
-			else
-			{
-				if(JFactory::getConfig()->get('unicodeslugs') == 1)
-				{
-					$array['alias'] = JFilterOutput::stringURLUnicodeSlug(trim($array['color']));
-				}
-				else
-				{
-					$array['alias'] = JFilterOutput::stringURLSafe(trim($array['color']));
-				}
-			}
-		}
-		else
-		{
-			$array['alias'] = JFilterOutput::stringURLSafe(trim($array['alias']));
-		}
-
 
 		if (isset($array['params']) && is_array($array['params']))
 		{
@@ -136,13 +79,13 @@ class ActTablecolor extends Table
 			$array['metadata'] = (string) $registry;
 		}
 
-		if (!Factory::getUser()->authorise('core.admin', 'com_act.color.' . $array['id']))
+		if (!JFactory::getUser()->authorise('core.admin', 'com_act.color.' . $array['id']))
 		{
-			$actions         = Access::getActionsFromFile(
+			$actions         = JAccess::getActionsFromFile(
 				JPATH_ADMINISTRATOR . '/components/com_act/access.xml',
 				"/access/section[@name='color']/"
 			);
-			$default_actions = Access::getAssetRules('com_act.color.' . $array['id'])->getData();
+			$default_actions = JAccess::getAssetRules('com_act.color.' . $array['id'])->getData();
 			$array_jaccess   = array();
 
 			foreach ($actions as $action)
@@ -207,18 +150,90 @@ class ActTablecolor extends Table
 			$this->ordering = self::getNextOrder();
 		}
 		
-		// Check if alias is unique
-		if (!$this->isUnique('alias'))
-		{
-			$count = 0;
-			$currentAlias =  $this->alias;
-			while(!$this->isUnique('alias')){
-				$this->alias = $currentAlias . '-' . $count++;
-			}
-		}
 		
 
 		return parent::check();
+	}
+
+	/**
+	 * Method to set the publishing state for a row or list of rows in the database
+	 * table.  The method respects checked out rows by other users and will attempt
+	 * to checkin rows that it can after adjustments are made.
+	 *
+	 * @param   mixed    $pks     An optional array of primary key values to update.  If not
+	 *                            set the instance property value is used.
+	 * @param   integer  $state   The publishing state. eg. [0 = unpublished, 1 = published]
+	 * @param   integer  $userId  The user id of the user performing the operation.
+	 *
+	 * @return   boolean  True on success.
+	 *
+	 * @since    1.0.4
+	 *
+	 * @throws Exception
+	 */
+	public function publish($pks = null, $state = 1, $userId = 0)
+	{
+		// Initialise variables.
+		$k = $this->_tbl_key;
+
+		// Sanitize input.
+		ArrayHelper::toInteger($pks);
+		$userId = (int) $userId;
+		$state  = (int) $state;
+
+		// If there are no primary keys set check to see if the instance key is set.
+		if (empty($pks))
+		{
+			if ($this->$k)
+			{
+				$pks = array($this->$k);
+			}
+			// Nothing to set publishing state on, return false.
+			else
+			{
+				throw new Exception(500, JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+			}
+		}
+
+		// Build the WHERE clause for the primary keys.
+		$where = $k . '=' . implode(' OR ' . $k . '=', $pks);
+
+		// Determine if there is checkin support for the table.
+		if (!property_exists($this, 'checked_out') || !property_exists($this, 'checked_out_time'))
+		{
+			$checkin = '';
+		}
+		else
+		{
+			$checkin = ' AND (checked_out = 0 OR checked_out = ' . (int) $userId . ')';
+		}
+
+		// Update the publishing state for rows with the given primary keys.
+		$this->_db->setQuery(
+			'UPDATE `' . $this->_tbl . '`' .
+			' SET `state` = ' . (int) $state .
+			' WHERE (' . $where . ')' .
+			$checkin
+		);
+		$this->_db->execute();
+
+		// If checkin is supported and all rows were adjusted, check them in.
+		if ($checkin && (count($pks) == $this->_db->getAffectedRows()))
+		{
+			// Checkin each row.
+			foreach ($pks as $pk)
+			{
+				$this->checkin($pk);
+			}
+		}
+
+		// If the JTable instance value is in the list of primary keys that were set, set the instance.
+		if (in_array($this->$k, $pks))
+		{
+			$this->state = $state;
+		}
+
+		return true;
 	}
 
 	/**
@@ -226,7 +241,7 @@ class ActTablecolor extends Table
 	 *
 	 * @return string The asset name
 	 *
-	 * @see Table::_getAssetName
+	 * @see JTable::_getAssetName
 	 */
 	protected function _getAssetName()
 	{
@@ -241,14 +256,14 @@ class ActTablecolor extends Table
 	 * @param   JTable   $table  Table name
 	 * @param   integer  $id     Id
 	 *
-	 * @see Table::_getAssetParentId
+	 * @see JTable::_getAssetParentId
 	 *
 	 * @return mixed The id on success, false on failure.
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		// We will retrieve the parent-asset from the Asset-table
-		$assetParent = Table::getInstance('Asset');
+		$assetParent = JTable::getInstance('Asset');
 
 		// Default: if no asset-parent can be found we take the global asset
 		$assetParentId = $assetParent->getRootId();
@@ -265,23 +280,18 @@ class ActTablecolor extends Table
 		return $assetParentId;
 	}
 
-	
-    /**
-     * Delete a record by id
-     *
-     * @param   mixed  $pk  Primary key value to delete. Optional
-     *
-     * @return bool
-     */
-    public function delete($pk = null)
-    {
-        $this->load($pk);
-        $result = parent::delete($pk);
-        
-        return $result;
-    }
-
-	
-
-	
+	/**
+	 * Delete a record by id
+	 *
+	 * @param   mixed  $pk  Primary key value to delete. Optional
+	 *
+	 * @return bool
+	 */
+	public function delete($pk = null)
+	{
+		$this->load($pk);
+		$result = parent::delete($pk);
+		
+		return $result;
+	}
 }

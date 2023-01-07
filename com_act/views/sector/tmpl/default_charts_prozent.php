@@ -17,6 +17,32 @@ $doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
 $doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
 $doc->addScript('node_modules/chartjs-plugin-labels/build/chartjs-plugin-labels.min.js');
 
+$params      = JComponentHelper::getParams('com_act');
+
+JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+// Liste der Schwierigkeitsgrade aus der jeweiligen Tabelle UIAA/Franz usw
+$gradeList     = GradeHelpersGrade::getGradeListPlanning(); // JSON String der Grade 
+$jsonColorList = GradeHelpersGrade::getGradeColorList();  // JSON String der Farben
+$jsonLabelList = GradeHelpersGrade::getGradeLabelList();  // JSON String der Farben
+
+
+// Farben aus den PArams
+$color_3  = $params['color3grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_4  = $params['color4grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_5  = $params['color5grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_6  = $params['color6grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_7  = $params['color7grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_8  = $params['color8grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_9  = $params['color9grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_10 = $params['color10grad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_11 = $params['color11rad'];  // Welche Tabelle für Schwierigkeitsgrade
+$color_12 = $params['color12grad'];  // Welche Tabelle für Schwierigkeitsgrade
+
+
+// Helper Grade aus ACT
+
+
 if (!empty($this->item->routessoll)) {
   $json = json_decode($this->item->routessoll, true);
   // Erstelle Variablen für Gesamtgrad (3.Grad, 4.Grad usw)
@@ -33,30 +59,22 @@ if (!empty($this->item->routessoll)) {
   $soll_grade_13 = $json['g13']; // undefiniert
   $soll_grade_array = [$soll_grade_3,$soll_grade_4,$soll_grade_5,$soll_grade_6,$soll_grade_7,$soll_grade_8,$soll_grade_9,
                        $soll_grade_10,$soll_grade_11,$soll_grade_12];
-  // Farben
-  $color_3  = $this->c3; 
-  $color_4  = $this->c4;
-  $color_5  = $this->c5;
-  $color_6  = $this->c6;
-  $color_7  = $this->c7;
-  $color_8  = $this->c8;
-  $color_9  = $this->c9;
-  $color_10 = $this->c10;
-  $color_11 = $this->c11;
-  $color_12 = $this->c12;
-  $color_13 = $this->c13;
+
+
   // Label für Grad
-  $label_13 = 'undefiniert';
-  $label_3 = '3.Grad';  // TODO Sprache
-  $label_4 = '4.Grad';
-  $label_5 = '5.Grad';
-  $label_6 = '6.Grad';
-  $label_7 = '7.Grad';
-  $label_8 = '8.Grad';
-  $label_9 = '9.Grad';
+  $label_3  = '3.Grad';  // TODO Sprache
+  $label_4  = '4.Grad';
+  $label_5  = '5.Grad';
+  $label_6  = '6.Grad';
+  $label_7  = '7.Grad';
+  $label_8  = '8.Grad';
+  $label_9  = '9.Grad';
   $label_10 = '10.Grad';
   $label_11 = '11.Grad';
   $label_12 = '12.Grad';
+  $label_13 = 'undefiniert';
+  
+  
   // Ist Werte für Chart
   $soll_label = '';
   $soll_color = '';
@@ -77,6 +95,8 @@ if (!empty($this->item->routessoll)) {
 } else {
   $soll_data = '';
 }
+
+//print_R($soll_data);
 
 ?>
 

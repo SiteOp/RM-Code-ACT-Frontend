@@ -89,19 +89,6 @@
 .color-box-sponsors { 
       float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
 
-.icon-48-sectors {
-      background-image: url(../images/l_sectors.png);
-      padding-left:60px!important;
-}
-
-.icon-48-sector {
-      background-image: url(../images/l_sectors.png);
-      padding-left:60px!important;
-}
-
-.color-box-sectors { 
-      float: left;      width: 15px;      height: 15px;      margin-right: 5px;      border: 1px solid rgba(0, 0, 0, .2);}
-
 
 
 .other-filters{
