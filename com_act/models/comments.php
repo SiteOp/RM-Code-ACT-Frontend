@@ -132,7 +132,7 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
                              'sc.sector AS lineSectorName',
                              // Trigger
                             // 't.calc_grade_round AS Calc_Grad',
-                             // C-Grade
+                             // S-Grade
                              'vg.grade AS s_grade', 
                              'vg.id_grade AS orderSGrade',
                               // My-Grade
@@ -149,8 +149,8 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
                 ->join('LEFT', '#__act_line         AS l   ON l.id        = r.line')
                 ->join('LEFT', '#__act_sector       AS sc  ON sc.id       = l.sector')
                 ->join('LEFT', '#__act_trigger_calc AS t   ON t.id        = r.id')
-                ->join('LEFT', '#__'.$grade_table.' AS vg  ON vg.id_grade = t.calc_grade_round')
-                ->join('LEFT', '#__'.$grade_table.' AS mg  ON mg.id_grade = t.calc_grade_round')
+                ->join('LEFT', '#__'.$grade_table.' AS vg  ON vg.id_grade = r.settergrade')
+                ->join('LEFT', '#__'.$grade_table.' AS mg  ON mg.id_grade = a.myroutegrade')
                 ->join('LEFT', '#__'.$grade_table.' AS cg  ON cg.id_grade = t.calc_grade_round')
 
                 ->where('a.created  > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
