@@ -108,15 +108,13 @@ class ActModelTicklists extends JModelList
         $user = Factory::getUser();
         $user = $user->get('id');
 
+        $params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
+
         // Create a new query object.
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-
-		// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
-        JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
-        $grade_table = GradeHelpersGrade::getGradeTable()[0];
-        $id_grade    = GradeHelpersGrade::getGradeTable()[1];
         
         $query->select(array(// Comment
                              'a.id', // NOTE - ID is required for delet
@@ -126,21 +124,21 @@ class ActModelTicklists extends JModelList
                              'r.id AS route_id', 'r.state AS route_state', 'r.name AS route_name',
                              // My-Grade
                              'mg.grade AS my_grade', 
-                             'mg.'.$id_grade.' AS orderMyGrade',
+                             'mg.id_grade AS orderMyGrade',
                              // C-Grade
                              'cg.grade AS c_grade', 
-                             'cg.'.$id_grade.' AS orderCGrade', 
+                             'cg.id_grade AS orderCGrade', 
                              )
                       )
               ->from('#__act_comment AS a')
 
               ->join('LEFT', '#__act_route        AS r     ON r .id             = a.route')
               ->join('LEFT', '#__act_trigger_calc AS t     ON t.id              = r.id')
-              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
-              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = My-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.id_grade  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = t.calc_grade_round') // Convertierter Grad cg = My-Grade
               ->where($db->qn('a.created_by') . '='. (int) $user)
               ->where($db->qn('ticklist_yn') . '= 1')
-              ->where('cg.'.$id_grade.' IS NOT NULL')
+              ->where('cg.id_grade IS NOT NULL')
               ->where($db->qn('a.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
 
         // Filter by search in title - Filter Name of Route
@@ -222,11 +220,8 @@ class ActModelTicklists extends JModelList
       $db   = Factory::getDbo();
       $user = Factory::getuser()->id;
 
-
-	  // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
-      JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
-      $grade_table = GradeHelpersGrade::getGradeTable()[0];
-      $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+      $params      = JComponentHelper::getParams('com_act');
+      $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
 
       $query = $db->getQuery(true);
       $query->select(array('COUNT(CASE WHEN MONTH(c.climbdate) =  1 then 1 ELSE NULL END) as Jan',
@@ -246,7 +241,7 @@ class ActModelTicklists extends JModelList
                     
             ->from('#__act_comment AS c')
             //->join('LEFT', '#__act_grade AS g ON g.id  = c.myroutegrade')
-            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = c.myroutegrade') // Convertierter Grad  My Grade
+            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = c.myroutegrade') // Convertierter Grad  My Grade
             ->where($db->qn('c.created_by') . '=' . (int) $user)
             ->where($db->qn('ticklist_yn') . '= 1')
             ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 11 MONTH)');
@@ -275,11 +270,8 @@ class ActModelTicklists extends JModelList
       $db   = Factory::getDbo();
       $user = Factory::getuser()->id;
 
-
-	  // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
-      JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
-      $grade_table = GradeHelpersGrade::getGradeTable()[0];
-      $id_grade    = GradeHelpersGrade::getGradeTable()[1];
+      $params      = JComponentHelper::getParams('com_act');
+      $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
 
       // Create a new query object.
       $query = $db->getQuery(true);
@@ -299,7 +291,7 @@ class ActModelTicklists extends JModelList
                     )
                     
             ->from('#__act_comment AS c')
-            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = c.myroutegrade') // Convertierter Grad  My Grade
+            ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = c.myroutegrade') // Convertierter Grad  My Grade
             ->where($db->qn('c.created_by') . '=' . (int) $user)
             ->where($db->qn('ticklist_yn') . '= 1')
             ->where($db->qn('c.climbdate') . ' > DATE_SUB(NOW(),INTERVAL 12 MONTH)');
