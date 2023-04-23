@@ -15,6 +15,7 @@ Papierkorb   | -2
 
 
 #####  Grade-Table
+----------------|----------
 Feld grade             | 
 Feld filter            | Hier Angabe 3 bis 12. Wird für Soll-Ist-Vergleich benötigt. Nur Integer möglich nicht 6a+ z.B.
 Feld filter_merged     | Damit wird der Filter innerhalb der Listen angesprochen. Muss mit dem Sprachdateien-Override übereinstimmen 
