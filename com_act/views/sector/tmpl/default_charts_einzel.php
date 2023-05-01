@@ -31,6 +31,7 @@ if (!empty($this->item->routessoll_ind)) {
         array_push($routes_array, $jsonroutes[$grade] );
     }
 
+
     $total_routes = array_sum($routes_array);             // Gesamtzahl Routen
     $total_lines  = count($this->lines);                  // Gesamtzahl Linien
     $density      = round($total_routes/$total_lines, 2); // Routendichte

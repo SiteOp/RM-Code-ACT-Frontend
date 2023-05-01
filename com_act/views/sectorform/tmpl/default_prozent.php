@@ -36,7 +36,6 @@ if(!empty($this->item->id)) {                            // Nur wenn es die ID b
 	$total_lines = 0;
 
 }
-print_R($json);
 
 ?>
 

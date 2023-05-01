@@ -110,16 +110,13 @@ class ActModelMycomments extends JModelList
     {
         $user = Factory::getUser();
         $user = $user->get('id');
+
+        $params      = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
         
         // Create a new query object.
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
-
-
-		// Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
-        JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
-        $grade_table = GradeHelpersGrade::getGradeTable()[0];
-        $id_grade    = GradeHelpersGrade::getGradeTable()[1];
 
         $query->select(array(// Comment
                              'a.id', //ID is required for delet
@@ -131,10 +128,10 @@ class ActModelMycomments extends JModelList
                           //   ' t.calc_grade as cgrade_uiaa',
                              // My-Grade
                              'mg.grade AS my_grade', 
-                             'mg.'.$id_grade.' AS orderMyGrade',
+                             'mg.id_grade AS orderMyGrade',
                              // C-Grade
                              'cg.grade AS c_grade', 
-                             'cg.'.$id_grade.' AS orderCGrade', 
+                             'cg.id_grade AS orderCGrade', 
                              )
                       )
               ->from('#__act_comment AS a')
@@ -142,8 +139,8 @@ class ActModelMycomments extends JModelList
               ->join('LEFT', '#__act_route AS route     ON route.id  = a.route')
               ->join('LEFT', '#__act_trigger_calc AS t ON t.id     = route.id')
              // ->join('LEFT', '#__act_grade        AS g  ON g.id     = t.calc_grade_round') // GRADE CONVERSIONN TABLE
-              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.'.$id_grade.'  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
-              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.'.$id_grade.'  = a.myroutegrade') // Convertierter Grad cg = My-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.id_grade  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = a.myroutegrade') // Convertierter Grad cg = My-Grade
               ->where('a.created_by ='. $user);
         
             
