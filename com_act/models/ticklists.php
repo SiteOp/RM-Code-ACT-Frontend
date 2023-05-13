@@ -135,7 +135,7 @@ class ActModelTicklists extends JModelList
               ->join('LEFT', '#__act_route        AS r     ON r .id             = a.route')
               ->join('LEFT', '#__act_trigger_calc AS t     ON t.id              = r.id')
               ->join('LEFT', '#__'.$grade_table.' AS cg    ON cg.id_grade  = t.calc_grade_round') // Convertierter Grad cg = C-Grade
-              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = t.calc_grade_round') // Convertierter Grad cg = My-Grade
+              ->join('LEFT', '#__'.$grade_table.' AS mg    ON mg.id_grade  = a.myroutegrade') // Convertierter Grad cg = My-Grade
               ->where($db->qn('a.created_by') . '='. (int) $user)
               ->where($db->qn('ticklist_yn') . '= 1')
               ->where('cg.id_grade IS NOT NULL')
