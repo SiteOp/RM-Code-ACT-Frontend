@@ -22,6 +22,9 @@ HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+// Colors
+JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
 // ACT Params 
 $params    = JComponentHelper::getParams('com_act');
 $calcgrade = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
@@ -196,7 +199,7 @@ $unix_date = strtotime(Factory::getDate());
                     </td>
                     <td class="text-center"><?php // Color ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routesadmin'); ?>?filter[color]=<?php echo $item->colorId; ?>">
-                            <span class="routecolor" style="background: <?php echo $item->rgbcode; ?>;"></span>
+                        <?php echo ColorsHelpersColors::getColor($item->rgbcode, $item->rgbcode2, $item->rgbcode3); ?>
                         </a>
                     </td>
                     <td class=""> 
