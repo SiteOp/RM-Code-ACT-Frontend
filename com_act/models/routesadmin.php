@@ -130,7 +130,7 @@ class ActModelRoutesAdmin extends ListModel
                              // Setter
                              's.settername', 's.id AS setterId',
                              // Color
-                             'c.rgbcode', 'c.id AS colorId',
+                             'c.rgbcode', 'c.id AS colorId', 'c.rgbcode2', 'c.rgbcode3',
                              // Line
                              'l.line', 'l.id AS lineId',
                              // Sector

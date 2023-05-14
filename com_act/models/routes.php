@@ -39,7 +39,7 @@ class ActModelRoutes extends ListModel
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'name', 'a.name',
-				'color', 'c.color', 'c.rgbcode2', 'c.rgbcode3',
+				'color', 'c.color',
                 'count_stars', 't.count_stars',
 				'AvgStars', 'AvgStars',
 				'line', 'l.line',
@@ -127,7 +127,7 @@ class ActModelRoutes extends ListModel
                              // Setter
                              's.id AS setterId', 's.settername', 
                              // Color
-                             'c.rgbcode', 'c.id AS colorId',
+                             'c.rgbcode', 'c.id AS colorId', 'c.rgbcode2', 'c.rgbcode3',
                              // Line
                              'l.line', 'l.id AS lineId', 'l.lineoption',
                              // Sector

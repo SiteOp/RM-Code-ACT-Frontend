@@ -123,7 +123,7 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
                              'r.id AS route_id', 'r.state AS route_state', 'r.name AS route_name',
                             // 'r.settergrade',
                              // Color
-                             'c.rgbcode',
+                             'c.rgbcode', 'c.rgbcode2', 'c.rgbcode3',
                              // Line
                              'l.line',
                              // Setter

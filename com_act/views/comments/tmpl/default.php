@@ -30,6 +30,9 @@ $canCheckin = $user->authorise('core.manage', 'com_act');
 $canChange  = $user->authorise('core.edit.state', 'com_act');
 $canDelete  = $user->authorise('core.delete', 'com_act');
 $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
+
+// Helper Colors
+JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
 ?>
 
 <?php // Page-Header ?>
@@ -165,7 +168,7 @@ $adminCommentEdit = $user->authorise('admin.comment.edit', 'com_act');
                         data-placement="right" 
                         data-trigger="hover" 
                         data-html="true" 
-                        data-original-title="<span class='routecolor' style='background: <?php echo $item->rgbcode; ?>;'></span> 
+                        data-original-title="<?php echo ColorsHelpersColors::getColor($item->rgbcode, $item->rgbcode2, $item->rgbcode3); ?>
                                              <?php echo $this->escape($item->route_name); ?>
                                             " 
                         data-content="<div class='pop_line'>Linie: <?php echo $item->line; ?></div>
