@@ -61,10 +61,15 @@ $canState = JFactory::getUser()->authorise('core.edit.state','com_act');
                 <div class="form-group row">  
                     <div class="col-md-5"><?php echo $this->form->renderField('state'); ?></div>
                 </div>
-                 <div class="form-group row">
-                <div class="col-md-5"><?php echo $this->form->renderField('color'); ?></div>
-                <div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('rgbcode'); ?></div>
-            </div> 
+                <div class="form-group row">
+                    <div class="col-md-5"><?php echo $this->form->renderField('color'); ?></div>
+                   
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><?php echo $this->form->renderField('rgbcode'); ?></div>
+                    <div class="col-md-3 col-md-offset-1"><?php echo $this->form->renderField('rgbcode2'); ?></div>
+                    <div class="col-md-3 col-md-offset-1"><?php echo $this->form->renderField('rgbcode3'); ?></div>
+                </div>
 
         <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
         <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
