@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
+JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -62,6 +64,12 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 				<th class=''><?php // RGB-Code ?>
                     <?php echo JHtml::_('grid.sort',  'COM_ACT_COLOR_RGB', 'a.rgbcode', $listDirn, $listOrder); ?>
 				</th>
+				<th class=''><?php // RGB-Code ?>
+                    <?php echo JHtml::_('grid.sort',  'COM_ACT_COLOR_RGB', 'a.rgbcode2', $listDirn, $listOrder); ?>
+				</th>
+				<th class=''><?php // RGB-Code ?>
+                    <?php echo JHtml::_('grid.sort',  'COM_ACT_COLOR_RGB', 'a.rgbcode3', $listDirn, $listOrder); ?>
+				</th>
 				<th class="center"><?php // Edit ?>
                     <?php echo JText::_('COM_ACT_ACTIONS'); ?>
 				</th>
@@ -99,11 +107,17 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
                     <?php echo $item->id; ?>
                 </td>
 				<td><?php // Color ?>
-                    <span class="routecolor" style="background: <?php echo $item->rgbcode; ?>;"></span>
+					<?php echo ColorsHelpersColors::getColor($item->rgbcode, $item->rgbcode2, $item->rgbcode3); ?>
                     <?php echo $item->color; ?>
                 </td>
 				<td><?php // RGB-Code ?>
                     <?php echo $item->rgbcode; ?>
+                </td>
+				<td><?php // RGB-Code ?>
+                    <?php echo $item->rgbcode2; ?>
+                </td>
+				<td><?php // RGB-Code ?>
+                    <?php echo $item->rgbcode3; ?>
                 </td>
 				<td class="center">
 					<a href="<?php echo JRoute::_('index.php?option=com_act&task=colorform.edit&id=' . $item->id, false, 2); ?>" class="" type="button">
@@ -119,7 +133,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 		<a href="<?php echo JRoute::_('index.php?option=com_act&task=colorform.edit&id=0', false, 0); ?>"
 		    class="btn btn-secondary btn-small mt-4">
             <i class="icon-plus"></i>
-			<?php echo JText::_('COM_ACT_COLORS_ADD_ITEM'); ?></a>
+			<?php echo Text::_('COM_ACT_COLORS_ADD_ITEM'); ?></a>
 	<?php endif; ?>
 
 	<input type="hidden" name="task" value=""/>
