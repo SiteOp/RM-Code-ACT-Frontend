@@ -41,6 +41,10 @@ $tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
 $tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);
 $tachoCGradeAfter  = GradeHelpersGrade::getGrade(($this->item->id_grade) +1);
 $tachoZeiger       = ((($this->item->id_grade - ($this->item->id_grade)+1)/2) *100);
+
+// Helper Colors
+JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
 ?>
 
 
@@ -143,7 +147,7 @@ $tachoZeiger       = ((($this->item->id_grade - ($this->item->id_grade)+1)/2) *1
                         <dl class="row  mt-4"><?php // Color ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_COLOR'); ?></dt>
                            <dd class="col-6">
-                                <span class="routecolor" style="background: <?php echo $this->item->rgbcode; ?>;"> </span>
+                                <?php echo ColorsHelpersColors::getColor($this->item->rgbcode, $this->item->rgbcode2, $this->item->rgbcode3); ?>
                                 <?php echo '&nbsp;' . $this->item->color; ?>
                             </dd>
                         </dl>
@@ -240,7 +244,7 @@ $tachoZeiger       = ((($this->item->id_grade - ($this->item->id_grade)+1)/2) *1
         
             <?php // Info Extend als Card vor den Review  == Zusatzinfo z.B für Speedroute usw.?>
             <?php if (!empty($this->item->infoextend)) : ?>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <h3>Info</h3>
                      </div>

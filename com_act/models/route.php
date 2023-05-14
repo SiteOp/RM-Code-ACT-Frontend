@@ -168,7 +168,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				'a.routetype', 'a.extend_txt', 'a.extend_check1', 'a.extend_check2', 
 				'a.info1_extend', 'a.info2_extend', 'a.info3_extend', 'a.info4_extend', 
 				// Color
-                'c.rgbcode', 'c.color',
+                'c.rgbcode', 'c.color', 'c.rgbcode2', 'c.rgbcode3',
 				// Setter
                 's.settername', 
 				// Line
