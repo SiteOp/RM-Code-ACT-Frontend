@@ -23,6 +23,20 @@
            type="color"
            label="COM_ACT_FORM_LBL_COLOR_RGBCODE" 
            class="form-control"
+           required="true"
+    />
+    <field name="rgbcode2" 
+           default=""
+
+           type="color"
+           label="COM_ACT_FORM_LBL_COLOR_RGBCODE" 
+           class="form-control"
+    />
+    <field name="rgbcode3" 
+           default="" 
+           type="color"
+           label="COM_ACT_FORM_LBL_COLOR_RGBCODE" 
+           class="form-control"
     />
     
     <field name="state" 
