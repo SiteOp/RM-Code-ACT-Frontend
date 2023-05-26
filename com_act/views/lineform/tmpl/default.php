@@ -20,6 +20,10 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+// ACT Params 
+$params      = JComponentHelper::getParams('com_act');
+$use_line_properties = $params['use_line_properties'];
+
 $doc = Factory::getDocument();
 $doc->addScript(Uri::base() . '/media/com_act/js/form.js');
 
@@ -72,7 +76,9 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 			</div> 
 			<div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('lineoption'); ?></div>
-				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('indicator'); ?></div>
+				<?php if(1==$use_line_properties) : ?>
+				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('properties'); ?></div>
+				<?php endif; ?>
 			</div>
 			<div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('maxroutes'); ?></div>

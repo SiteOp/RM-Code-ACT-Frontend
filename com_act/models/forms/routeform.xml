@@ -37,7 +37,7 @@
         <field name="settergrade" 
                type="list" 
                filter="integer"
-               label="COM_ACT_FORM_LBL_ROUTE_SETTERGRADE" 
+               label="JGLOBAL_ROUTE_GRAD" 
                class="" 
                required="true" 
                >
@@ -187,6 +187,20 @@
                   <option value="4">COM_ACT_FORM_LBL_ROUTE_ROUTETYPE_OPTION_4</option>
                   <option value="5">COM_ACT_FORM_LBL_ROUTE_ROUTETYPE_OPTION_5</option>
         </field>
+
+       <field name="properties"
+              type="sql"
+		filter="integer" 
+              default=""
+	       class="form-control" 
+              label="COM_ACT_CONFIG_ROUTES_PROPERTIES"  
+              sql_select="name, id"
+              sql_from="#__rm_config_routes_property"
+              sql_where="state = 1" 
+              key_field="id"
+              value_field="name"
+              multiple="true">
+       </field>
 		
 	<field name="extend_sql" 
                type="sql"

@@ -29,6 +29,10 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
 $params    = JComponentHelper::getParams('com_act');
 $calcgrade = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
 $line      = $params['lineyn'];
+$use_routesetter = $params['use_routesetter'];
+$use_setterdate = $params['use_setterdate'];
+$use_route_properties = $params['use_route_properties'];
+$use_line_properties = $params['use_line_properties'];
 
 $newRouteDateRange  = $params['newroutedaterange']; // Config Anzahl Tage wann Route Label Neu
 $newRouteDateRange = 24*60*60*$newRouteDateRange;
@@ -37,7 +41,13 @@ $unix_date = strtotime(Factory::getDate());
 $listOrder   = $this->state->get('list.ordering');
 $listDirn    = $this->state->get('list.direction');
 
+// Add styles
+$document = Factory::getDocument();
+$style .=  1==$use_routesetter ? '' : '#filter_settername, #filter_settername_chosen {display: none;}';
+$document->addStyleDeclaration($style);
+
 ?>
+
 
 <?php // Page-Header ?>
 <?php if ($this->params->get('show_page_heading')) : ?>
@@ -95,12 +105,16 @@ $listDirn    = $this->state->get('list.direction');
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_REVIEW_COUNT', 'COM_ACT_ROUTE_POPOVER_TXT_REVIEW_COUNT'); ?><br />
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_REVIEW_COUNT', 't.count_stars', $listDirn, $listOrder); ?>
                 </th>
+                <?php if(1==$use_routesetter) : ?>
                 <th class="r_setter d-none d-lg-table-cell"><?php // Setter ?>
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTERNAME', 's.settername', $listDirn, $listOrder); ?>
                 </th>
+                <?php endif; ?>
+                <?php if(1==$use_setterdate) : ?>
                 <th class="r_setterdate d-none d-md-table-cell"><?php // Setterdate ?>
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTERDATE', 'a.setterdate', $listDirn, $listOrder); ?>
                 </th>
+                <?php endif; ?>
             </tr>
             </thead>
             <tfoot>
@@ -127,8 +141,12 @@ $listDirn    = $this->state->get('list.direction');
                                 data-content=" 
                                     <div class='pop_line'>Linie: <?php echo $item->line; ?></div>
                                     <div class=''><?php echo $item->lineSectorName; ?> </div>
+                                    <?php if(1==$use_routesetter) : ?>
                                     <div class='pop_setter d-lg-none'><?php echo $item->settername; ?></div>
+                                    <?php endif;?>
+                                    <?php if(1==$use_setterdate) : ?>
                                     <div class='pop_setterdate d-lg-none'> <?php echo HTMLHelper::_('date', $item->setterdate, Text::_('DATE_FORMAT_LC4')); ?></div>
+                                    <?php endif;?>
                                     
                                     ">
                             <?php if (1 == $item->inorout ) : ?>
@@ -178,14 +196,18 @@ $listDirn    = $this->state->get('list.direction');
                     <td  class=" d-none d-md-table-cell"><?php // Count User ?>
                         <?php echo (empty($item->count_stars)) ? '(0)' : '(' .$item->count_stars. ')'; ?><?php // Short if else ?>
                     </td>
+                    <?php if(1==$use_routesetter) : ?>
                     <td class="d-none d-lg-table-cell">
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[settername]=<?php echo $item->setterId; ?>">
                              <?php echo $item->settername; ?>
                         </a>
                     </td>
+                    <?php endif; ?>
+                    <?php if(1==$use_setterdate) : ?>
                     <td class="d-none d-md-table-cell"><?php // Setterdate ?>
                         <?php echo HTMLHelper::_('date', $item->setterdate, Text::_('DATE_FORMAT_LC4')); ?>
                     </td>
+                    <?php endif;?>
 
                 </tr>
             <?php endforeach; ?>

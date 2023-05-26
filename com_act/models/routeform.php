@@ -341,6 +341,23 @@ class ActModelRouteForm extends JModelForm
 		$data->setter = $array;
 		}
 
+
+
+        // Support for multiple or not foreign key field: route_properties
+		$array = array();
+
+		foreach ((array) $data->properties as $value)
+		{
+			if (!is_array($value))
+			{
+				$array[] = $value;
+			}
+		}
+		if(!empty($array)){
+
+		$data->properties = $array;
+		}
+
         return $data;
     }
 

@@ -179,6 +179,27 @@ class ActTableline extends \Joomla\CMS\Table\Table
 			$array['lineoption'] = '';
 		}
 
+		// Support for multiple field: line_properties
+		if (isset($array['properties']))
+		{
+			if (is_array($array['properties']))
+			{
+				$array['properties'] = implode(',',$array['properties']);
+			}
+			elseif (strpos($array['properties'], ',') != false)
+			{
+				$array['properties'] = explode(',',$array['properties']);
+			}
+			elseif (strlen($array['properties']) == 0)
+			{
+				$array['properties'] = '';
+			}
+		}
+		else
+		{
+			$array['properties'] = '';
+		}
+
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			$registry = new JRegistry;

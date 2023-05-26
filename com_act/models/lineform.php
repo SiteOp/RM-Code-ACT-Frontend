@@ -298,20 +298,41 @@ class ActModelLineForm extends \Joomla\CMS\MVC\Model\FormModel
         if ($data)
         {
             
-		// Support for multiple or not foreign key field: building
-		$array = array();
+            // Support for multiple or not foreign key field: building
+            $array = array();
 
-		foreach ((array) $data->lineoption as $value)
-		{
-			if (!is_array($value))
-			{
-				$array[] = $value;
-			}
-		}
-		if(!empty($array)){
+            foreach ((array) $data->lineoption as $value)
+            {
+                if (!is_array($value))
+                {
+                    $array[] = $value;
+                }
+            }
+            if(!empty($array)){
 
-		$data->lineoption = $array;
-		}
+            $data->lineoption = $array;
+            }
+
+            // Support for multiple or not foreign key field: line_properties
+            $array = array();
+
+            foreach ((array) $data->properties as $value)
+            {
+                if (!is_array($value))
+                {
+                    $array[] = $value;
+                }
+            }
+            if(!empty($array)){
+
+            $data->properties = $array;
+            }
+
+
+
+
+
+
 
             return $data;
         }

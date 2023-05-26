@@ -164,7 +164,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
         $query->select(array(
 				// Route
 				'a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.infoadmin', 'a.settergrade',
-				'a.modified', 'a.checked_out', 'a.exclude', 'a.infoextend',
+				'a.modified', 'a.checked_out', 'a.exclude', 'a.infoextend', 'a.properties AS route_properties',
 				'a.routetype', 'a.extend_txt', 'a.extend_check1', 'a.extend_check2', 
 				'a.info1_extend', 'a.info2_extend', 'a.info3_extend', 'a.info4_extend', 
 				// Color
@@ -172,7 +172,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				// Setter
                 's.settername', 
 				// Line
-                'l.line',  'l.height', 'l.indicator',
+                'l.line',  'l.height', 'l.indicator', 'l.properties AS line_properties',
 				// Sector
                 'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
 				// Sponsor
@@ -186,9 +186,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				'vr.grade AS s_grade', 
 				// C-Grade
 				'cg.grade AS c_grade',
-				'cg.id_grade',
-				// Grade Convert
-                'cg.grade_convert'
+				'cg.id_grade'
                 )
              )
                        

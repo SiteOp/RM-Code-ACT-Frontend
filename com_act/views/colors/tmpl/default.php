@@ -132,7 +132,7 @@ $canDelete  = $user->authorise('core.delete', 'com_act');
 	<?php if ($canCreate) : ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_act&task=colorform.edit&id=0', false, 0); ?>"
 		    class="btn btn-secondary btn-small mt-4">
-            <i class="icon-plus"></i>
+            <i class="fas fa-plus-circle"></i>
 			<?php echo Text::_('COM_ACT_COLORS_ADD_ITEM'); ?></a>
 	<?php endif; ?>
 

@@ -33,9 +33,26 @@ $colorThree  = $params['colorThree'];
 $colorFour   = $params['colorFour'];
 $colorZeiger = $params['colorZeiger'];
 $extendFormField   = $params['extendFormField'];  // Griffhersteller ja/nein
+$use_routesetter = $params['use_routesetter'];
+$use_setterdate = $params['use_setterdate'];
+$use_route_properties = $params['use_route_properties'];
+$use_line_properties = $params['use_line_properties'];
+
 
 // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
 JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+// Helper um die Tabelle der Routen/Linien Eigenschaften
+JLoader::import('helpers.config', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+if(!empty($this->item->route_properties)) {
+    $routeProperties  = ConfigHelpersConfig::getRoutePropertiesList($this->item->route_properties);  
+}
+if(!empty($this->item->line_properties)) {
+    $lineProperties  = ConfigHelpersConfig::getLinePropertiesList($this->item->line_properties); 
+}
+
+
+
 //  Tacho 
 $tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
 $tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);
@@ -123,7 +140,6 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
                             </dt>
                             <dd class="col-6">
                                 <?php echo $this->item->c_grade != 0 ? $this->item->c_grade : '-'; ?>
-                                <?php echo $this->item->c_grade != 0 ? ' | ' .$this->item->grade_convert : ''; ?>
                             </dd>
                         </dl>
 
@@ -166,6 +182,7 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
                            <dd class="col-6"><?php echo $this->item->height; ?> <?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_UNIT'); ?></dd>
                         </dl>
                        <?php endif; ?>
+                       
                         <?php if (!empty($img->image)) : ?><?php // Standordbild vorhanden? ?>
                         <dl class="row"><?php // Standort ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_STANDORT'); ?></dt>
@@ -176,15 +193,36 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
                            </dd>
                         </dl>
                         <?php endif; ?>
+
+                        <?php if(1== $use_routesetter) : ?>
                         <dl class="row"><?php // Setter ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_FORM_LBL_ROUTE_SETTER'); ?></dt>
                            <dd class="col-6"><?php echo $this->item->settername; ?></dd>
                         </dl>
+                        <?php endif; ?>
+
+                        <?php if(1==$use_setterdate) :?>
                         <dl class="row"><?php // Setterdate ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_SETTERDATE'); ?></dt>
                            <dd class="col-6"><?php echo HTMLHelper::_('date', $this->item->setterdate, 'd.m.Y'); ?></dd>
 						   <?php $setterdate = HTMLHelper::_('date', $this->item->setterdate, 'Y-m-d'); ?>
                         </dl>
+                        <?php endif; ?>
+
+                        <?php if ((1==$use_route_properties) AND (!empty($this->item->route_properties))) : ?>
+                        <dl class="row"><?php // Eigenschaften / Routencharakter ?>
+                           <dt class="col-6"><?php echo Text::_('COM_ACT_CONFIG_ROUTES_PROPERTIES'); ?></dt>
+                           <dd class="col-6"><?php echo $routeProperties; ?></dd>
+                        </dl>
+                        <?php endif; ?>
+
+                        <?php if ((1==$use_line_properties) AND (!empty($this->item->line_properties))) : ?>
+                        <dl class="row"><?php // Eigenschaften / Liniencharakter ?>
+                           <dt class="col-6"><?php echo Text::_('COM_ACT_CONFIG_LINE_PROPERTIES'); ?></dt>
+                           <dd class="col-6"><?php echo $lineProperties; ?></dd>
+                        </dl>
+                        <?php endif; ?>
+                        
                         
                         <?php if (!empty($this->item->info)) : ?>
                         <dl class="row mt-4"><?php // Route Info ?>

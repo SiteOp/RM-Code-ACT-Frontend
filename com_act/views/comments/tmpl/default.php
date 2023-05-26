@@ -20,6 +20,11 @@ HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('behavior.multiselect');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+// ACT Params 
+$params    = JComponentHelper::getParams('com_act');
+$use_routesetter = $params['use_routesetter'];
+
+
 
 $user       = Factory::getUser();
 $listOrder  = $this->state->get('list.ordering');
@@ -173,7 +178,9 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
                                             " 
                         data-content="<div class='pop_line'>Linie: <?php echo $item->line; ?></div>
                                       <div><?php echo $item->lineSectorName; ?></div>
+                                      <?php if(1==$use_routesetter) : ?>
                                       <div class='pop_setter'><?php echo $item->settername; ?></div>
+                                      <?php endif; ?>
                                       <div class='pop_cgrade'>C-Grade:
                                           <?php if ($item->c_grade == 0) :?><?php // Wenn Communitiy Grade vorhanden (berechnet) dann ausgeben. ## View Table ?>
                                             <?php echo '-'; ?>

@@ -86,12 +86,25 @@
 		filter="integer" 
               default=""
 	       class="form-control" 
-              label="COM_ACT_FORM_LBL_LINE_LINEOPTION_LABEL"  
+              label="JGLOBAL_LINES_OPTIONS"  
               sql_select="l.name,l.id"
               sql_from="#__lineoption_opt AS l"
               key_field="id"
               value_field="name"
               sql_where="l.state = 1"
+              multiple="true">
+       </field>
+       <field name="properties"
+              type="sql"
+		filter="integer" 
+              default=""
+	       class="form-control" 
+              label="JGLOBAL_LINES_PROPERTIES"  
+              sql_select="name, id"
+              sql_from="#__rm_config_lines_property"
+              sql_where="state = 1" 
+              key_field="id"
+              value_field="name"
               multiple="true">
        </field>
        <field name="maintenance_interval" 

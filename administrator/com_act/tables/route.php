@@ -134,6 +134,29 @@ class ActTableroute extends JTable
 			$array['setter'] = '';
 		}
 
+		// Support for multiple field: route_properties
+		if (isset($array['properties']))
+		{
+			if (is_array($array['properties']))
+			{
+				$array['properties'] = implode(',',$array['properties']);
+			}
+			elseif (strpos($array['properties'], ',') != false)
+			{
+				$array['properties'] = explode(',',$array['properties']);
+			}
+			elseif (strlen($array['properties']) == 0)
+			{
+				$array['properties'] = '';
+			}
+		}
+		else
+		{
+			$array['properties'] = '';
+		}
+
+
+
 		// Support for empty date field: createdate
 		if($array['createdate'] == '0000-00-00' )
 		{

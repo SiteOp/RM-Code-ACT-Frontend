@@ -42,6 +42,7 @@ $params          = JComponentHelper::getParams('com_act');
 $grade_table = $params['grade_table'];             // Welche Tabelle für Schwierigkeitsgrade
 $routetype       = $params['routetype']; 
 $extendFormField = $params['extendFormField'];
+$route_properties = $params['use_route_properties'];
 
 
 if($this->item->state == 1){
@@ -94,7 +95,7 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
             <div class="form-group row">
                 <div class="col-md-5"><?php echo $this->form->renderField('setter'); ?></div>
                 <div class="col-md-5 col-md-offset-1">
-                    <?php echo $this->form->getLabel('setter'); ?>
+                    <?php echo $this->form->getLabel('settergrade'); ?>
                     <div class="controls">
                         <select id="jform_settergrade" name="jform[settergrade]" class="required" required aria-required="true">
                             <option value="" ><?php echo Text::_('COM_ACT_ROUTES_GRADE_OPTION_0'); ?></option>
@@ -121,11 +122,15 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
             </div>
 			
 			 
-			<?php if(1==$routetype) : ?>
-				<div class="form-group row">
-				   <div class="col-md-5"><?php echo $this->form->renderField('routetype'); ?></div>
-				</div>
-			<?php endif; ?>
+			<div class="form-group row">
+            <?php if(1==$routetype) : ?>
+			   <div class="col-md-5"><?php echo $this->form->renderField('routetype'); ?></div>
+            <?php endif; ?>
+            <?php if(1==$route_properties) : ?>
+			   <div class="col-md-5"><?php echo $this->form->renderField('properties'); ?></div>
+            <?php endif; ?>
+			</div>
+			
 			
 
             <?php // Wird das Template für die erweiterten Felder (z. B. Hersteller) benötigt?>

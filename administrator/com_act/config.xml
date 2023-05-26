@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset label="COM_ACT_ROUTES_LIST" name="routes_list">
-        <field name="sponsoringyn" default="1" type="radio" label="COM_ACT_CONFIG_LBL_SPONSORING">
+    <fieldset label="Routen" name="routes_list">
+        <field name="sponsoringyn" class="btn-group btn-group-yesno"  default="1" type="radio" label="COM_ACT_CONFIG_LBL_SPONSORING">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
-        <field name="calculatedyn" default="1" type="radio" label="COM_ACT_CONFIG_LBL_CALCULATED">
+        <field name="calculatedyn"  class="btn-group btn-group-yesno"  default="1" type="radio" label="COM_ACT_CONFIG_LBL_CALCULATED">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
@@ -18,6 +18,18 @@
                max="99" 
                step="1" 
         />
+        <field name="use_routesetter" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Routenschrauber" description="Rotenschrauber anzeigen">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="use_setterdate" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Schraubdatum" description="Schraubdatum anzeigen">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="use_route_properties" default="0" type="radio"  class="btn-group btn-group-yesno"  label="Routencharakter" description="Routencharakter/Eigenschaften verwenden? aus com_rm_config">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
     </fieldset>
 	
 
@@ -220,17 +232,14 @@
 
     </fieldset>
     
-    
-    <fieldset label="COM_ACT_ADMIN_COMMENT" name="admin_comment">
-        <field name="admin_comment_id" default="1" type="radio" label="COM_ACT_CONFIG_LBL_ADMIN_COMMENT_ID">
+
+	
+	 <fieldset label="Linien" name="admin_lines">
+        <field name="admin_lines_indicator" default="0" type="radio" class="btn-group btn-group-yesno"  label="Indicator für Lines">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
-		
-    </fieldset>
-	
-	 <fieldset label="Admin Lines" name="admin_lines">
-        <field name="admin_lines_indicator" default="0" type="radio" label="Indicator für Lines">
+		<field name="use_line_properties" default="0" type="radio" class="btn-group btn-group-yesno"  label="Liniencharakter" description=" Liniencharakter/Eigenschaften verwenden?">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
@@ -370,7 +379,7 @@
 			<option value="act_grade_uiaa_zwg">UIAA mit Zwischengraden</option>
 			<option value="act_grade_franz">Franz</option>
         </field>
-		 <field name="admin_lines_pdf" default="1" type="radio" label="PDF">
+		 <field name="admin_lines_pdf" default="1" type="radio" class="btn-group btn-group-yesno"  label="PDF">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
         </field>
