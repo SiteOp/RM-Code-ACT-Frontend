@@ -155,6 +155,27 @@ class ActTableroute extends JTable
 			$array['properties'] = '';
 		}
 
+		// Support for multiple field: extend_sql2
+		if (isset($array['extend_sql2']))
+		{
+			if (is_array($array['extend_sql2']))
+			{
+				$array['extend_sql2'] = implode(',',$array['extend_sql2']);
+			}
+			elseif (strpos($array['extend_sql2'], ',') != false)
+			{
+				$array['extend_sql2'] = explode(',',$array['extend_sql2']);
+			}
+			elseif (strlen($array['extend_sql2']) == 0)
+			{
+				$array['extend_sql2'] = '';
+			}
+		}
+		else
+		{
+			$array['extend_sql2'] = '';
+		}
+
 
 
 		// Support for empty date field: createdate

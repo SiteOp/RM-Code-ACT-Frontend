@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 $params        = JComponentHelper::getParams('com_act');
 $extendHeader  = $params['extendHeader'];
 $extend_sql    = $params['extend_sql'];
+$extend_sql2   = $params['extend_sql2'];
 $extend_txt    = $params['extend_txt'];
 $info1_extend  = $params['info1_extend'];
 $info2_extend  = $params['info2_extend'];
@@ -51,10 +52,13 @@ $info4_extendRequired = $params['info4_extendRequired'];
      </div>
 <?php endif; ?>
 
-<?php if (1 == $extend_sql OR 1 == $extend_txt) : ?>
+<?php if (1 == $extend_sql OR 1 == $extend_txt OR 1==$extend_sql2) : ?>
     <div class="form-group row">   
         <?php if (1 == $extend_sql): ?>
             <div class="col-md-5"><?php echo $this->form->renderField('extend_sql'); ?></div>
+        <?php endif; ?>
+        <?php if(1== $extend_sql2) : ?>
+            <div class="col-md-5 mb-2"><?php echo $this->form->renderField('extend_sql2'); ?></div>
         <?php endif; ?>
         <?php if(1 == $extend_txt) : ?>
             <div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('extend_txt'); ?></div>

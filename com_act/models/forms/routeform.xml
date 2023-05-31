@@ -37,7 +37,7 @@
         <field name="settergrade" 
                type="list" 
                filter="integer"
-               label="JGLOBAL_ROUTE_GRAD" 
+               label="ACTGLOBAL_ROUTE_GRAD" 
                class="" 
                required="true" 
                >
@@ -193,7 +193,7 @@
 		filter="integer" 
               default=""
 	       class="form-control" 
-              label="COM_ACT_CONFIG_ROUTES_PROPERTIES"  
+              label="ACTGLOBAL_ROUTES_PROPERTIES"  
               sql_select="name, id"
               sql_from="#__rm_config_routes_property"
               sql_where="state = 1" 
@@ -214,6 +214,20 @@
                filter="integer"
                label="COM_ACT_FROM_LBL_ROUTE_EXTEND_SQL" 
                header="ACTGLOBAL_SELECTION"
+         />
+
+       <field name="extend_sql2" 
+               type="sql"
+               sql_select="name, state, id" 
+               sql_from="#__act_holds_types" 
+               sql_where="state != 0" 
+               sql_order="name ASC" 
+               key_field="id" 
+               value_field="name" 
+               required="false" 
+               filter="integer"
+               label="ACTGLOBALL_ROUTE_EXTEND_SQL2" 
+              multiple="true"
          />
 		 
 	<field name="extend_check1"	

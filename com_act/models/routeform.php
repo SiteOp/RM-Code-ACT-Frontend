@@ -358,6 +358,24 @@ class ActModelRouteForm extends JModelForm
 		$data->properties = $array;
 		}
 
+
+
+        // Support for multiple or not foreign key field: extend_sql2
+		$array = array();
+
+		foreach ((array) $data->extend_sql2 as $value)
+		{
+			if (!is_array($value))
+			{
+				$array[] = $value;
+			}
+		}
+		if(!empty($array)){
+
+		$data->extend_sql2 = $array;
+		}
+
+
         return $data;
     }
 
