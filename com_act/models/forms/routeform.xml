@@ -132,6 +132,25 @@
                label="COM_ACT_FORM_LBL_ROUTE_CREATEDATE"
         />
 
+        <!-- Time true - erfoderlich damit Sortierung vernünftig funktioniert / Sonst Unterschiede beim sortieren -->
+        <field name="removedate" 
+               type="calendar" 
+        />
+
+       <field name="route_lifetime" 
+               type="sql"
+               sql_select="lifetime, id, description" 
+               sql_from="#__rm_config_routes_lifetime" 
+               sql_where="state = 1" 
+               key_field="lifetime" 
+               value_field="description" 
+               required="false" 
+               filter="integer"
+               label="ACTGLOBAL_ROUTE_LIFETIME" 
+               multiple="false"
+               sql_order="ordering ASC" 
+         />
+
         <field name="info"
                class="form-control" 
                filter="safehtml" 

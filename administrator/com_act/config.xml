@@ -30,6 +30,11 @@
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
+		<field name="use_route_lifetime" default="0" type="radio"  class="btn-group btn-group-yesno"  label="Routen Lebensdauer" description="Feature Liftime verwenden? aus com_rm_config">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		<field name="route_lifetime_range" type="number" showon="use_route_lifetime:1" label="Zeitraum für Liftime" description="Wie weit im voraus soll eine Route vor dem Ende der Routen Lebensdauer gekennzeichnet werden?" min="1" max="999" step="1" />
     </fieldset>
 	
 

@@ -19,11 +19,6 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
-// Load admin language file
-$lang = Factory::getLanguage();
-$lang->load('com_act', JPATH_SITE);
-$doc = Factory::getDocument();
-$doc->addScript(JUri::base() . '/media/com_act/js/form.js');
 
 $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
@@ -43,6 +38,7 @@ $grade_table = $params['grade_table'];             // Welche Tabelle für Schwie
 $routetype       = $params['routetype']; 
 $extendFormField = $params['extendFormField'];
 $route_properties = $params['use_route_properties'];
+$use_route_lifetime = $params['use_route_lifetime'];
 
 
 if($this->item->state == 1){
@@ -130,7 +126,12 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
 			   <div class="col-md-5"><?php echo $this->form->renderField('properties'); ?></div>
             <?php endif; ?>
 			</div>
-			
+
+ 			<?php if(1==$use_route_lifetime) : ?>
+            <div class="form-group row">
+                <div class="col-md-5"><?php echo $this->form->renderField('route_lifetime'); ?></div>
+            </div> 
+			<?php endif; ?>
 			
 
             <?php // Wird das Template für die erweiterten Felder (z. B. Hersteller) benötigt?>
@@ -164,6 +165,7 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
             <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
             <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
             <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
+            
 
             <div class="control-group">
                 <div class="controls mt-1">
@@ -183,6 +185,7 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
         </form>
 <?php endif; ?>
 </div>
+
 
 <script>
 // Required hinzufügen wenn -----

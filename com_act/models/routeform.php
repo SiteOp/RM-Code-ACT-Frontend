@@ -395,6 +395,13 @@ class ActModelRouteForm extends JModelForm
         $state = (!empty($data['state'])) ? 1 : 0;
         $user  = Factory::getUser();
 
+        // Lifetime in Tage 
+        $lifetime = $data['route_lifetime'];
+        $setterdate = $data['setterdate'];
+        $date=date_create($setterdate);
+        date_add($date,date_interval_create_from_date_string("$lifetime  days"));
+        $data['removedate'] = date_format($date,"Y-m-d");
+
         
         if ($id)
         {
