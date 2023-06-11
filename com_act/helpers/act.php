@@ -559,4 +559,57 @@ class ActHelpersAct
     }
    
 
+
+
+
+/**
+    * Anzeige eines Icons für den Removestatus einer Route
+    * Beispiel ActHelpersAct::getRemoveRouteIcon($item->lifetime, $removedate)
+    * @param =  
+    * @return echo Icons
+    */
+    public static function getRemoveRouteIcon($removestate, $removedate = '') {
+      
+		switch($removestate){
+            case (0):
+                $color = '#89c200';
+                break;
+            case (1):
+                $color = '#fc8c26';
+                break;
+            case (2):
+                $color = 'red';
+                break;
+            }
+        // Mit Angabe des Removedate Popover mit Datumsangabe
+        // Z. B. Routenliste Admin
+        if(!empty($removedate)) {
+            echo '<a class="d-inline-block" rel="popover" 
+                data-container="body"
+                data-placement="top" 
+                data-trigger="hover" 
+                data-content="'.$removedate.' ">
+                <i class="'.Text::_('ACTGLOBAL_FA_REMOVE_STATE_'.$removestate).' fa-lg" style="color: '.$color.';"></i> 
+              </a>';
+           
+        } 
+        // Ohne Angabe des Datums nur Icon anzeigen
+        // Z, B für Routenliste User
+        else {
+            echo '<a class="d-inline-block" rel="popover" 
+            data-container="body"
+            data-placement="top" 
+            data-trigger="hover" 
+            data-content="'.Text::_('ACTGLOBAL_ROUTE_LIFETIME_POPOVER_CONTENT_USER').' ">
+            <i class="'.Text::_('ACTGLOBAL_FA_REMOVE_STATE_1').'" style="color: red"></i> 
+          </a>';
+        }
+              
+        
+    }
+
+    
+
 }
+    
+    

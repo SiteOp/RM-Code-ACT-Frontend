@@ -27,12 +27,14 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
 
 // ACT Params 
 $params    = JComponentHelper::getParams('com_act');
-$calcgrade = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
-$line      = $params['lineyn'];
-$use_routesetter = $params['use_routesetter'];
-$use_setterdate = $params['use_setterdate'];
-$use_route_properties = $params['use_route_properties'];
-$use_line_properties = $params['use_line_properties'];
+$calcgrade              = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
+$line                   = $params['lineyn'];
+$use_routesetter        = $params['use_routesetter'];
+$use_setterdate         = $params['use_setterdate'];
+$use_route_properties   = $params['use_route_properties'];
+$use_line_properties    = $params['use_line_properties'];
+$use_route_lifetime     = $params['use_route_lifetime']; // Removedate Lifetime einer Route
+
 
 $newRouteDateRange  = $params['newroutedaterange']; // Config Anzahl Tage wann Route Label Neu
 $newRouteDateRange = 24*60*60*$newRouteDateRange;
@@ -40,6 +42,14 @@ $unix_date = strtotime(Factory::getDate());
 
 $listOrder   = $this->state->get('list.ordering');
 $listDirn    = $this->state->get('list.direction');
+
+// Lade Globale Sprachdateien
+$lang = Factory::getLanguage();
+$extension = 'com_act_global';
+$base_dir = JPATH_SITE;
+$language_tag = $lang->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
 
 // Add styles
 $document = Factory::getDocument();
@@ -171,11 +181,19 @@ $document->addStyleDeclaration($style);
 
                     <td class=""> <?php // Setterdate older then 14 Day ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=route&id='.(int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
-                          <?php if (strtotime($item->setterdate) > ($unix_date - $newRouteDateRange) ): ?><span class="new_route"><?php echo Text::_('COM_ACT_ROUTE_NEW_ROUTE'); ?></span> <?php endif; ?>
-						  <?php $options = explode(",", $item->lineoption); ?>
+                        <?php // Removedate Lifetime der Route ?>
+                        <?php if((1==$use_route_lifetime) AND (1==$item->lifetime)) : ?> 
+                         <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime); ?>
+                        <?php endif; ?>
+                        <?php // Route NEWS ?>
+                        <?php if (strtotime($item->setterdate) > ($unix_date - $newRouteDateRange) ): ?><span class="new_route"><?php echo Text::_('COM_ACT_ROUTE_NEW_ROUTE'); ?></span> <?php endif; ?>
+                        <?php // Linienoptionen ?>
+                        <?php $options = explode(",", $item->lineoption); ?>
 						<?php foreach ($options as $option) : ?>
 						  <?php echo ActHelpersAct::getLineoptions($option); ?>
 						<?php endforeach ; ?>
+                        
+
                     </td>
                     <?php if ($calcgrade == 1 ) : ?><?php // C-Grade ?>
                     <td  class="text-center">

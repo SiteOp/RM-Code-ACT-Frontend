@@ -27,11 +27,12 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
 
 // ACT Params 
 $params    = JComponentHelper::getParams('com_act');
-$calcgrade = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
-$setter    = $params['setteryn'];
-$sector    = $params['sectoryn'];
-$inorout   = $params['inoroutyn'];
-$line      = $params['lineyn'];
+$calcgrade              = $params['calculatedyn']; // Ausgabe des Kalkulierten Grades ?   | if ($calcgrade == 1 )
+$setter                 = $params['setteryn'];
+$sector                 = $params['sectoryn'];
+$inorout                = $params['inoroutyn'];
+$line                   = $params['lineyn'];
+$use_route_lifetime     = $params['use_route_lifetime']; // Removedate Lifetime einer Route
 
 $user        = Factory::getUser();
 
@@ -43,6 +44,19 @@ $canChange   = $user->authorise('core.edit.state', 'com_act');
 $adminUser   = $user->authorise('core.manage', 'com_actj');
 
 $unix_date = strtotime(Factory::getDate());
+
+// Lade Globale Sprachdateien
+$lang = Factory::getLanguage();
+$extension = 'com_act_global';
+$base_dir = JPATH_SITE;
+$language_tag = $lang->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+
+// Add styles
+$document = Factory::getDocument();
+$style .=  1==$use_route_lifetime ? '' : '#filter_lifetime, #filter_lifetime_chosen {display: none;}'; // Filter ausblenden
+$document->addStyleDeclaration($style);
 
 ?>
 
@@ -74,6 +88,12 @@ $unix_date = strtotime(Factory::getDate());
                 <th class="r_state text-center" ><?php // STATE ?>
                     <?php echo  HTMLHelper::_('grid.sort', 'COM_ACT_STATUS', 'a.state', $listDirn, $listOrder); ?> 
                 </th>
+                <?php if(1==$use_route_lifetime) : ?>
+                    <th class="r_edit text-center"> <?php // Removedate ?>
+                        <?php echo ActHelpersAct::getPopoverByParams('ACTGLOBAL_ROUTE_LIFETIME', 'ACTGLOBAL_ROUTE_LIFETIME_POPOVER_TXT'); ?><br />
+                        <?php echo HTMLHelper::_('grid.sort', 'ACTGLOBAL_LIFETIME', 'removedate', $listDirn, $listOrder); ?>
+                    </th>
+                <?php endif; ?>
                 <th class="r_info text-center d-xl-table-cell"><?php // Info Popover ?>
                     <?php echo Text::_('COM_ACT_LBL_INFO'); ?>
                 </th>
@@ -141,8 +161,7 @@ $unix_date = strtotime(Factory::getDate());
 
                      <?php if (isset($this->items[0]->state)) : ?>
                         <?php $class = ($canChange) ? 'active' : 'disabled'; ?>    
-                        
-                        
+                         
                     <td class="text-center"><?php // State ############################ TODO Statt if elseif - Switch einsetzten ?>
                     <?php if ($item->state == -4): ?><?php // Planung  ?>
                             <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=route.publish&id=' . $item->id . '&state= -3') : '#'; ?>">
@@ -168,6 +187,14 @@ $unix_date = strtotime(Factory::getDate());
                         <?php endif; ?>
                     </td>
                      <?php endif; ?>
+
+                     <?php if(1==$use_route_lifetime) : ?>
+                        <td class="text-center">
+                            <?php $removedate = HTMLHelper::_('date', $item->removedate, Text::_('DATE_FORMAT_LC4')); ?>
+                            <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime, $removedate); ?>
+                        </td>
+                    <?php endif; ?> 
+
                     <td class="r_info text-center"><?php // Info Popover ?>
                          <a class="" rel="popover" 
                                 data-placement="right" 

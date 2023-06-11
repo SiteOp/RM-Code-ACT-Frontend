@@ -54,7 +54,9 @@ class ActModelRoutesAdmin extends ListModel
                 'setterdate', 'a.setterdate',
                 'info', 'a.info',
                 'state', 'a.state',
-                'fixed', 'a.fixed'
+                'fixed', 'a.fixed',
+                'lifetime', 'lifetime',
+                'removedate', 'a.removedate'
             );
         }
 
@@ -121,6 +123,9 @@ class ActModelRoutesAdmin extends ListModel
         $params      = JComponentHelper::getParams('com_act');
         $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
 
+        $use_route_lifetime =  $params['use_route_lifetime'];
+        $route_lifetime_range =  $params['route_lifetime_range'];
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
@@ -144,7 +149,8 @@ class ActModelRoutesAdmin extends ListModel
                              'vr.id_grade AS orderVrGrade',
                              // C-Grade
                              'cg.grade AS c_grade', 
-                             'cg.id_grade AS orderCGrade',
+                             'cg.id_grade AS orderCGrade'
+                            
                             )
                          )
               ->from('#__act_route AS a')
@@ -158,6 +164,35 @@ class ActModelRoutesAdmin extends ListModel
               ->join('LEFT', '#__act_setter       AS s  ON a.setter         = s.id')               // Setter
               ->join('LEFT', '#__act_color        AS c  ON c.id             = a.color')           // Color
               ->where('cg.id_grade IS NOT NULL');
+
+     
+     
+     
+        // Removedate / Lifetime
+        if(1 == $use_route_lifetime) {
+            $query->select(array( 
+                'CASE 
+                    WHEN a.removedate = 0000-00-00 THEN 3
+                    WHEN NOW() > a.removedate THEN 2
+                    WHEN NOW() BETWEEN  DATE_SUB(a.removedate, INTERVAL '.$route_lifetime_range.' DAY) AND a.removedate THEN 1
+                    ELSE 0
+                END as lifetime',
+                'a.removedate')
+            );
+
+            // Filtering Lifetime
+            $filter_lifetime= $db->escape($this->getState('filter.lifetime'));
+
+            if ($filter_lifetime == '2'){
+                $query->where('NOW() > a.removedate');
+            }
+            if ($filter_lifetime == '1'){
+                $query->where('NOW() BETWEEN  DATE_SUB(a.removedate, INTERVAL '.$route_lifetime_range.' DAY) AND a.removedate');
+            }
+            if ($filter_lifetime == '3'){
+                $query->where('NOW() >  DATE_SUB(a.removedate, INTERVAL '.$route_lifetime_range.' DAY)');
+            }
+        }
 
 
         // ########################### Filter ##################
@@ -258,13 +293,15 @@ class ActModelRoutesAdmin extends ListModel
                 $query->where($db->qn('c.id') . '=' . (int) $filter_color);
             }
 
+
+
          // Filtering Lineoptions - Value from Multiple List - Array (Automat, Toprobe usw)
         $filter_lineoption = $this->state->get("filter.lineoption");
              if ($filter_lineoption != '')
                 {
                 $query->where('FIND_IN_SET('.$filter_lineoption.', l.lineoption)');
                 }
-        
+
 
         // Add the list ordering clause.
         $orderCol  = $this->state->get('list.ordering', 'a.setterdate');

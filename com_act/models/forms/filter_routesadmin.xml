@@ -146,8 +146,8 @@
                   <option value="10">10</option>
                   <option value="11">11</option>
                   <option value="12">12</option>
-       </field>  
-         <field name="datesort"
+        </field>  
+        <field name="datesort"
               type="list"
               filter="raw"
               label="date"
@@ -157,6 +157,19 @@
               default="0">
                 <option value="1">Datum aufsteigend</option>
                 <option value="0">Datum absteigend</option>
-       </field>
+        </field>
+        <field name="lifetime" 
+              label="lifetime" 
+              type="list"
+              filter="integer"
+              multiple="false"
+              onchange="this.form.submit();"
+              default="*">
+                  <option value="">ACTGLOBAL_ROUTE_LIFETIME</option>
+                  <option value="1">ACTGLOBAL_ROUTE_LIFETIME_STATE_1</option>
+                  <option value="2">ACTGLOBAL_ROUTE_LIFETIME_STATE_2</option>
+                  <option value="3">ACTGLOBAL_ROUTE_LIFETIME_STATE_1_2</option>
+
+        </field>  
     </fields>
 </form>

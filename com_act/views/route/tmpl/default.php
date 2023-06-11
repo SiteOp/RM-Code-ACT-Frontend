@@ -15,9 +15,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-$doc = Factory::getDocument();
-$doc->addScript(Uri::base() . '/media/com_act/js/form.js');
-
 $user        = Factory::getUser();
 $userId      = $user->get('id');
 $adminUser   = $user->authorise('core.admin', 'com_act');
@@ -25,19 +22,19 @@ $routeAdmin  = 	$user->authorise('route.edit', 'com_act');
 $canEdit     = Factory::getUser()->authorise('core.edit', 'com_act');
 
 // ACT Params 
-$params      = JComponentHelper::getParams('com_act');
-$indicator   = $params['admin_lines_indicator'];
-$colorOne    = $params['colorOne'];
-$colorTwo    = $params['colorTwo'];
-$colorThree  = $params['colorThree'];
-$colorFour   = $params['colorFour'];
-$colorZeiger = $params['colorZeiger'];
-$extendFormField   = $params['extendFormField'];  // Griffhersteller ja/nein
-$use_routesetter = $params['use_routesetter'];
-$use_setterdate = $params['use_setterdate'];
-$use_route_properties = $params['use_route_properties'];
-$use_line_properties = $params['use_line_properties'];
-
+$params                 = JComponentHelper::getParams('com_act');
+$indicator              = $params['admin_lines_indicator'];
+$colorOne               = $params['colorOne'];
+$colorTwo               = $params['colorTwo'];
+$colorThree             = $params['colorThree'];
+$colorFour              = $params['colorFour'];
+$colorZeiger            = $params['colorZeiger'];
+$extendFormField        = $params['extendFormField'];  // Griffhersteller ja/nein
+$use_routesetter        = $params['use_routesetter'];
+$use_setterdate         = $params['use_setterdate'];
+$use_route_properties   = $params['use_route_properties'];
+$use_line_properties    = $params['use_line_properties'];
+$use_route_lifetime     = $params['use_route_lifetime']; // Removedate Lifetime einer Route
 
 // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
 JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
@@ -57,10 +54,21 @@ if(!empty($this->item->line_properties)) {
 $tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
 $tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);
 $tachoCGradeAfter  = GradeHelpersGrade::getGrade(($this->item->id_grade) +1);
-$tachoZeiger       = ((($this->item->id_grade - ($this->item->id_grade)+1)/2) *100);
+//Prozente für den Zeiger: (C_Grade - C_Grade_Gerundet + 1) / 2 * 100%
+$tachoZeiger       = ((($this->item->calc_grade - ($this->item->id_grade)+1)/2) *100);
 
 // Helper Colors
 JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
+
+
+// Lade Globale Sprachdateien
+$lang = Factory::getLanguage();
+$extension = 'com_act_global';
+$base_dir = JPATH_SITE;
+$language_tag = $lang->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+
 
 ?>
 
@@ -89,6 +97,7 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
             <?php if (0 == $this->item->exclude) : ?>
 				<div class="Stars" style=" --rating: <?php echo ActHelpersAct::getStarsRound($this->item->avg_stars); ?>;"></div>
 				<small class="stars_percent">(<?php echo number_format(round($this->item->avg_stars,2),2); ?>)</small>
+               
             <?php endif; ?>
         </h1>
 	</div>
@@ -99,15 +108,14 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
 
             <div class="card">
                 <div class="card-header">
-                    <h3><i class="<?php echo Text::_('COM_ACT_FA_ROUTE'); ?>"></i> 
-					<?php echo Text::_('COM_ACT_ROUTE_Details'); ?> 
-					<?php if($adminUser) : ?> <?php // Für Admin - Tachoanzeige und Grade-ID ?>
-					    <span class="float-right"><?php echo $tachoZeiger; ?> / <?php echo $this->item->id_grade; ?></span>
-					<?php endif; ?>
-					
-					</h3>
+                    <h3><i class="<?php echo Text::_('COM_ACT_FA_ROUTE'); ?>"></i> <?php echo Text::_('COM_ACT_ROUTE_Details'); ?> </h3>
                 </div>
                  <div class="card-body">
+
+                <?php if((1==$use_route_lifetime) AND (1==$this->item->lifetime)) : ?> <?php // Removedate Lifetime der Route ?>
+                    <dl class="row"><dt class="col" style="font-size: 150%;"><?php echo ActHelpersAct::getRemoveRouteIcon($this->item->lifetime); ?></dt></dl>
+                <?php endif; ?>
+
 				 <?php if (0 == $this->item->exclude) : ?><?php // Tacho anzeigen wenn Route für Kommentare nicht gesperrt ?>
 					<dl class="row mt-4">
                            <dt class="col-6">
@@ -228,13 +236,6 @@ JLoader::import('helpers.colors', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DI
                         <dl class="row mt-4"><?php // Route Info ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_INFO'); ?></dt>
                            <dd class="col-12"><?php echo $this->item->info; ?></dd>
-                        </dl>
-                        <?php endif; ?>
-                        
-                        <?php if (!empty($this->item->sp_name)) : ?>
-                        <dl class="row sponsor"><?php // Sponsor ?>
-                           <dt class="col-6"><img class="img-fluid" src="<?php echo($this->item->sp_media); ?>" alt=""  ></dt>
-                           <dd class="col-6"><?php echo($this->item->sp_txt); ?></dd>
                         </dl>
                         <?php endif; ?>
                     </div>

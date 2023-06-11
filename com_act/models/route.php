@@ -157,6 +157,9 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 		$params      = JComponentHelper::getParams('com_act');
 		$grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
 
+		$use_route_lifetime =  $params['use_route_lifetime'];
+        $route_lifetime_range =  $params['route_lifetime_range'];
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
@@ -175,10 +178,8 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
                 'l.line',  'l.height', 'l.indicator', 'l.properties AS line_properties',
 				// Sector
                 'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
-				// Sponsor
-                'sp.name AS sp_name', 'sp.media AS sp_media', 'sp.txt AS sp_txt',
 				// Trigger
-                't.calc_grade_round AS calc_grade', // Für Berechnung des Tacho 
+                't.calc_grade AS calc_grade', // Für Berechnung des Tacho 
 				't.avg_stars',
 				// Holds Manufacturer
 				'h.name AS extend_name',
@@ -197,11 +198,14 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
               ->join('LEFT', '#__act_color              AS c  ON a.color     = c.id')               // Color
               ->join('LEFT', '#__act_setter             AS s  ON a.setter    = s.id')               // Setter
               ->join('LEFT', '#__act_line               AS l  ON a.line      = l.id')               // Line
-              ->join('LEFT', '#__act_sponsor            AS sp ON a.sponsor   = sp.id')              // Sponsor
               ->join('LEFT', '#__act_sector             AS sc ON sc.id       = l.sector')           // Sector
 			  ->join('LEFT', '#__act_holds_manufacturer AS h  ON h.id        = a.extend_sql' )      // Holds
               ->where($db->qn('a.id') . '='. (int) $id);
-
+       
+		// Removedate / Lifetime
+        if(1 == $use_route_lifetime) {
+            $query->select('NOW() >  DATE_SUB(a.removedate, INTERVAL '.$route_lifetime_range.' DAY) AS lifetime' );
+        }
         
         $db->setQuery($query);
         $query = $db->loadAssoc();

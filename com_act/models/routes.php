@@ -119,6 +119,9 @@ class ActModelRoutes extends ListModel
         $params      = JComponentHelper::getParams('com_act');
         $grade_table = $params['grade_table'];  // Welche Tabelle für Schwierigkeitsgrade
 
+        $use_route_lifetime =  $params['use_route_lifetime'];
+        $route_lifetime_range =  $params['route_lifetime_range'];
+
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
@@ -154,6 +157,11 @@ class ActModelRoutes extends ListModel
               ->where($db->qn('a.state') . 'IN (1,-1)')                                       // Freigegeben und Vorgemerkt
               ->where('cg.id_grade IS NOT NULL')
               ->where($db->qn('a.hidden') . ' != 1');
+        
+        // Removedate / Lifetime
+        if(1 == $use_route_lifetime) {
+            $query->select('NOW() >  DATE_SUB(a.removedate, INTERVAL '.$route_lifetime_range.' DAY) AS lifetime' );
+        }
 
         // Filter by search in title
         $search = $this->getState('filter.search');
