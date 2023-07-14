@@ -89,7 +89,7 @@ $document->addStyleDeclaration($style);
                     <?php echo  HTMLHelper::_('grid.sort', 'COM_ACT_STATUS', 'a.state', $listDirn, $listOrder); ?> 
                 </th>
                 <?php if(1==$use_route_lifetime) : ?>
-                    <th class="r_edit text-center"> <?php // Removedate ?>
+                    <th class="text-center" style="width: 5%"> <?php // Removedate ?>
                         <?php echo ActHelpersAct::getPopoverByParams('ACTGLOBAL_ROUTE_LIFETIME', 'ACTGLOBAL_ROUTE_LIFETIME_POPOVER_TXT'); ?><br />
                         <?php echo HTMLHelper::_('grid.sort', 'ACTGLOBAL_LIFETIME', 'removedate', $listDirn, $listOrder); ?>
                     </th>
@@ -190,8 +190,12 @@ $document->addStyleDeclaration($style);
 
                      <?php if(1==$use_route_lifetime) : ?>
                         <td class="text-center">
-                            <?php $removedate = HTMLHelper::_('date', $item->removedate, Text::_('DATE_FORMAT_LC4')); ?>
-                            <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime, $removedate); ?>
+                            <?php if($item->removedate != '0000-00-00') : ?>
+                            <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime, 0); ?>
+                            <?php echo HTMLHelper::_('date', $item->removedate, Text::_('DATE_FORMAT_LC4')); ?>
+                            <?php else : ?>
+                            <?php echo '-'; ?>
+                            <?php endif; ?>
                         </td>
                     <?php endif; ?> 
 

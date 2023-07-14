@@ -38,6 +38,13 @@ $params    = JComponentHelper::getParams( 'com_act' );
 $pdf = $params['admin_lines_pdf'];
 $indicator = $params['admin_lines_indicator'];
 
+// Lade Globale Sprachdateien
+$lang = Factory::getLanguage();
+$extension = 'com_act_global';
+$base_dir = JPATH_SITE;
+$language_tag = $lang->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
 ?>
 
 <?php // Page-Header ?>
@@ -61,6 +68,7 @@ $indicator = $params['admin_lines_indicator'];
         <table class="table table-striped table-sm" id="lineList">
             <thead>
                 <tr>
+                    <th class="text-center" width="5%"><?php echo HTMLHelper::_('grid.sort',  'ACTGLOBAL_STATUS', 'a.locked', $listDirn, $listOrder); ?></th>
                     <th class="text-center"><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_LINE', 'a.line', $listDirn, $listOrder); ?></th>
                     <?php if (1 == $indicator) : ?>
                         <th width="5%"><?php echo HTMLHelper::_('grid.sort',  'COM_ACT_INDICATOR', 'a.indicator', $listDirn, $listOrder); ?></th>
@@ -87,7 +95,21 @@ $indicator = $params['admin_lines_indicator'];
             <tbody>
                 <?php foreach ($this->items as $i => $item) : ?>
                     <?php $canEdit = $user->authorise('core.edit', 'com_act'); ?>
-                    <tr class="row<?php echo $i % 2; ?>">
+                  
+                   
+                    <tr class="row<?php echo $i % 2; ?> <?php if(3==$item->state) {echo "table-danger";} ?>">
+                    <td class="text-center">
+                    <?php if ($item->state == 1): ?><?php // Freigegeben  ?>
+                        <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=line.publish&id=' . $item->id . '&state= 3') : '#'; ?>">
+                            <i class="<?php echo Text::_('ACTGLOBAL_FA_CHECK'); ?>"></i>
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($item->state == 3): ?><?php // Freigegeben  ?>
+                        <a class=" <?php echo $class; ?>" href="<?php echo ($canChange) ? Route::_('index.php?option=com_act&task=line.publish&id=' . $item->id . '&state= 1') : '#'; ?>">
+                            <i class="<?php echo Text::_('ACTGLOBAL_FA_LOCK'); ?>"></i>
+                        </a>
+                    <?php endif; ?>
+                    </td>
                     <td class="text-center"><?php echo $item->line; ?>
                         <?php if(1 == $pdf) : ?><?php // ist in der Config PDF auf Ja? ?>
                             <a class="ml-3" href="/createPDF/jdisplay.php?line=<?php echo (int)$item->line; ?>">  <i style="color: red;" class="far fa-file-pdf"></i></a>

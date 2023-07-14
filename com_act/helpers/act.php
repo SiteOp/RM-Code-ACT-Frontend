@@ -568,7 +568,7 @@ class ActHelpersAct
     * @param =  
     * @return echo Icons
     */
-    public static function getRemoveRouteIcon($removestate, $removedate = '') {
+    public static function getRemoveRouteIcon($removestate, $popover = 0) {
       
 		switch($removestate){
             case (0):
@@ -583,14 +583,8 @@ class ActHelpersAct
             }
         // Mit Angabe des Removedate Popover mit Datumsangabe
         // Z. B. Routenliste Admin
-        if(!empty($removedate)) {
-            echo '<a class="d-inline-block" rel="popover" 
-                data-container="body"
-                data-placement="top" 
-                data-trigger="hover" 
-                data-content="'.$removedate.' ">
-                <i class="'.Text::_('ACTGLOBAL_FA_REMOVE_STATE_'.$removestate).' fa-lg" style="color: '.$color.';"></i> 
-              </a>';
+        if(0 == $popover) {
+            echo '<i class="'.Text::_('ACTGLOBAL_FA_REMOVE_STATE_'.$removestate).' fa-lg" style="color: '.$color.';"></i> </a>';
            
         } 
         // Ohne Angabe des Datums nur Icon anzeigen

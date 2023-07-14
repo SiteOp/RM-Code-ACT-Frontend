@@ -15,8 +15,10 @@
               filter="integer"
               size="1">
                 <option value="1">JPUBLISHED</option>
+                <option value="3">ACTGLOBAL_LINES_LOCKED</option>
                 <option value="0">JUNPUBLISHED</option>
                 <option value="-2">JTRASHED</option>
+
        </field>
        <field name="line" 
               filter="string" 
@@ -86,7 +88,7 @@
 		filter="integer" 
               default=""
 	       class="form-control" 
-              label="JGLOBAL_LINES_OPTIONS"  
+              label="ACTGLOBAL_LINES_OPTIONS"  
               sql_select="l.name,l.id"
               sql_from="#__lineoption_opt AS l"
               key_field="id"
@@ -99,7 +101,7 @@
 		filter="integer" 
               default=""
 	       class="form-control" 
-              label="JGLOBAL_LINES_PROPERTIES"  
+              label="ACTGLOBAL_LINES_PROPERTIES"  
               sql_select="name, id"
               sql_from="#__rm_config_lines_property"
               sql_where="state = 1" 

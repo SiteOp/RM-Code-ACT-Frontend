@@ -9,16 +9,18 @@
               filter="string"
        />
        <field name="state" 
-              default="1" 
+              default="" 
               type="list" 
               label="COM_ACT_STATUS" 
               class="inputbox"
               filter="integer"
               size="1"
               onchange="this.form.submit();">
-                <option value="1">COM_ACT_PUBLISHED</option>
-                <option value="0">COM_ACT_UNPUBLISHED </option>
-                <option value="-2">COM_ACT_TRASHED </option>
+              <option value="">ACTGLOBAL_PUBLISHE_AND_LOCKED</option>
+                <option value="1">JPUBLISHED</option>
+                <option value="3">ACTGLOBAL_LINES_LOCKED</option>
+                <option value="0">JUNPUBLISHED</option>
+                <option value="-2">JTRASHED</option>
        </field>        
        <field name="sector" 
               type="sql"

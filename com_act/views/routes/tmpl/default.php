@@ -183,7 +183,7 @@ $document->addStyleDeclaration($style);
                         <a href="<?php echo Route::_('index.php?option=com_act&view=route&id='.(int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
                         <?php // Removedate Lifetime der Route ?>
                         <?php if((1==$use_route_lifetime) AND (1==$item->lifetime)) : ?> 
-                         <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime); ?>
+                         <?php echo ActHelpersAct::getRemoveRouteIcon($item->lifetime, 1); ?>
                         <?php endif; ?>
                         <?php // Route NEWS ?>
                         <?php if (strtotime($item->setterdate) > ($unix_date - $newRouteDateRange) ): ?><span class="new_route"><?php echo Text::_('COM_ACT_ROUTE_NEW_ROUTE'); ?></span> <?php endif; ?>

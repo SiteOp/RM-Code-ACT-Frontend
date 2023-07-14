@@ -18,6 +18,7 @@ use \Joomla\Utilities\ArrayHelper;
 use \Joomla\CMS\Language\Text;
 use \Joomla\CMS\Table\Table;
 use \Joomla\CMS\Helper\TagsHelper;
+use Joomla\CMS\Date\Date;
 
 /**
  * Act model.
@@ -346,10 +347,13 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 	 */
 	public function publish($id, $state)
 	{
+
+
 		$table = $this->getTable();
                 
 		$table->load($id);
 		$table->state = $state;
+		$table->modified = new Date('now');
 
 		return $table->store();
                 

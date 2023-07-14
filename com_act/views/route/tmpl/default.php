@@ -113,7 +113,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
                  <div class="card-body">
 
                 <?php if((1==$use_route_lifetime) AND (1==$this->item->lifetime)) : ?> <?php // Removedate Lifetime der Route ?>
-                    <dl class="row"><dt class="col" style="font-size: 150%;"><?php echo ActHelpersAct::getRemoveRouteIcon($this->item->lifetime); ?></dt></dl>
+                    <dl class="row"><dt class="col" style="font-size: 150%;"><?php echo ActHelpersAct::getRemoveRouteIcon($this->item->lifetime, 1); ?></dt></dl>
                 <?php endif; ?>
 
 				 <?php if (0 == $this->item->exclude) : ?><?php // Tacho anzeigen wenn Route für Kommentare nicht gesperrt ?>
@@ -219,14 +219,14 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
                         <?php if ((1==$use_route_properties) AND (!empty($this->item->route_properties))) : ?>
                         <dl class="row"><?php // Eigenschaften / Routencharakter ?>
-                           <dt class="col-6"><?php echo Text::_('COM_ACT_CONFIG_ROUTES_PROPERTIES'); ?></dt>
+                           <dt class="col-6"><?php echo Text::_('ACTGLOBAL_ROUTES_PROPERTIES'); ?></dt>
                            <dd class="col-6"><?php echo $routeProperties; ?></dd>
                         </dl>
                         <?php endif; ?>
 
                         <?php if ((1==$use_line_properties) AND (!empty($this->item->line_properties))) : ?>
                         <dl class="row"><?php // Eigenschaften / Liniencharakter ?>
-                           <dt class="col-6"><?php echo Text::_('COM_ACT_CONFIG_LINE_PROPERTIES'); ?></dt>
+                           <dt class="col-6"><?php echo Text::_('ACTGLOBAL_LINES_PROPERTIES'); ?></dt>
                            <dd class="col-6"><?php echo $lineProperties; ?></dd>
                         </dl>
                         <?php endif; ?>

@@ -44,7 +44,7 @@ class ActModelLines extends ListModel
                 'indicator', 'a.indicator',
                 'maintenance_interval', 'a.maintenance_interval',
                 'first_maintenace', 'a.first_maintenace',
-                'next_maintenance', 'v.next_maintenance'
+                'next_maintenance', 'v.next_maintenance',
             );
         }
 
@@ -84,7 +84,7 @@ class ActModelLines extends ListModel
         $app->input->set('list', null);
 
         // List state information.
-        parent::populateState('a.line', 'asc');
+        parent::populateState('a.state', 'asc');
 
         $context = $this->getUserStateFromRequest($this->context . '.context', 'context', 'com_content.article', 'CMD');
         $this->setState('filter.context', $context);
@@ -154,7 +154,7 @@ class ActModelLines extends ListModel
         }
         else 
         {
-            $query->where($db->qn('a.state') . '= 1');
+            $query->where($db->qn('a.state') . 'IN (1,3)');
         }
  
          // Filtering sector
@@ -178,8 +178,8 @@ class ActModelLines extends ListModel
             }
 
             // Add the list ordering clause.
-            $orderCol  = $this->state->get('list.ordering', 'id');
-            $orderDirn = $this->state->get('list.direction', 'ASC');
+            $orderCol  = $this->state->get('list.ordering', 'state');
+            $orderDirn = $this->state->get('list.direction', 'DESC');
 
             if ($orderCol && $orderDirn)
             {

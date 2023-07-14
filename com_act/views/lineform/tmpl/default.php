@@ -20,6 +20,14 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
+// Lade Globale Sprachdateien
+$lang = Factory::getLanguage();
+$extension = 'com_act_global';
+$base_dir = JPATH_SITE;
+$language_tag = $lang->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+
 // ACT Params 
 $params      = JComponentHelper::getParams('com_act');
 $use_line_properties = $params['use_line_properties'];
