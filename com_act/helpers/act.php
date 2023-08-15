@@ -384,8 +384,11 @@ class ActHelpersAct
      * z.B Automat, Toprpbe
      * @param   int     $pk     The item's id
      * @return  mixed
+     * 
+     * Anzeigeart 0 == nur PopoverIcon
+     * Anzeigeart 1 == Popover und daneben der Text
      */
-    public static function getLineoptions($id)
+    public static function getLineoptions($id, $anzeigeart = 0)
     {
         $db	   = Factory::getDbo();
         $query = $db->getQuery(true);
@@ -395,10 +398,13 @@ class ActHelpersAct
             ->from('#__lineoption_opt')
             ->where('id = ' . (int) $id);
 
-        $db->setQuery($query);
+        $db->setQuery($query); 
         $options = $db->loadObjectList();
 		
 		foreach ($options as $option) {
+            if($anzeigeart == 1) {
+                echo $option->name;
+             }
 			echo '<span class="icon ml-1"  
 				 rel="popover" 
 				 data-html="true"
@@ -408,8 +414,10 @@ class ActHelpersAct
 				 data-content=" '.$option->name.' ">
 				 ' .$option->icon. '
 				 </span>';
+                 
 		}
     }
+
 
 
     /**

@@ -36,6 +36,7 @@ $use_route_properties   = $params['use_route_properties'];
 $use_line_properties    = $params['use_line_properties'];
 $use_route_lifetime     = $params['use_route_lifetime']; // Removedate Lifetime einer Route
 
+
 // Helper um die Tabelle der Schwierigkeitsgrade zu erhalten
 JLoader::import('helpers.grade', JPATH_SITE.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_act');
 
@@ -230,8 +231,18 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
                            <dd class="col-6"><?php echo $lineProperties; ?></dd>
                         </dl>
                         <?php endif; ?>
-                        
-                        
+
+                        <?php if(!empty($this->item->lineoption)) : ?>
+                        <dl class="row"><?php // Linienoptionen ?>
+                           <dt class="col-6"><?php echo Text::_('ACTGLOBAL_LINES_OPTIONS'); ?></dt>
+                           <dd class="col-6">
+                                <?php $options = explode(",", $this->item->lineoption); ?>
+                                <?php foreach ($options as $option) : ?>
+                                <?php echo ActHelpersAct::getLineoptions($option, 1); ?>
+                                <?php endforeach ; ?>
+                            </dd>
+                        </dl>
+                        <?php endif; ?>
                         <?php if (!empty($this->item->info)) : ?>
                         <dl class="row mt-4"><?php // Route Info ?>
                            <dt class="col-6"><?php echo Text::_('COM_ACT_TABLE_LBL_ROUTE_INFO'); ?></dt>

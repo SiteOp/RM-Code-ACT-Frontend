@@ -34,6 +34,10 @@ $use_setterdate         = $params['use_setterdate'];
 $use_route_properties   = $params['use_route_properties'];
 $use_line_properties    = $params['use_line_properties'];
 $use_route_lifetime     = $params['use_route_lifetime']; // Removedate Lifetime einer Route
+$use_info_icon          = $params['use_info_icon'];
+$use_row_line           = $params['use_row_line'];
+$use_review_count       = $params['use_review_count'];
+$use_row_sector         = $params['use_row_sector'];
 
 
 $newRouteDateRange  = $params['newroutedaterange']; // Config Anzahl Tage wann Route Label Neu
@@ -78,24 +82,31 @@ $document->addStyleDeclaration($style);
 
 <?php if (sizeof($this->items) !== 0 ) : ?> <?php // Pr�fe ob es �berhaubpt Ergebnisse gibt ?>
 
-    <div class="table-responsive ">
+    <div class="table-responsive">
         <table class="table table-striped table-sm" id="routeList">
             <thead>
             <tr>
+                <?php if(1 == $use_info_icon) : ?>
                 <th class="r_info text-center"><?php // Info Popover ?>
                     <?php echo Text::_('COM_ACT_LBL_INFO'); ?>
                 </th>
-                <?php if ($line == 1 ) : ?><?php // Line ?>
-                <th class="r_line d-none d-xxl-table-cell">
-                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_LINE', 'l.line', $listDirn, $listOrder); ?> 
-                </th>
-                <?php endif ;?>
+                <?php endif; ?>
                 <th class="r_color text-center"><?php // Color ?>
                     <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_COLOR', 'c.color', $listDirn, $listOrder); ?>
                 </th>
                 <th class="r_name"><?php // Name Route ?>
                     <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_NAME', 'a.name', $listDirn, $listOrder); ?>
                 </th>
+                <?php if (1 == $use_row_sector  ) : ?><?php // Sektor ?>
+                <th class="">
+                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_SECTORS_SECTOR', 'sectorID', $listDirn, $listOrder); ?> 
+                </th>
+                <?php endif ;?>
+                <?php if (1 == $use_row_line ) : ?><?php // Line ?>
+                <th class="r_line">
+                    <?php echo HTMLHelper::_('grid.sort',  'COM_ACT_TABLE_HEADER_ROUTES_LINE', 'l.line', $listDirn, $listOrder); ?> 
+                </th>
+                <?php endif ;?>
                 <?php if ($calcgrade == 1 ) : ?>
                 <th class="r_cgrade text-center"> <?php // C-Grade ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_C_GRADE', 'COM_ACT_ROUTE_POPOVER_TXT_C_GRADE'); ?><br />
@@ -111,10 +122,12 @@ $document->addStyleDeclaration($style);
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_STARS', 'COM_ACT_ROUTE_POPOVER_TXT_STARS'); ?><br />
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_REVIEW', 'AvgStars', $listDirn, $listOrder); ?>
                 </th>
+                <?php if(1==$use_review_count) : ?>
                 <th class="r_count  d-none d-md-table-cell"><?php // Count ?>
                     <?php echo ActHelpersAct::getPopoverByParams('COM_ACT_ROUTE_POPOVER_HEAD_REVIEW_COUNT', 'COM_ACT_ROUTE_POPOVER_TXT_REVIEW_COUNT'); ?><br />
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_REVIEW_COUNT', 't.count_stars', $listDirn, $listOrder); ?>
                 </th>
+                <?php endif; ?>
                 <?php if(1==$use_routesetter) : ?>
                 <th class="r_setter d-none d-lg-table-cell"><?php // Setter ?>
                     <?php echo HTMLHelper::_('grid.sort', 'COM_ACT_TABLE_HEADER_ROUTES_SETTERNAME', 's.settername', $listDirn, $listOrder); ?>
@@ -138,7 +151,7 @@ $document->addStyleDeclaration($style);
 
             <?php foreach ($this->items as $i => $item) : ?>
                 <tr class="row<?php echo $i % 2; ?>">
-
+                    <?php if(1 == $use_info_icon) : ?>
                     <td class="r_info text-center"><?php // Info Popover ?>
                          <a class="" rel="popover" 
                                 data-placement="right" 
@@ -166,12 +179,6 @@ $document->addStyleDeclaration($style);
                             <?php endif; ?>
                         </a>
                     </td>
-                    <?php  if ($line == 1 ) : ?><?php // Line Number ?>
-                    <td class="d-none d-xxl-table-cell">
-                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[line]=<?php echo $item->lineId; ?>">
-                            <?php echo $item->line; ?>
-                        </a>
-                    </td>
                     <?php endif; ?>
                     <td class="text-center"><?php // Color ?>
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[color]=<?php echo $item->colorId; ?>">
@@ -192,9 +199,22 @@ $document->addStyleDeclaration($style);
 						<?php foreach ($options as $option) : ?>
 						  <?php echo ActHelpersAct::getLineoptions($option); ?>
 						<?php endforeach ; ?>
-                        
-
                     </td>
+                    <?php if(1==$use_row_sector) : ?><?php // Sektor ?>
+                    <td class="r_setter">
+                        <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[sector]=<?php echo $item->sectorID; ?>">
+                            <?php echo $item->lineSectorName; ?>
+                        </a>
+                    </td>
+                    <?php endif; ?>
+                    <?php  if (1 == $use_row_line ) : ?><?php // Line Number ?>
+                    <td class="">
+                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[line]=<?php echo $item->lineId; ?>">
+                            <?php echo $item->line; ?>
+                        </a>
+                    </td>
+                    <?php endif; ?>
+
                     <?php if ($calcgrade == 1 ) : ?><?php // C-Grade ?>
                     <td  class="text-center">
                         <?php echo (0 == (int)$item->c_grade) ? '-' : $item->c_grade; ?>
@@ -211,9 +231,11 @@ $document->addStyleDeclaration($style);
                     <td class="d-sm-none text-center" >  <?php // AVG nur Ausgabe Text für Smartphone  ?>
                         <?php echo round($item->AvgStars,0); ?>
                     </td>
+                    <?php if(1==$use_review_count) : ?>
                     <td  class=" d-none d-md-table-cell"><?php // Count User ?>
                         <?php echo (empty($item->count_stars)) ? '(0)' : '(' .$item->count_stars. ')'; ?><?php // Short if else ?>
                     </td>
+                    <?php endif; ?>
                     <?php if(1==$use_routesetter) : ?>
                     <td class="d-none d-lg-table-cell">
                         <a href="<?php echo Route::_('index.php?option=com_act&view=routes'); ?>?filter[settername]=<?php echo $item->setterId; ?>">

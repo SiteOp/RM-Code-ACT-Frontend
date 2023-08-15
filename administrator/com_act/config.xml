@@ -18,6 +18,22 @@
                max="99" 
                step="1" 
         />
+		<field name="use_info_icon" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Spalte Info" description="Feature Info mit Icon, Linie, Sektor usw">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		<field name="use_review_count" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Spalte Anzahl" description="">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		<field name="use_row_line" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Spalte Linie" description="Spalte Linie anzeigen">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		<field name="use_row_sector" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Spalte Sektor" description="">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
         <field name="use_routesetter" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Routenschrauber" description="Rotenschrauber anzeigen">
           <option value="0">JNO</option>
           <option value="1">JYES</option>
@@ -260,7 +276,6 @@
           <option value="0">JNO</option>
           <option value="1">JYES</option>
         </field>
-		
     </fieldset>
 	
 	<fieldset label="Colors" name="colors">

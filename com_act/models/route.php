@@ -176,7 +176,7 @@ class ActModelRoute extends \Joomla\CMS\MVC\Model\ItemModel
 				// Setter
                 's.settername', 
 				// Line
-                'l.line',  'l.height', 'l.indicator', 'l.properties AS line_properties',
+                'l.line',  'l.height', 'l.indicator', 'l.properties AS line_properties', 'l.lineoption',
 				// Sector
                 'sc.sector AS lineSectorName', 'sc.building', 'sc.inorout',
 				// Trigger
