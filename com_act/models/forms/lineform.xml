@@ -134,6 +134,21 @@
               label="COM_ACT_NEXT_MAINTENACE"
         />
         <field name="maxroutes" type="number" label="COM_ACT_LINE_MAX_ROUTES"  min="0" max="10" step="1" class="form-control"/>
+       <field name="mapid"
+              type="sql"
+		filter="integer" 
+              default="0"
+	       class="form-control" 
+              label="Image"  
+              sql_select="name, id"
+              sql_from="#__mapimage"
+              sql_where="raster = 1 AND state = 1" 
+              key_field="id"
+              value_field="name">
+               <option value="0">JGLOBAL_SELECT_AN_OPTION</option>
+           </field>
+        <field name="cx" type="number" default="" label="x-Koordinate" description="" filter="float" step="1" class="form-control" hint=""/>
+        <field name="cy" type="number" default="" label="y-Koordinate" description="" filter="float"  step="" class="form-control" hint="" />
        <field name="checked_out" type="hidden" filter="unset"/>
        <field name="checked_out_time" default="0000-00-00 00:00:00" type="hidden" filter="unset"/>
   </fieldset>

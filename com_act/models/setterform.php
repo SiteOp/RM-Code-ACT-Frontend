@@ -15,6 +15,7 @@ jimport('joomla.event.dispatcher');
 
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\User\UserHelper;
 
 /**
  * Act model.
@@ -287,7 +288,20 @@ class ActModelSetterForm extends JModelForm
         {
             $data = $this->getItem();
         }
-        
+                // Support for multiple or not foreign key field: ugroup
+		$array = array();
+
+		foreach ((array) $data->ugroup as $value)
+		{
+			if (!is_array($value))
+			{
+				$array[] = $value;
+			}
+		}
+		if(!empty($array)){
+
+		$data->ugroup = $array;
+		}
 
         return $data;
     }
@@ -305,10 +319,33 @@ class ActModelSetterForm extends JModelForm
     public function save($data)
     {
         $id    = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('setter.id');
-        $state = (!empty($data['state'])) ? 1 : 0;
         $user  = Factory::getUser();
+           
+        $setterUserId = $data['user_id'];
+        $setterUserGroup = Factory::getUser($setterUserId)->groups;
 
-        
+        // Wenn RM gewählt alle anderen auf Null setzten
+        // Ausnahme Benutzer Frontend
+        if($data['is_rm'] == true) {
+            $data['is_wa'] = 0;
+            $data['is_ak'] = 0;
+            $data['is_jo'] = 0;
+            
+        }
+ 
+        // Status Mitarbeite Account
+        $state = (!empty($data['state'])) ? 1 : 0;
+        if($state != 1) {  // Wenn nicht aktiviert alles Rechte auf 0
+            $data['is_rm'] = 0;
+            $data['is_wa'] = 0;
+            $data['is_bf'] = 0;
+            $data['is_ak'] = 0;
+            $data['is_jo'] = 0;
+            $data['is_me'] = 0;
+        }
+
+
+
         if ($id)
         {
             // Check the user can edit this item
@@ -322,13 +359,53 @@ class ActModelSetterForm extends JModelForm
 
         if ($authorised !== true)
         {
-            throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         $table = $this->getTable();
 
         if ($table->save($data) === true)
         {
+
+          // Benutzer Standard ist 2 (Registriert) Dieser sollte immer bestehen bleiben. 
+          // Sonst funktioniert das löschen aus den Benutezrgruppen nicht richtig
+          UserHelper::addUserToGroup($setterUserId,2);
+         
+          if($data['is_wa'] == true) { // Wartung
+            UserHelper::addUserToGroup($setterUserId,11);
+          } else {
+            UserHelper::removeUserFromGroup($setterUserId,11);
+          }
+          if($data['is_bf'] == true) {// Benutzer Frontend
+            UserHelper::addUserToGroup($setterUserId,12);
+          } else {
+            UserHelper::removeUserFromGroup($setterUserId,12);
+          }
+          if($data['is_ak'] == true) {// Admin Kommentar
+            UserHelper::addUserToGroup($setterUserId,13);
+          } else {
+            UserHelper::removeUserFromGroup($setterUserId,13);
+          }
+          if($data['is_rm'] == 1) {// Routes-Manager
+            UserHelper::addUserToGroup($setterUserId,14);
+           } elseif ($data['is_rm'] == 0) {
+             UserHelper::removeUserFromGroup($setterUserId,14);
+           }
+          if($data['is_jo'] == true) {// Jobs
+            UserHelper::addUserToGroup($setterUserId,16);
+          } else {
+            UserHelper::removeUserFromGroup($setterUserId,16);
+          }
+          if($data['is_me'] == true) { // Mängel erfassen
+            UserHelper::addUserToGroup($setterUserId,17);
+          } else {
+            UserHelper::removeUserFromGroup($setterUserId,17);
+          }
+
+
+            //###########
+            //#############
+
             return $table->id;
         }
         else

@@ -13,6 +13,8 @@
         <action name="admin.comment.edit" title="COM_ACT_ACTION_ADMIN_COMMENT_EDIT" description="COM_ACT_ACTION_ADMIN_COMMENT_EDIT_DESC" />
         <action name="route.archive.show" title="Archivierte Routen" description="Kann Archivierte Routen aufrufen" />
         <action name="route.planning" title="Route planen" description="Kann Routen planen und Status Routes Planung sehen und setzen " />
+        <action name="group.as.admin.manage" title="Alle Rechte setzen" description="" />
+        <action name="group.as.routesmanager.manage" title="Routes-Manager untergordent setzen" description="" />
 	</section>
     <section name="category">
 		<action name="core.create" title="JACTION_CREATE" description="COM_CATEGORIES_ACCESS_CREATE_DESC" />

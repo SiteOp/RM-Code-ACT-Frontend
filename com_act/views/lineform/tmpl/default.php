@@ -94,8 +94,16 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 			<div class="form-group row">
 				<div class="col-md-5"><?php echo $this->form->renderField('maintenance_interval'); ?></div>
 				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('first_maintenace'); ?></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-md-5"><?php echo $this->form->renderField('mapid'); ?></div>
+			</div>  
+			<div class="form-group row">
+				<div class="col-md-5"><?php echo $this->form->renderField('cx'); ?></div>
+				<div class="col-md-5 col-md-offset-1"><?php echo $this->form->renderField('cy'); ?></div>
 			</div> 
 	
+
 			<?php echo $this->form->getInput('id'); ?>
 			<?php echo $this->form->getInput('created_by'); ?>
 			<?php echo $this->form->getInput('modified_by'); ?>
@@ -122,3 +130,5 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
 		</form>
 	<?php endif; ?>
 </div>
+
+<?php echo $this->loadTemplate('map'); ?>

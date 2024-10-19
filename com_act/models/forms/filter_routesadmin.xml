@@ -47,19 +47,24 @@
               onchange="this.form.submit();">
                <option value="">COM_ACT_SECTORS_BUILDING</option>
        </field>  
+
+
        <field name="sector" 
-              type="sql"
-              filter="integer"
-              default="*"
-              label="COM_ACT_SEARCH_FILTER_SECTOR"
-              sql_select="sector, id"
-              sql_from="#__act_sector"
-              sql_where="state = 1"
-              key_field="id"
-              value_field="sector"
-              onchange="this.form.submit();">
-               <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
-       </field>  
+               type="sql"
+               default="*"
+               label="COM_ACT_SEARCH_FILTER_SECTOR"
+               sql_select="sector, id"
+               sql_from="#__act_sector"
+               sql_where="state = 1"
+               key_field="id"
+               value_field="sector"
+               class="form-control"
+               multiple="true"
+               filter="integer"
+               sql_filter="building"
+               onchange="this.form.submit();"
+              >
+        </field>   
        <field name="line"
               type="sql"
               filter="integer"

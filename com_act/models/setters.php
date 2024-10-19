@@ -35,11 +35,12 @@ class ActModelSetters extends JModelList
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
-				'category', 'a.category',
+				'category', 'category',
 				'lastname', 'a.lastname',
 				'firstname', 'a.firstname',
 				'settername', 'a.settername',
 				'state', 'a.state',
+				'user_group', 'uv.user_group'
 			);
 		}
 
@@ -70,7 +71,7 @@ class ActModelSetters extends JModelList
 		$ordering  = isset($list['filter_order'])     ? $list['filter_order']     : null;
 		$direction = isset($list['filter_order_Dir']) ? $list['filter_order_Dir'] : null;
 
-		$list['limit']     = (int) Factory::getConfig()->get('list_limit', 20);
+		$list['limit']     = 10; //(int) Factory::getConfig()->get('list_limit', 10);
 		$list['start']     = $app->input->getInt('start', 0);
 		$list['ordering']  = $ordering;
 		$list['direction'] = $direction;
@@ -79,7 +80,7 @@ class ActModelSetters extends JModelList
 		$app->input->set('list', null);
 
         // List state information.
-        parent::populateState('a.ordering', 'asc');
+        parent::populateState('a.id', 'desc');
 
         $context = $this->getUserStateFromRequest($this->context . '.context', 'context', 'com_content.article', 'CMD');
         $this->setState('filter.context', $context);
@@ -108,7 +109,8 @@ class ActModelSetters extends JModelList
             $query = $db->getQuery(true);
 
             // Select the required fields from the table.
-            $query->select(array('a.id', 'a.state',  'a.category',  'a.settername',  'a.lastname', 'a.firstname', 
+            $query->select(array('a.id', 'a.state',  'category',  'a.settername',  'a.lastname', 'a.firstname', 'a.user_id',
+								 '.uv.user_group'
                                  )
                            )
 
@@ -117,6 +119,7 @@ class ActModelSetters extends JModelList
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS uEditor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->join('LEFT', '#__act_user_connect_list_view AS uv ON uv.setterId =a.id');
 
 		// Join over the created by field 'created_by'
 		$query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
@@ -124,11 +127,6 @@ class ActModelSetters extends JModelList
 		// Join over the created by field 'modified_by'
 		$query->join('LEFT', '#__users AS modified_by ON modified_by.id = a.modified_by');
             
-		if (!Factory::getUser()->authorise('core.edit', 'com_act'))
-		{
-			$query->where('a.state = 1');
-		}
-
             // Filter by search in title
             $search = $this->getState('filter.search');
 
@@ -146,17 +144,81 @@ class ActModelSetters extends JModelList
             }
             
 
+
+        // Filter by state 
+        $filter_state = $this->getState('filter.state');
+        
+        if ($filter_state != '')
+        {
+            $query->where($db->qn('a.state') . '=' .  $filter_state);
+        }
+        else 
+        {
+            $query->where($db->qn('a.state') . '= 1');
+        }
+		
+		// Filter by linked 
+		$filter_linked = $this->getState('filter.linked');
+		if($filter_linked != '')
+		switch ($filter_linked) {
+			case 1:
+				$query->where($db->qn('a.user_id') . '!= 0');
+				break;
+			case 0:
+				$query->where($db->qn('a.user_id') . '= 0');
+				break;
+			}
+		
+		// Filtering Benutzerrechte
+		$filter_benutzerrechte = $this->state->get("filter.benutzerrechte");
+
+		if ($filter_benutzerrechte)
+		{		
+		  switch($filter_benutzerrechte) {
+			case 'wa': // Wartung
+				$query->where($db->qn('uv.user_group') . 'IN (7,14,11)');
+				break;
+			case 'bf': // Benutzer
+				$query->where($db->qn('uv.user_group') . 'IN (7,12)');
+				break;
+			case 'ak': //Admin Kommentar
+				$query->where($db->qn('uv.user_group') . 'IN (7,13)');
+				break;
+			case 'rm': //Routes-Manager
+				$query->where($db->qn('uv.user_group') . 'IN (7,14)');
+				break;
+			case 'jo': //Jobs
+				$query->where($db->qn('uv.user_group') . 'IN (7,14,16)');
+				break;
+			case 'me': //Jobs
+				$query->where($db->qn('uv.user_group') . 'IN (7,14,17)');
+				break;
+		  }
+			//$filter = $filter_benutzerrechte;
+			//$query->where($db->qn('a.ugroup') . 'IN ('.$filter.')');
+		    //echo $query->dump(); exit;
+		}	
+
+		// Filter by username
+		//$filter_user_id = $this->getState('filter.user_id');
+        
+		//	if ($filter_user_id != '')
+		//	{
+		//		$query->where($db->qn('a.user_id') . '=' .  $filter_user_id);
+		//	}
+	
+
 		// Filtering category
 		$filter_category = $this->state->get("filter.category");
 
 		if ($filter_category)
 		{
-			$query->where("FIND_IN_SET('" . $db->escape($filter_category) . "',a.category)");
+			$query->where("FIND_IN_SET('" . $db->escape($filter_category) . "',category)");
 		}
 
             // Add the list ordering clause.
-            $orderCol  = $this->state->get('list.ordering', 'id');
-            $orderDirn = $this->state->get('list.direction', 'ASC');
+            $orderCol  = $this->state->get('list.ordering', 'a.id');
+            $orderDirn = $this->state->get('list.direction', 'DESC');
 
             if ($orderCol && $orderDirn)
             {
@@ -186,7 +248,7 @@ class ActModelSetters extends JModelList
 
 			$query
 				->select($db->quoteName('title'))
-				->from($db->quoteName('#__categories'))
+				->from($db->quoteName('#__rm_config_setter_category'))
 				->where('FIND_IN_SET(' . $db->quoteName('id') . ', ' . $db->quote($item->category) . ')');
 
 			$db->setQuery($query);

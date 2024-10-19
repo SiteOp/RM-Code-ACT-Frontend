@@ -230,9 +230,9 @@ class ActHelpersAct
     * @return Bootstrap Popover
     *  <?php echo ActHelpersAct::getPopoverByParams('SPRACHSTRING', 'SPRACHSTRING'); ?><br />
     */
-    public static function getPopoverByParams($header, $txt) {
+    public static function getPopoverByParams($header, $txt, $class='lblpopover') {
       
-     echo ' <a class="lblpopover" rel="popover" 
+     echo ' <a class="'.$class.'" rel="popover" 
                 data-container="body"
                 data-placement="right" 
                 data-trigger="hover" 
@@ -242,8 +242,24 @@ class ActHelpersAct
                 <i class=" '.Text::_('COM_ACT_FA_INFO').' "></i>
             </a>';
     }
-    
-    
+
+
+        /**
+    * Get Popover $params
+    * @params Text Var für  Body
+    * @return Bootstrap Popover
+    *  <?php echo ActHelpersAct::getPopover('SPRACHSTRING', 'Icon Class'); ?><br />
+    * Einfache Ausgabe nur Icon und Erklärung
+    */
+    public static function getPopover($header, $icon_class) {
+      echo'  <a class="popover2" rel="popover" 
+			    data-container="body"
+				data-placement="top" 
+				data-trigger="hover" 
+				data-content="'.Text::_($header).' ">
+				<i class="'.$icon_class.'"></i>
+			</a>';
+    }
     
     
     

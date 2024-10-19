@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use \Joomla\Utilities\ArrayHelper;
 
 //jimport('joomla.application.component.modellist');
 
@@ -138,7 +139,7 @@ class ActModelRoutesAdmin extends ListModel
                              // Color
                              'c.rgbcode', 'c.id AS colorId', 'c.rgbcode2', 'c.rgbcode3',
                              // Line
-                             'l.line', 'l.id AS lineId',
+                             'l.line', 'l.id AS lineId', 'lineoption',
                              // Sector
                              'sc.inorout',  'sc.building', 'sc.inorout',
                              'sc.sector AS lineSectorName',
@@ -262,13 +263,15 @@ class ActModelRoutesAdmin extends ListModel
             }
  
 
-        // Filtering sector
-        $filter_sector = $this->state->get("filter.sector");
 
-            if ($filter_sector)
-            {
-                $query->where($db->qn('sc.id') . '=' . (int) $filter_sector);
-            }
+
+    // Filtering sector
+		$filter_sector = $this->state->get("filter.sector");
+        if ($filter_sector != '')
+        {
+            ArrayHelper::toInteger($filter_sector);
+            $query->where($db->qn('sc.id') . 'IN (' . implode(',', $filter_sector).')');
+        }
 
         // Filtering building
         $filter_building = $this->state->get("filter.building");

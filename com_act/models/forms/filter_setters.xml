@@ -1,23 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fields name="filter">
+        <field name="state" 
+           default="1" 
+           type="list" 
+           label="JSTATUS" 
+           class="inputbox"
+           onchange="this.form.submit();"
+           filter="integer"
+           size="1">
+              <option value="1">JENABLED</option>
+              <option value="0">JDISABLED</option>
+        </field>
         <field name="search" 
                type="text" 
                hint="COM_ACT_SEARCH_FILTER_SETTER_SUBMIT"
                label=""
                filter="string"
-               class="js-stools-search-string" />
-
-        <field name="category" 
-               label="" 
-               type="category" 
-               extension="com_act.setters" 
+               class="js-stools-search-string" 
+        />
+        <field name="benutzerrechte" 
+               label="Benutzerrechte" 
+               type="list"
+               multiple="false"
+               onchange="this.form.submit();"
+               default="14">
+                  <option value="">COM_ACT_SETTERS_BENUTZERRECHTE</option>
+                  <option value="rm">COM_ACT_ACL_USERS_RM</option>
+                  <option value="bf">COM_ACT_ACL_USERS_BF</option>
+                  <option value="ak">COM_ACT_ACL_USERS_AK</option>
+                  <option value="jo">COM_ACT_ACL_USERS_JO</option>
+                  <option value="wa">COM_ACT_ACL_USERS_WA</option>
+                  <option value="me">COM_ACT_ACL_USERS_ME</option>
+        </field>
+        <field name="linked" 
+               default="3" 
+               type="list" 
+               label="Linked" 
+               class="inputbox"
                onchange="this.form.submit();"
                filter="integer"
-               default=""
-               >
-                <option value="">COM_ACT_SEARCH_FILTER_KATEGORIE</option>
+                size="1">
+                    <option value="3">COM_ACT_SETTERS_BENUTZERKONTO</option>
+                    <option value="1">COM_ACT_SETTERS_BENUTZERKONTO_CONNECTED</option>
+                    <option value="0">COM_ACT_SETTERS_BENUTZERKONTO_NOT_CONNECTED</option>
         </field>
-
+        <field name="category" 
+               label="COM_ACT_SEARCH_FILTER_KATEGORIE" 
+               type="sql" 
+               multiple="false"
+               filter="integer"
+               query="SELECT id, title FROM #__rm_config_setter_category"
+               key_field="id"
+               value_field="title"
+               header="COM_ACT_SEARCH_FILTER_KATEGORIE"
+               onchange="this.form.submit();"
+        />
     </fields>
 </form>

@@ -16,7 +16,7 @@ use \Joomla\CMS\Router\Route;
 use \Joomla\CMS\Language\Text;
 
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 
@@ -29,7 +29,6 @@ $doc->addScript(JUri::base() . '/media/com_act/js/form.js');
 $user    = Factory::getUser();
 $canEdit = ActHelpersAct::canUserEdit($this->item, $user);
 
-
 if($this->item->state == 1){
 	$state_string = 'Publish';
 	$state_value = 1;
@@ -38,12 +37,16 @@ if($this->item->state == 1){
 	$state_value = 0;
 }
 $canState = Factory::getUser()->authorise('core.edit.state','com_act');
-?>
 
+$authorised = $user->authorise('group.as.admin.manage', 'com_act') || $authorised = $user->authorise('group.as.routesmanager.manage', 'com_act');
+if ($authorised !== true)
+{
+	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+}
+?>
 <?php if (!$canEdit) : ?>
 	<h3><?php throw new Exception(Text::_('COM_ACT_ERROR_MESSAGE_NOT_AUTHORISED'), 403); ?></h3>
 <?php else : ?>
-
     <?php // Pager-Header ?>
     <?php if (!empty($this->item->id)): ?>
         <div class="page-header">
@@ -54,61 +57,47 @@ $canState = Factory::getUser()->authorise('core.edit.state','com_act');
             <h1 itemprop="headline"><?php echo Text::_('COM_ACT_FORM_SETTER_APPLY_ITEM_TITLE'); ?></h1>
         </div>
     <?php endif; ?>
-    
-
     <div id="form-edit" class="setter-edit front-end-edit">
-            <form id="form-setter"
-                  action="<?php echo Route::_('index.php?option=com_act&task=setter.save'); ?>"
-                  method="post" class="form-validate" enctype="multipart/form-data">
-                
-        <?php echo $this->form->getInput('id'); ?>
-        
-        <div class="form-group row">  
-             <div class="col-md-5"><?php echo $this->form->renderField('state'); ?></div>
-             <div class="col-md-5"><?php echo $this->form->renderField('category'); ?></div>
-        </div>
-        <div class="form-group row">  
-             <div class="col-md-5"><?php echo $this->form->renderField('firstname'); ?></div>
-             <div class="col-md-5"><?php echo $this->form->renderField('lastname'); ?></div>
-        </div>
-        <div class="form-group row">  
-             <div class="col-md-5"><?php echo $this->form->renderField('settername'); ?></div>
-        </div>
-        <div class="form-group row">  
-             <div class="col-md-5"><?php echo $this->form->renderField('email'); ?></div>
-             <div class="col-md-5"><?php echo $this->form->renderField('phone'); ?></div>
-        </div>
-        <div class="form-group row">  
-             <div class="col-md-5"><?php echo $this->form->renderField('info'); ?></div>
-             <div class="col-md-5"><?php echo $this->form->renderField('image'); ?></div>
-        </div>
-
-        <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
-        <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
-                    <?php echo $this->form->getInput('created_by'); ?>
-                    <?php echo $this->form->getInput('modified_by'); ?>
-        <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
-
-                <div class="control-group">
-                    <div class="controls">
-
-                        <?php if ($this->canSave): ?>
-                            <button type="submit" class="validate btn btn-success">
-                                <?php echo Text::_('COM_ACT_SUBMIT_SAVE'); ?>
-                            </button>
-                        <?php endif; ?>
-                        <a class="btn btn-warning"
-                           href="<?php echo Route::_('index.php?option=com_act&task=setterform.cancel'); ?>"
-                           title="<?php echo Text::_('JCANCEL'); ?>">
-                            <?php echo Text::_('JCANCEL'); ?>
-                        </a>
-                    </div>
+        <form id="form-setter" action="<?php echo Route::_('index.php?option=com_act&task=setter.save'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
+            <?php // Account Verknüpfung ?>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <?php  echo $this->loadTemplate('account'); ?>
                 </div>
-
-                <input type="hidden" name="option" value="com_act"/>
-                <input type="hidden" name="task"
-                       value="setterform.save"/>
-                <?php echo JHtml::_('form.token'); ?>
-            </form>
-	<?php endif; ?>
-</div>
+                <?php // Benutzerrechte ?>
+                <?php if(!empty($this->item->user_id)): ?>
+                        <div class="col-12 col-md-6">
+                            <?php  echo $this->loadTemplate('benutzerrechte'); ?>
+                        </div>
+                <?php endif; ?>
+            </div><?php // row End ?>
+            <?php // Mitarbeiter Info ?>
+            <div class="row mt-5">
+                <div class="col">
+                    <?php  echo $this->loadTemplate('setterinfo'); ?>
+                </div>
+            </div>
+            <input type="hidden" name="jform[checked_out]" value="<?php echo $this->item->checked_out; ?>" />
+            <input type="hidden" name="jform[checked_out_time]" value="<?php echo $this->item->checked_out_time; ?>" />
+            <?php echo $this->form->getInput('created_by'); ?>
+            <?php echo $this->form->getInput('modified_by'); ?>
+            <?php echo $this->form->getInput('id'); ?>
+            <input type="hidden" name="jform[ordering]" value="<?php echo $this->item->ordering; ?>" />
+            <div class="control-group">
+                <div class="controls">
+                    <?php if ($this->canSave): ?>
+                        <button type="submit" class="validate btn btn-success">
+                            <?php echo Text::_('COM_ACT_SUBMIT_SAVE'); ?>
+                        </button>
+                    <?php endif; ?>
+                    <a class="btn btn-warning" href="<?php echo Route::_('index.php?option=com_act&task=setterform.cancel'); ?>" title="<?php echo Text::_('JCANCEL'); ?>">
+                        <?php echo Text::_('JCANCEL'); ?>
+                    </a>
+                </div>
+            </div>
+            <input type="hidden" name="option" value="com_act"/>
+            <input type="hidden" name="task"  value="setterform.save"/>
+            <?php echo JHtml::_('form.token'); ?>
+        </form>
+    </div>
+<?php endif; ?>
