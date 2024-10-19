@@ -50,12 +50,12 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 <?php // Page-Header ?>
 <?php if ($this->params->get('show_page_heading')) : ?>
     <div class="page-header">
-        <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+        <h1<i class="fas fa-grip-lines-vertical"></i> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
     </div>
 <?php else : ?>
     <div class="page-header">
         <h1 itemprop="headline">
-            <?php echo $this->escape($this->params->get('page_title')); ?>
+        <i class="fas fa-grip-lines-vertical"></i> <?php echo $this->escape($this->params->get('page_title')); ?>
         </h1>
     </div>
 <?php endif; ?>

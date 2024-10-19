@@ -72,12 +72,12 @@ $document->addScript("/templates/b4/js/changeSelectOptionsValue.js", array(), ar
 <?php // Page-Header ?>
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<div class="page-header">
-		<h1> <i class="fas fa-shield-alt"></i> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1> 
+		<h1> <i class="fas fa-cubes"></i> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1> 
 	</div>
 <?php else : ?>
     <div class="page-header">
 		<h1 itemprop="headline">
-			<i class="fas fa-shield-alt"></i> <?php echo $this->escape($this->params->get('page_title')); ?>
+			<i class="fas fa-cubes"></i> <?php echo $this->escape($this->params->get('page_title')); ?>
 		</h1>
     </div>
 <?php endif; ?>

@@ -64,11 +64,11 @@ $gradeList = GradeHelpersGrade::getSettergradeList($grade_table);
     <?php // Pager-Header Start ?>
     <?php if (!empty($this->item->id)): ?>
         <div class="page-header">
-            <h1><?php echo Text::sprintf('COM_ACT_FORM_ROUTE_EDIT_ITEM_TITLE', $this->item->id); ?></h1>
+            <h1><i class="fas fa-cube"></i> <?php echo Text::sprintf('COM_ACT_FORM_ROUTE_EDIT_ITEM_TITLE', $this->item->id); ?></h1>
         </div>
 	<?php else: ?>
         <div class="page-header">
-            <h1 itemprop="headline"><?php echo Text::_('COM_ACT_FORM_ROUTE_APPLY_ITEM_TITLE'); ?></h1>
+            <h1 itemprop="headline"> <i class="fas fa-cube"></i> <?php echo Text::_('COM_ACT_FORM_ROUTE_APPLY_ITEM_TITLE'); ?></h1>
         </div>
     <?php endif; ?>
     <?php // Pager-Header END ?>
