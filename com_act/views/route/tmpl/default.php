@@ -50,6 +50,7 @@ if(!empty($this->item->line_properties)) {
 }
 
 
+
 //  Tacho 
 $tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
 $tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);
@@ -71,7 +72,6 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
 
 ?>
-
 
 <?php // Nach dem Kommentieren wird die Seite Refreshed. Dadurch kein HTTP_REFERER. Der Backlink muss daher unterschiedlich sein ?>
 <a href='<?php echo URI::base(); ?>' 
@@ -254,6 +254,10 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
         
             <?php if($extendFormField) { // Griffhersteller ja/nein
                 echo $this->loadTemplate('extend_info');
+            }; ?>
+
+            <?php if(1 == 1) { // Griffhersteller ja/nein
+                echo $this->loadTemplate('map');
             }; ?>
 
 

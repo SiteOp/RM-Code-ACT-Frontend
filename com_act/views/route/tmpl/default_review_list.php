@@ -15,11 +15,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-$user        = JFactory::getUser();
+$user        = Factory::getUser();
 $userId      = $user->get('id');
 $adminUser   = $user->authorise('core.admin', 'com_act');	
 $userAdminComment   = $user->authorise('core.edit', 'com_act_admin_comment');	
-	
+
+
 // Erhalte den Itemid des Menüpunktes Admin Commens Liste 
 // Nötig um beim Editieren direkt in das richtige Formular zu kommen	
 $app = JFactory::getApplication(); 
@@ -43,7 +44,6 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
 	</h3> 
     </div>
     <div class="card-body">
-
      <?php if (!empty($this->comment)) : ?><?php // Kommentar vorhanden? ?>
             <?php foreach ($this->comment as $comment) : ?>
        
@@ -77,7 +77,7 @@ JLoader::register('Act_admin_commentHelpersAct_admin_comment', JPATH_ROOT . '/co
 									</div>
 								<?php endif; ?>
 									
-								<?php if($userAdminComment == true) : ?> <?php // nur für Admin ?>
+								<?php if($userAdminComment) : ?> <?php // nur für Admin ?>
 										<?php if (empty($adminComment->admincommentId)) : ?>
 											<div class="col-1 offset-11">
 												<a href="<?php echo Route::_('index.php?option=com_act_admin_comment&view=admincommentform&layout=edit&id=0&commentid='.$comment['c_id'].'&route_id='.$this->item->id, false, 0); ?>">

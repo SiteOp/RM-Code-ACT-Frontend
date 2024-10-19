@@ -59,7 +59,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
         </h1>
     </div>
 <?php endif; ?>
-
+<a class="btn btn-primary mb-4" href="<?php echo Route::_('index.php?option=com_mapimage&view=mapimages'); ?>"> Übersicht Linien</a>
 <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post"
       name="adminForm" id="adminForm">
 
