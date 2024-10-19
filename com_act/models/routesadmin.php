@@ -53,6 +53,7 @@ class ActModelRoutesAdmin extends ListModel
                 'settername', 's.settername',
                 'setterdate', 'a.setterdate',
                 'info', 'a.info',
+                'infoadmin', 'a.infoadmin',
                 'state', 'a.state',
                 'fixed', 'a.fixed',
                 'lifetime', 'lifetime',
@@ -130,7 +131,7 @@ class ActModelRoutesAdmin extends ListModel
         $query = $db->getQuery(true);
 
         $query->select(array(// Route
-                             'a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info',
+                             'a.id', 'a.state', 'a.name', 'a.setterdate', 'a.info', 'a.infoadmin',
                               'a.created_by', 'a.exclude', 'a.hidden', 'a.fixed',
                              // Setter
                              's.settername', 's.id AS setterId',
@@ -227,14 +228,30 @@ class ActModelRoutesAdmin extends ListModel
                 }
             }
 
+        // Filter by search in Admin-Info
+        $infosearch = $this->getState('filter.infosearch');
+
+        if ($infosearch != '') {
+            $infosearch = $db->Quote('%' . $db->escape($infosearch, true) . '%');
+            // $query->where(($db->qn('a.infoadmin') .'LIKE' . $infosearch ). 'OR' . ($db->qn('a.info') .'LIKE' . $infosearch));
+            $query->where($db->qn('a.infoadmin') . 'LIKE ' . $infosearch);
+        }
+        
         // Filtering c-grade - Value from Multiple List - Array
         $filter_cgrade = $this->state->get("filter.cgrade");
-        if ($filter_cgrade != '')
-         {
-            JArrayHelper::toInteger($filter_cgrade);
-            $query->where($db->qn('cg.filter') . 'IN (' . implode(',', $filter_cgrade).')');
-         }
-         
+            if ($filter_cgrade != '')
+             {
+                JArrayHelper::toInteger($filter_cgrade);
+                $query->where($db->qn('cg.filter_merged') . 'IN (' . implode(',', $filter_cgrade).')');
+             }
+
+        // Filtering c-grade - Value from Multiple List - Array
+        $filter_vrgrade = $this->state->get("filter.vrgrade");
+            if ($filter_vrgrade != '')
+             {
+                JArrayHelper::toInteger($filter_vrgrade);
+                $query->where($db->qn('a.settergrade') . 'IN (' . implode(',', $filter_vrgrade).')');
+             }
              
         // Filtering Line
         $filter_line = $this->state->get("filter.line");

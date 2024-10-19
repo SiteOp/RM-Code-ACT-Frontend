@@ -7,21 +7,15 @@
         />
        <field name="cgrade" 
               label="COM_ACT_SEARCH_FILTER_CGRADE" 
-              type="list"
-              multiple="multiple"
-              onchange="this.form.submit();"
-              filter="integer"
-              default="*">
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
+              type="sql"
+               sql_select="filter, grade"
+               sql_from="#__act_grade_filter"
+               sql_where="state = 1"
+               key_field="filter"
+               value_field="grade"
+               multiple="multiple"
+               onchange="this.form.submit();"
+               filter="integer">
        </field>
        <field name="settername"
                type="sql"

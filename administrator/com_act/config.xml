@@ -52,10 +52,22 @@
         </field>
 		<field name="route_lifetime_range" type="number" showon="use_route_lifetime:1" label="Zeitraum für Liftime" description="Wie weit im voraus soll eine Route vor dem Ende der Routen Lebensdauer gekennzeichnet werden?" min="1" max="999" step="1" />
     </fieldset>
+
+	<fieldset label="Routes-Admin-List" name="routes_admin_list">
+		<field name="Routes-Admin-List_Filter" type="note" label="Filter Admin Liste" />
+		<field name="use_filter_c_grade" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Filter C-Grade" description="">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		<field name="use_filter_vr_grade" default="1" type="radio"  class="btn-group btn-group-yesno"  label="Filter VR-Grade" description="">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+
+	</fieldset>
 	
 
 	<fieldset label="Route anlegen" name="routeform">
-
 		<field name="txtRoute" type="note" label="Felder Route" />
 
 	 	<field name="routetype" 

@@ -5,6 +5,9 @@
               label=""
               class="js-stools-search-string"
        />
+       <field name="infosearch" type="text" hint="Info-Admin"
+              label=""
+       />
        <field name="state"
               type="list"
               filter="integer"
@@ -129,24 +132,33 @@
               onchange="this.form.submit();">
 	         <option value="">Optionen</option>
         </field>
-        <field name="cgrade" 
+       <field name="cgrade"
+              class="cgrade_filter"
               label="COM_ACT_SEARCH_FILTER_CGRADE" 
-              type="list"
-              filter="integer"
+              type="sql"
+              sql_select="filter, grade"
+              sql_from="#__act_grade_filter"
+              sql_where="state = 1"
+              key_field="filter"
+              value_field="grade"
               multiple="multiple"
               onchange="this.form.submit();"
-              default="*">
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-        </field>  
+              filter="integer">
+       </field>
+       <field name="vrgrade"
+              class="vrgrade_filter"
+              label="COM_ACT_SEARCH_FILTER_CGRADE" 
+              type="sql"
+              sql_select="filter, grade"
+              sql_from="#__act_grade_filter"
+              sql_where="state = 1"
+              key_field="filter"
+              value_field="grade"
+              multiple="multiple"
+              onchange="this.form.submit();"
+              filter="integer">
+       </field>
+
         <field name="datesort"
               type="list"
               filter="raw"

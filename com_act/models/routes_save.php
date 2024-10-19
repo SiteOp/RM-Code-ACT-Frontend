@@ -185,7 +185,7 @@ class ActModelRoutes extends ListModel
             if ($filter_cgrade != '')
              {
                 JArrayHelper::toInteger($filter_cgrade);
-                $query->where($db->qn('cg.filter_merged') . 'IN (' . implode(',', $filter_cgrade).')');
+                $query->where($db->qn('cg.filter') . 'IN (' . implode(',', $filter_cgrade).')');
              }
 			 
 		// Filtering Lineoptions - Value from Multiple List - Array (Automat, Toprobe usw)

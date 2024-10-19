@@ -50,7 +50,6 @@ if(!empty($this->item->line_properties)) {
 }
 
 
-
 //  Tacho 
 $tachoCGrade       = GradeHelpersGrade::getGrade(($this->item->id_grade));
 $tachoCGradeBefore = GradeHelpersGrade::getGrade(($this->item->id_grade) -1);

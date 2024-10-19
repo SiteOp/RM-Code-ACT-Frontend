@@ -60,6 +60,9 @@ $document = Factory::getDocument();
 $style .=  1==$use_routesetter ? '' : '#filter_settername, #filter_settername_chosen {display: none;}';
 $document->addStyleDeclaration($style);
 
+// Search Field C-Grade und VR-Grade Text anpassen
+$document->addScript("/templates/b4/js/changeSelectOptionsValue.js", array(), array('async'=>'async'));
+
 ?>
 
 
@@ -266,3 +269,4 @@ $document->addStyleDeclaration($style);
     <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
+
