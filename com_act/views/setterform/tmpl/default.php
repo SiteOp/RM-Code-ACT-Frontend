@@ -15,6 +15,7 @@ use \Joomla\CMS\Uri\Uri;
 use \Joomla\CMS\Router\Route;
 use \Joomla\CMS\Language\Text;
 
+
 JHtml::_('behavior.keepalive');
 //JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');

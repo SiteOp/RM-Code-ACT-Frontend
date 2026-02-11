@@ -13,11 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
-
-// Add Script 
-$doc = Factory::getDocument();
-$doc->addScript('node_modules/chart.js/dist/Chart.bundle.min.js');
-$doc->addScript('node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js');
+ 
 
 /**
  * View class for a list of Act.

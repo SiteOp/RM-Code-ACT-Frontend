@@ -345,55 +345,6 @@ class ActHelpersAct
     }
     
 
-
-
-     /**
-     * Erstellung einer chronologischen Zeitleiste
-     * Wird für Charts.js benötigt
-     *
-     * Zeitraum 1 Jahr
-     * Aktueller Monat am Ende
-     *
-     * Ausgabe "12/18","01/19","02/19","03/19", usw.
-     */
-    
-    public static function Timeline()
-    {
-        $monate = array(1=>"01/",2=>"02/",3=>"03/",4=>"04/",5=>"05/",6=>"06/",7=>"07/",8=>"08/",9=>"09/",10=>"10/",11=>"11/",12=>"12/"); 
-        $year = date("y");
-        $lastyear = $year -1;
-        $currentmonth = date("m");
-    
-        for ($i = ($currentmonth +1); $i <= 12; $i++)
-        {
-            echo '"'.$monate[$i] .$lastyear . '",';
-        } 
-        for ($i = 1; $i <= $currentmonth;)
-        {
-            echo '"'.$monate[$i] .$year . '",';
-            $i++;
-        }; 
-    }
-    
-    
-     /*
-      * Erstellung der Kurven bzw. Datasets für Charts.js
-      * Daten werden chronolgische Sortiert
-      * Ausgabe als CSV-Liste
-     */
-
-    public static function LinesDataset($params)
-    {
-
-        $offset = date("m");                                               // Start ($offest) ist der aktuelle Monat ($currentmonth)
-        $totalCurrentYear = array_slice($params, 0, $offset, true);        // Alle Daten des Array ab diesen Monat
-        $totalLastYear    = array_slice($params, $offset, null, true);     // Daten des Array bis diesen Monat
-        $linesDataset = array_merge($totalLastYear,$totalCurrentYear);     // Beide Array werden wieder verbunden
-        $linesDataset  = implode(',', $linesDataset);                      // Erstelle CSV-Liste 
-
-        return $linesDataset;
-    }
-	
 	
 	/**
      * Lineoptions - Text und Icon 

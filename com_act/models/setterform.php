@@ -344,6 +344,10 @@ class ActModelSetterForm extends JModelForm
             $data['is_me'] = 0;
         }
 
+        if($data['is_wa']) {
+            $data['is_me'] = 0;
+        }
+
 
 
         if ($id)

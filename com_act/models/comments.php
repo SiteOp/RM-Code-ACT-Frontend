@@ -233,118 +233,131 @@ class ActModelComments extends \Joomla\CMS\MVC\Model\ListModel
 
 
     /**
-    * Method um eine Statistik für die Kommentare zu erhalten
-    */
+     * Hilfsmethode: Baut die chronologische Timeline der letzten 12 Monate auf.
+     * Gibt ein Array von 'mm/yy'-Strings zurück, ältester Monat zuerst.
+     *
+     * @return array  z.B. ['03/25', '04/25', ..., '02/26']
+     */
+    protected function buildTimeline()
+    {
+        $timeline = [];
+        for ($i = 11; $i >= 0; $i--)
+        {
+            $timeline[] = date('m/y', strtotime("-{$i} months"));
+        }
+        return $timeline;
+    }
+
+
+    /**
+     * Statistik aller Kommentare der letzten 12 Monate.
+     * Gibt die Monatszahlen bereits in chronologischer Reihenfolge zurück,
+     * fehlende Monate werden mit 0 aufgefüllt.
+     *
+     * @return array  [[0 => int, 1 => int, ...]] (12 Einträge)
+     */
     public function getCommentsTotal()
     {
-        // Get a db connection.
-        $db = JFactory::getDbo();
-
-        // Create a new query object.
+        $db    = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select(array('COUNT(CASE WHEN MONTH(c.created) =  1 then 1 ELSE NULL END) as Jan',
-                             'COUNT(CASE WHEN MONTH(c.created) =  2 then 1 ELSE NULL END) as Feb',
-                             'COUNT(CASE WHEN MONTH(c.created) =  3 then 1 ELSE NULL END) as Maerz',
-                             'COUNT(CASE WHEN MONTH(c.created) =  4 then 1 ELSE NULL END) as Apr',
-                             'COUNT(CASE WHEN MONTH(c.created) =  5 then 1 ELSE NULL END) as Mai',
-                             'COUNT(CASE WHEN MONTH(c.created) =  6 then 1 ELSE NULL END) as Jun',
-                             'COUNT(CASE WHEN MONTH(c.created) =  7 then 1 ELSE NULL END) as Jul',
-                             'COUNT(CASE WHEN MONTH(c.created) =  8 then 1 ELSE NULL END) as Aug',
-                             'COUNT(CASE WHEN MONTH(c.created) =  9 then 1 ELSE NULL END) as Sept',
-                             'COUNT(CASE WHEN MONTH(c.created) = 10 then 1 ELSE NULL END) as Okt',
-                             'COUNT(CASE WHEN MONTH(c.created) = 11 then 1 ELSE NULL END) as Nov',
-                             'COUNT(CASE WHEN MONTH(c.created) = 12 then 1 ELSE NULL END) as Dez',
-                            )
-                      )
 
+        $query->select([
+                    'DATE_FORMAT(c.created, "%m/%y") AS monat',
+                    'COUNT(*) AS anzahl',
+                ])
               ->from('#__act_comment AS c')
-              ->where('c.created  > DATE_SUB(NOW(),INTERVAL 11 MONTH)')
-              ->where('c.state != -2');
-              //->group('YEAR(c.created)')
-              //->group('MONTH(c.created)');
+              ->where('c.created > DATE_SUB(NOW(), INTERVAL 11 MONTH)')
+              ->where('c.state != -2')
+              ->group('YEAR(c.created), MONTH(c.created)')
+              ->order('YEAR(c.created) ASC, MONTH(c.created) ASC');
 
-       $db->setQuery($query);
-       $result = $db->loadRowList();
+        $db->setQuery($query);
+        $rows = $db->loadAssocList('monat', 'anzahl');
 
-       return $result; 
+        // Jeden Monat der Timeline befüllen (fehlende → 0)
+        $result = [];
+        foreach ($this->buildTimeline() as $key)
+        {
+            $result[] = isset($rows[$key]) ? (int) $rows[$key] : 0;
+        }
+
+        return [$result];
     }
-    
-    
+
+
     /**
-    * Method um die Statistik der Kommentare mit Filter zu erweitern
-    */
+     * Statistik der Kommentare mit aktiven Filtern.
+     * Gleiche Rückgabestruktur wie getCommentsTotal().
+     *
+     * @return array  [[0 => int, 1 => int, ...]] (12 Einträge)
+     */
     public function getCommentsFilter()
     {
-        // Get a db connection.
-        $db = JFactory::getDbo();
-
-        // Create a new query object.
+        $db    = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select(array('COUNT(CASE WHEN MONTH(c.created) =  1 then 1 ELSE NULL END) as Jan',
-                             'COUNT(CASE WHEN MONTH(c.created) =  2 then 1 ELSE NULL END) as Feb',
-                             'COUNT(CASE WHEN MONTH(c.created) =  3 then 1 ELSE NULL END) as Maerz',
-                             'COUNT(CASE WHEN MONTH(c.created) =  4 then 1 ELSE NULL END) as Apr',
-                             'COUNT(CASE WHEN MONTH(c.created) =  5 then 1 ELSE NULL END) as Mai',
-                             'COUNT(CASE WHEN MONTH(c.created) =  6 then 1 ELSE NULL END) as Jun',
-                             'COUNT(CASE WHEN MONTH(c.created) =  7 then 1 ELSE NULL END) as Jul',
-                             'COUNT(CASE WHEN MONTH(c.created) =  8 then 1 ELSE NULL END) as Aug',
-                             'COUNT(CASE WHEN MONTH(c.created) =  9 then 1 ELSE NULL END) as Sept',
-                             'COUNT(CASE WHEN MONTH(c.created) = 10 then 1 ELSE NULL END) as Okt',
-                             'COUNT(CASE WHEN MONTH(c.created) = 11 then 1 ELSE NULL END) as Nov',
-                             'COUNT(CASE WHEN MONTH(c.created) = 12 then 1 ELSE NULL END) as Dez',
-                             )
-                      )
 
+        $query->select([
+                    'DATE_FORMAT(c.created, "%m/%y") AS monat',
+                    'COUNT(*) AS anzahl',
+                ])
               ->from('#__act_comment AS c')
-             ->join('LEFT', '#__act_route AS r ON r.id = c.route')
-              ->where('c.created  > DATE_SUB(NOW(),INTERVAL 11 MONTH)')
-              ->where('c.state != -2');
+              ->join('LEFT', '#__act_route AS r ON r.id = c.route')
+              ->where('c.created > DATE_SUB(NOW(), INTERVAL 11 MONTH)')
+              ->where('c.state != -2')
+              ->group('YEAR(c.created), MONTH(c.created)')
+              ->order('YEAR(c.created) ASC, MONTH(c.created) ASC');
 
-        // Filter by search in title
+        // Filter: Suche nach Route-Name oder Route-ID
         $search = $this->getState('filter.search');
-
         if (!empty($search))
         {
             if (is_numeric($search))
             {
-                $query->where($db->qn('r.id') . '=' . (int) $search);
+                $query->where($db->qn('r.id') . ' = ' . (int) $search);
             }
             else
             {
                 $search = $db->Quote('%' . $db->escape($search, true) . '%');
-                $query->where($db->qn('r.name') . 'LIKE ' . $search);
+                $query->where($db->qn('r.name') . ' LIKE ' . $search);
             }
         }
 
-        // Filtering stars
-        $filter_stars = $this->state->get("filter.stars");
-        if ($filter_stars != '')
+        // Filter: Sternebewertung
+        $filter_stars = $this->getState('filter.stars');
+        if ($filter_stars !== null && $filter_stars !== '')
         {
-            $query->where($db->qn('c.stars') . '=' . (int) $filter_stars);
+            $query->where($db->qn('c.stars') . ' = ' . (int) $filter_stars);
         }
 
-        // Filtering Username (Filter width ID)
-        $filter_user = $this->state->get("filter.user");
-
-        // Hole die ID des User anhand des Username
-		$user_id   = JUserHelper::getUserId($filter_user);
-
-        if ($filter_user !== null && !empty($filter_user))
+        // Filter: Eingabegerät
+        $filter_input = $this->getState('filter.input');
+        if ($filter_input !== null && $filter_input !== '')
         {
-           $query->where($db->qn('c.created_by') . '=' . (int) $user_id);
-        }
-        
-        // Filtering Input
-        $filter_input = $this->state->get("filter.input");
-        if ($filter_input != '')
-        {
-            $query->where($db->qn('c.input') . '=' . (int) $filter_input);
+            $query->where($db->qn('c.input') . ' = ' . (int) $filter_input);
         }
 
-       $db->setQuery($query);
-       $result = $db->loadRowList();
+        // Filter: Benutzer (via Username → ID)
+        $filter_user = $this->getState('filter.user');
+        if (!empty($filter_user))
+        {
+            $user_id = JUserHelper::getUserId($filter_user);
+            if ($user_id)
+            {
+                $query->where($db->qn('c.created_by') . ' = ' . (int) $user_id);
+            }
+        }
 
-       return $result; 
+        $db->setQuery($query);
+        $rows = $db->loadAssocList('monat', 'anzahl');
+
+        // Jeden Monat der Timeline befüllen (fehlende → 0)
+        $result = [];
+        foreach ($this->buildTimeline() as $key)
+        {
+            $result[] = isset($rows[$key]) ? (int) $rows[$key] : 0;
+        }
+
+        return [$result];
     }
 
 

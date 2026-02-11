@@ -3,104 +3,73 @@
  * @package    Com_Act
  * @author     Richard Gebhard <gebhard@site-optimierer.de>
  * @copyright  2019 Richard Gebhard
- * @license    GNU General Public License Version 2 oder später
+ * @license    GNU General Public License Version 2 oder spÃ¤ter
  */
+
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri as JUri;
+
 // ACT Params 
-$params      	= JComponentHelper::getParams( 'com_act' );
-$primaryline    = $params['primaryline'];
-$secondaryline  = $params['secondaryline'];
+$params        = JComponentHelper::getParams('com_act');
+$primaryline   = $params->get('primaryline', '#0393ad');
+$secondaryline = $params->get('secondaryline', '#fab903');
 
+// Daten aus dem Model - kommen bereits chronologisch sortiert
+$totalDataArray  = array_values(array_map('intval', $this->CommentsTotal[0]));
+$filterDataArray = array_values(array_map('intval', $this->CommentsFilter[0]));
+$totalSum        = array_sum($totalDataArray);
+$filterSum       = array_sum($filterDataArray);
 
-/*
- * Zeitleiste über Helper             =  ActHelpersAct::Timeline()
- * Erstes Dataset (Kurve) über Helper = ActHelpersAct::linesDataset($this->routes_total[0])
- * Zweites Dataset(Kurve)             = $ascent auch über die Helper
-*/
-$ascent = ActHelpersAct::linesDataset($this->CommentsFilter[0]);
-
-
-// Filter User
-if ($this->state->get('filter.user') != '')
+// Timeline-Labels direkt aus PHP generieren (korrekt sortiert, ohne ob_start)
+$timelineArray = [];
+for ($i = 11; $i >= 0; $i--)
 {
-    $var = "{data: [".$ascent." ],
-                 label: 'Filter ' + '" .array_sum($this->CommentsFilter[0])."',
-                 borderColor: '" . $secondaryline . "',
-                 fill: false
-                 },";
-}
-else {
-    $var = ''; // Die Variable muss erst auf null gesetzt werden sonst lädt die Grafik beim erstenmal nicht (Zum testen Browser Cookies leeren!)
+    $timelineArray[] = date('m/y', strtotime("-{$i} months"));
 }
 
-// Filter Stars 
-if ($this->state->get('filter.stars') != '')
+// PrÃ¼fe aktive Filter
+$activeFilter = '';
+$hasFilter    = false;
+
+$filterStates = [
+    'filter.user'   => 'Benutzer',
+    'filter.stars'  => 'Bewertung',
+    'filter.search' => 'Suche',
+    'filter.input'  => 'EingabegerÃ¤t',
+];
+
+foreach ($filterStates as $filterKey => $filterName)
 {
-    $var = "{data: [".$ascent." ],
-                 label: 'Filter ' + '" .array_sum($this->CommentsFilter[0])."',
-                 borderColor: '" . $secondaryline . "',
-                 fill: false
-                 },";
+    if ($this->state->get($filterKey) != '')
+    {
+        $activeFilter = $filterName;
+        $hasFilter    = true;
+        break;
+    }
 }
 
-// Filter  Suchfeld 
- if ($this->state->get('filter.search') != '')
-{
-    $var = "{data: [".$ascent." ],
-                 label: 'Filter ' + '" .array_sum($this->CommentsFilter[0])."',
-                 borderColor: '" . $secondaryline . "',
-                 fill: false
-                 },";
-}
+$showFilter = $hasFilter && ($totalDataArray !== $filterDataArray);
 
-// Filter  Suchfeld 
- if ($this->state->get('filter.input') != '')
-{
-    $var = "{data: [".$ascent." ],
-                 label: 'Filter ' + '" .array_sum($this->CommentsFilter[0])."',
-                 borderColor: '" . $secondaryline . "',
-                 fill: false
-                 },";
-}
+// Chart-Daten fÃ¼r JavaScript
+$chartData = [
+    'labels'         => $timelineArray,
+    'totalData'      => $totalDataArray,
+    'totalSum'       => $totalSum,
+    'filterData'     => $filterDataArray,
+    'filterSum'      => $filterSum,
+    'filterLabel'    => $activeFilter,
+    'showFilter'     => $showFilter,
+    'primaryColor'   => $primaryline,
+    'secondaryColor' => $secondaryline,
+];
+
+// Daten als globale JavaScript-Variable ausgeben
+$doc = Factory::getDocument();
+$doc->addScriptDeclaration('var actCommentsChartData = ' . json_encode($chartData, JSON_UNESCAPED_SLASHES) . ';');
+
+// Externes JavaScript laden
+$doc->addScript(JUri::root() . 'components/com_act/js/comments/comments-chart.js');
 ?>
-
-<?php // Charts.js ?>
-<script>
-Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
-  align: 'end',
-  anchor: 'end',
-  font: {
-    size: 15,
-    weight: 700
-  },
-});
-</script>
-<script>
-new Chart(document.getElementById("chart"), {
-    type: 'line',
-    data: {
-      labels: [<?php echo ActHelpersAct::Timeline(); ?>],
-       datasets: [{ 
-        data: [<?php echo ActHelpersAct::linesDataset($this->CommentsTotal[0]); ?>],
-        label: '12 Monate gesamt ' + <?php echo array_sum($this->CommentsTotal[0]); ?>,
-        borderColor: '<?php echo $primaryline; ?>',
-        fill: false
-      },
-      <?php echo $var; ?>
-        ]
-    }, 
-        options: {
-            animation: {
-                duration: 0 // general animation time
-            },
-            legend: {
-                display: true,
-                labels: {
-                    fontSize: 15,
-                }
-            }
-        },
-});
-</script>

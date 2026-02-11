@@ -52,17 +52,18 @@
         </field>
         <field name="sector" 
                type="sql"
-               default="*"
+             
                label="COM_ACT_SEARCH_FILTER_SECTOR"
-               sql_select="sector, id"
-               sql_from="#__act_sector"
-               sql_where="state = 1"
+               sql_select="sc.sector, sc.id"
+               sql_from="#__act_sector AS sc"
+               sql_where="sc.state = 1"
                key_field="id"
                value_field="sector"
                onchange="this.form.submit();"
-               filter="integer"
+               filter=""
+             
                >
-                     <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
+                    <option value="">COM_ACT_SEARCH_FILTER_SECTOR</option>
         </field>  
         <field name="line"
                type="sql"

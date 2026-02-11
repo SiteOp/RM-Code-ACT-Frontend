@@ -355,6 +355,101 @@ class GradeHelpersGrade
      }
     
 
+    /**
+     * Generiert das Merge-Schema aus der Datenbank
+     * 
+     * Diese Funktion liest aus der konfigurierten Grade-Tabelle alle Schwierigkeitsgrade aus,
+     * die für die Routenplanung verwendet werden (routes_planning = 1) und gruppiert sie
+     * nach ihrem merge_group Wert.
+     * 
+     * Funktionsweise:
+     * 1. Lädt die Grade-Tabelle aus den Komponenten-Parametern
+     * 2. Führt eine Datenbank-Abfrage aus mit GROUP_CONCAT um alle Grades zu sammeln
+     * 3. Filtert nur Datensätze mit routes_planning = 1 (aktiv für Routenplanung)
+     * 4. Gruppiert nach merge_group und sortiert nach id_grade (aufsteigende Schwierigkeit)
+     * 5. Wandelt das Ergebnis in ein assoziatives Array um
+     * 
+     * Beispiel aus der Datenbank:
+     * - Grade "5b" (id_grade=15) und "5b+" (id_grade=16) haben beide merge_group "5b/5b+"
+     * - Diese werden zu einem Array-Eintrag: "5b/5b+" => ["5b", "5b+"]
+     * - Grade "5a" (id_grade=14) hat merge_group "5a" 
+     * - Wird zu: "5a" => ["5a"]
+     * 
+     * GROUP_CONCAT sammelt alle grade-Werte einer Gruppe kommasepariert
+     * und sortiert sie dabei nach id_grade, damit die Reihenfolge stimmt.
+     * 
+     * @return array Das Merge-Schema im Format:
+     *               [
+     *                 "merge_group" => ["grade1", "grade2", ...],
+     *                 ...
+     *               ]
+     *               
+     *               Konkrete Ausgabe:
+     *               [
+     *                 "3" => ["3"],
+     *                 "4a" => ["4a"],
+     *                 "4b" => ["4b"],
+     *                 "4c" => ["4c"],
+     *                 "5a" => ["5a"],
+     *                 "5b/5b+" => ["5b", "5b+"],
+     *                 "5c/5c+" => ["5c", "5c+"],
+     *                 "6a/6a+" => ["6a", "6a+"],
+     *                 "6b/6b+" => ["6b", "6b+"],
+     *                 "6c/6c+" => ["6c", "6c+"],
+     *                 "7a/7a+" => ["7a", "7a+"],
+     *                 "7b/7b+" => ["7b", "7b+"],
+     *                 "7c/7c+" => ["7c", "7c+"],
+     *                 "8a/8a+" => ["8a", "8a+"],
+     *                 "8b/8b+" => ["8b", "8b+"],
+     *                 ...
+     *               ]
+     */
+    public static function getMergeScheme(): array
+    {
+        // Lade die Komponenten-Parameter um die konfigurierte Grade-Tabelle zu ermitteln
+        $params = JComponentHelper::getParams('com_act');
+        $grade_table = $params['grade_table'];
+
+        $db = Factory::getDbo();
+        
+        // SQL-Query:
+        // SELECT merge_group, GROUP_CONCAT(DISTINCT grade ORDER BY id_grade) AS grades
+        // FROM #__grade_table
+        // WHERE routes_planning = 1 AND merge_group IS NOT NULL
+        // GROUP BY merge_group
+        // ORDER BY id_grade ASC
+        //
+        // GROUP_CONCAT: Fasst alle grade-Werte einer merge_group zu einem String zusammen (kommasepariert)
+        // DISTINCT: Verhindert doppelte Einträge (sollte nicht vorkommen, aber zur Sicherheit)
+        // ORDER BY id_grade: Sortiert die Grades innerhalb der Gruppe nach Schwierigkeit
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('merge_group'),
+                'GROUP_CONCAT(DISTINCT ' . $db->quoteName('grade') . ' ORDER BY ' . $db->quoteName('id_grade') . ') AS grades'
+            ])
+            ->from($db->quoteName('#__' . $grade_table))
+            ->where($db->quoteName('routes_planning') . ' = 1')        // Nur Grades für Routenplanung
+            ->where($db->quoteName('merge_group') . ' IS NOT NULL')    // Nur Grades mit merge_group
+            ->group($db->quoteName('merge_group'))                      // Gruppiere nach merge_group
+            ->order($db->quoteName('id_grade') . ' ASC');               // Sortiere Ergebnis nach Schwierigkeit
+        
+        $db->setQuery($query);
+        $results = $db->loadObjectList();
+        
+        // Konvertiere die Datenbank-Resultate in das gewünschte Array-Format
+        // Eingabe: [{"merge_group": "5b/5b+", "grades": "5b,5b+"}, ...]
+        // Ausgabe: ["5b/5b+" => ["5b", "5b+"], ...]
+        $mergeScheme = [];
+        foreach ($results as $row) {
+            // Wandle die kommaseparierte Grade-Liste in ein Array um
+            // z.B. "5b,5b+" wird zu ["5b", "5b+"]
+            // z.B. "5a" wird zu ["5a"]
+            $mergeScheme[$row->merge_group] = explode(',', $row->grades);
+        }
+        
+        return $mergeScheme;
+    }
+
 
 }
 

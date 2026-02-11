@@ -29,13 +29,24 @@ if(!$userIsAdmin) {
    $this->form->setFieldAttribute( 'is_jo', 'showon', '' );
    $this->form->setFieldAttribute( 'is_ak', 'showon', '' );
 }
-if($userIsRoutesManager) {
+
+if(($userIsRoutesManager) AND (!$userIsAdmin)) {
    $this->form->setFieldAttribute( 'is_me', 'showon', 'is_wa:0' );
 }
 
+// Modal Benutzerrechte
+echo $this->loadTemplate('benutzerrechte_modal');
 ?>
+
 <div class="card h-100">
-    <div class="card-header"><h3><i class="fas fa-pencil-ruler"></i> <?php echo Text::_('Benutzerrechte');?></h3></div>
+    <div class="card-header">
+      <h3><i class="fas fa-pencil-ruler"></i> <?php echo Text::_('Benutzerrechte');?>
+        <!-- Button trigger modal -->
+        <a  data-toggle="modal" data-target="#benutzerrechteModal">
+          <i class="fas fa-info-circle float-right"></i> 
+        </a>
+      </h3>
+    </div>
     <div class="card-body">
       <?php  // Mitarbeiter ist Admin
              // Keine Felder 
