@@ -26,8 +26,8 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 require_once JPATH_LIBRARIES . '/rmcentrallib/rmcentrallib.php';
 
 // Chart.js + Datalabels laden
-RMCentralLibHelperAssets::loadJS('chartjs', true);
-RMCentralLibHelperAssets::loadJS('chartjs-datalabels', true);
+RMCentralLibHelperAssets::loadJS('chartjs', false);
+RMCentralLibHelperAssets::loadJS('chartjs-datalabels', false);
 
 // ACT Params 
 $params = JComponentHelper::getParams('com_act');
